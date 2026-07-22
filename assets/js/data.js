@@ -65,6 +65,23 @@ const ENGINE_SUPPLEMENT = {
     { id: 73398797, name: "白龙之圣骑士",   kind: "monster", typeLine: "[怪兽|效果|仪式] 龙/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
     { id: 89631139, name: "青眼白龙",       kind: "monster", typeLine: "[怪兽|通常] 龙/光",          level: 8, attrCN: "光", supQ: 3, role: "payoff" },
   ],
+  // 黑魔術／黑魔導（Dark Magician）—— 怪獸名為「黑魔術師」、魔法名為「黑魔導X」，兩者不同名
+  "黑魔": [
+    { id: 7084129,  name: "魔术师之杖",   kind: "monster", typeLine: "[怪兽|效果] 魔法师/暗", level: 3, attrCN: "暗", supQ: 3, role: "starter" },
+    { id: 97631303, name: "魔术师双魂",   kind: "monster", typeLine: "[怪兽|效果] 魔法师/暗", level: 1, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 71696014, name: "魔术师之袍",   kind: "monster", typeLine: "[怪兽|效果] 魔法师/暗", level: 2, attrCN: "暗", supQ: 2, role: "starter" },
+    { id: 47222536, name: "黑魔导阵",     kind: "spell",   typeLine: "[魔法|永续]",         level: 0, supQ: 3, role: "starter" },
+    { id: 73616671, name: "幻像魔法",     kind: "spell",   typeLine: "[魔法|速攻]",         level: 0, supQ: 2, role: "starter" },
+    { id: 46986414, name: "黑魔术师",     kind: "monster", typeLine: "[怪兽|通常] 魔法师/暗", level: 7, attrCN: "暗", supQ: 2, role: "payoff" },
+  ],
+  // 真紅眼（Red-Eyes）—— 旗艦「真紅眼黑龍」為通常怪，引擎卡（紅玉之寶札、傳說的黑石…）不同名
+  "真红眼": [
+    { id: 32566831, name: "红玉之宝札",   kind: "spell",   typeLine: "[魔法]",              level: 0, supQ: 3, role: "starter" },
+    { id: 66574418, name: "传说的黑石",   kind: "monster", typeLine: "[怪兽|效果] 龙/暗",     level: 1, attrCN: "暗", supQ: 2, role: "starter" },
+    { id: 36262024, name: "黑龙之雏",     kind: "monster", typeLine: "[怪兽|效果] 龙/暗",     level: 1, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 93969023, name: "黑钢龙",       kind: "monster", typeLine: "[怪兽|效果] 龙/暗",     level: 1, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 74677422, name: "真红眼黑龙",   kind: "monster", typeLine: "[怪兽|通常] 龙/暗",     level: 7, attrCN: "暗", supQ: 2, role: "payoff" },
+  ],
 };
 function supplementFor(keyword) {
   for (const k in ENGINE_SUPPLEMENT) {
