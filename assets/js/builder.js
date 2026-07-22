@@ -115,10 +115,16 @@ const Builder = (function () {
   function buildFromKeyword(keyword, cards, opts, rng) {
     rng = rng || Math.random;
     const notes = [];
+    // 策略流派：命中預設卡包則以其為核心（非關鍵字系列）
+    const preset = (typeof presetFor === "function") ? presetFor(keyword) : null;
     // 主題卡池：卡名含關鍵字者優先（乾淨的系列）；太少時退回較廣的相關結果
-    let named = cards.filter(function (c) { return c.name.indexOf(keyword) >= 0; });
-    let mode = "archetype";
-    if (named.length < 4) { mode = "loose"; named = cards.slice(0, 24); }
+    let named, mode;
+    if (preset) { named = []; mode = "strategy"; }
+    else {
+      named = cards.filter(function (c) { return c.name.indexOf(keyword) >= 0; });
+      mode = "archetype";
+      if (named.length < 4) { mode = "loose"; named = cards.slice(0, 24); }
+    }
 
     let mons = named.filter(function (c) { return c.kind === "monster" && !isExtraMon(c); });
     const extras = named.filter(isExtraMon);
@@ -133,16 +139,17 @@ const Builder = (function () {
       mons = effMons;
     }
 
-    // 經典主題引擎補全：補上與主題不同名的核心展開/搜尋卡
+    // 引擎補全 / 策略卡包：注入核心卡（與主題不同名，或流派固定卡包）
     const supRole = {}, supIds = {};
-    const sup = (typeof supplementFor === "function") ? supplementFor(keyword) : [];
+    const sup = preset ? preset : ((typeof supplementFor === "function") ? supplementFor(keyword) : []);
     sup.forEach(function (c) {
       supIds[c.id] = 1; if (c.role) supRole[c.id] = c.role;
       if (c.kind === "monster" && !isExtraMon(c)) { if (!isNormalMon(c) || c.role) mons.push(c); }
       else if (c.kind === "spell") spells.push(c);
       else if (c.kind === "trap") traps.push(c);
     });
-    if (sup.length) notes.push("已補上此主題的核心引擎卡（" + sup.length + " 種，與主題不同名，keyword 搜不到）。");
+    if (sup.length && !preset) notes.push("已補上此主題的核心引擎卡（" + sup.length + " 種，與主題不同名，keyword 搜不到）。");
+    if (preset) notes.push("此為玩法導向的「策略流派」卡包，以固定核心卡＋泛用卡組成，非單一系列。");
 
     // 特殊召喚怪：視為半個展開牌（自我特召可接續）
     const ssIds = {};
@@ -339,11 +346,15 @@ const Builder = (function () {
     for (let g = 0; g < GAMES; g++) {
       const handSize = (g % 2 === 0) ? 5 : 6;   // 先手 5 / 後手 6 各半
       const hand = sampleHand(bag, handSize);
-      let s = 0, m = 0, h = 0;
-      for (const r of hand) { if (r === "starter") s++; else if (r === "mid") m++; else if (r === "handtrap") h++; }
-      const openOK = s >= 1 || m >= 2;          // 有 1 張展開牌，或 2 張中階可搭橋
+      let s = 0, m = 0, h = 0, iv = 0;
+      for (const r of hand) {
+        if (r === "starter") s++; else if (r === "mid") m++; else if (r === "handtrap") h++;
+        else if (r === "interrupt" || r === "breaker") iv++;
+      }
+      // 可用起手：有展開牌／2 張中階／2 張妨害（控制·封鎖·擾亂流亦算成形）
+      const openOK = s >= 1 || m >= 2 || (h + iv) >= 2;
       if (openOK) openable++;
-      if (!openOK && h === 0) brick++;           // 既無法展開又無妨害 = 卡手
+      if (!openOK && h === 0 && iv === 0) brick++;   // 既不能展開又無妨害 = 卡手
       htSum += h;
     }
     const openRate = 100 * openable / GAMES;

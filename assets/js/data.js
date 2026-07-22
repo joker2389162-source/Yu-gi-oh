@@ -428,23 +428,104 @@ const META_DECKS = [
   },
 ];
 
-/* 生成器「關鍵字快選」——點一下即填入關鍵字，但你也可以直接輸入任何主題／卡名。
-   涵蓋現代環境與經典主題；不在此列的主題一樣可用（直接輸入即可）。 */
+/* 策略流派卡包（非單一系列，玩法導向）。以固定策展卡片為核心，生成器補足張數。
+   卡片格式同 ENGINE_SUPPLEMENT；role: starter/interrupt/payoff/handtrap。 */
+const STRATEGY_PRESETS = {
+  // 燒血流：以效果傷害＋拖延取勝
+  "烧血流": [
+    { id: 3510565,  name: "隐形鸟",     kind: "monster", typeLine: "[怪兽|效果] 鸟兽/暗", level: 3, attrCN: "暗", supQ: 3, role: "interrupt" },
+    { id: 83986578, name: "王虎",       kind: "monster", typeLine: "[怪兽|效果] 兽/地",   level: 4, attrCN: "地", supQ: 2, role: "interrupt" },
+    { id: 51449743, name: "连锁爆破",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 3, role: "interrupt" },
+    { id: 36468556, name: "停战协定",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 72302403, name: "光之护封剑", kind: "spell", typeLine: "[魔法]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 33782437, name: "一时休战",   kind: "spell", typeLine: "[魔法]", level: 0, supQ: 2, role: "interrupt" },
+  ],
+  // 封鎖系：永續陷阱／場地展開封鎖
+  "封锁系": [
+    { id: 90846359, name: "群雄割据",   kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 53334471, name: "御前试合",   kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 5851097,  name: "虚无空间",   kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 82732705, name: "技能抽取",   kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 30241314, name: "大宇宙",     kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 93016201, name: "王宫的弹压", kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 1, role: "interrupt" },
+    { id: 61740673, name: "王宫的敕命", kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 1, role: "interrupt" },
+    { id: 83326048, name: "次元障壁",   kind: "trap",  typeLine: "[陷阱]",     level: 0, supQ: 2, role: "interrupt" },
+    { id: 81674782, name: "次元的裂缝", kind: "spell", typeLine: "[魔法|永续]", level: 0, supQ: 2, role: "interrupt" },
+  ],
+  // 手牌破壞／擾亂：封鎖檢索、棄牌、剝奪對方資源
+  "手牌破坏": [
+    { id: 94145021, name: "小丑与锁鸟", kind: "monster", typeLine: "[怪兽|效果] 魔法师/风", level: 1, attrCN: "风", supQ: 3, role: "handtrap" },
+    { id: 23434538, name: "增殖的G",    kind: "monster", typeLine: "[怪兽|效果] 昆虫/地", level: 2, attrCN: "地", supQ: 3, role: "handtrap" },
+    { id: 14558127, name: "灰流丽",     kind: "monster", typeLine: "[怪兽|效果|调整] 不死/炎", level: 3, attrCN: "炎", supQ: 3, role: "handtrap" },
+    { id: 25311006, name: "三战之才",   kind: "spell", typeLine: "[魔法]", level: 0, supQ: 3, role: "interrupt" },
+    { id: 65681983, name: "抹杀之指名者", kind: "spell", typeLine: "[魔法|速攻]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 10045474, name: "无限泡影",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 3, role: "interrupt" },
+  ],
+  // 陰間阻抗：墓地／除外封鎖，剋墓地循環
+  "阴间阻抗": [
+    { id: 73642296, name: "屋敷童",     kind: "monster", typeLine: "[怪兽|效果|调整] 不死/地", level: 3, attrCN: "地", supQ: 3, role: "handtrap" },
+    { id: 24508238, name: "D.D.乌鸦",  kind: "monster", typeLine: "[怪兽|效果] 鸟兽/暗", level: 1, attrCN: "暗", supQ: 2, role: "handtrap" },
+    { id: 47355498, name: "王家长眠之谷", kind: "spell", typeLine: "[魔法|场地]", level: 0, supQ: 1, role: "interrupt" },
+    { id: 81674782, name: "次元的裂缝", kind: "spell", typeLine: "[魔法|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 30241314, name: "大宇宙",     kind: "trap",  typeLine: "[陷阱|永续]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 70342110, name: "次元幽闭",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 2, role: "interrupt" },
+  ],
+  // 報復社會：反制／拆場擾亂，專打對方成形盤
+  "报复社会": [
+    { id: 25311006, name: "三战之才",   kind: "spell", typeLine: "[魔法]", level: 0, supQ: 3, role: "interrupt" },
+    { id: 15693423, name: "颉颃胜负",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 3, role: "interrupt" },
+    { id: 18144506, name: "鹰身女妖的羽毛扫", kind: "spell", typeLine: "[魔法]", level: 0, supQ: 1, role: "interrupt" },
+    { id: 83326048, name: "次元障壁",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 2, role: "interrupt" },
+    { id: 27204311, name: "原始生命态 尼比鲁", kind: "monster", typeLine: "[怪兽|效果|调整] 岩石/光", level: 11, attrCN: "光", supQ: 2, role: "handtrap" },
+    { id: 10045474, name: "无限泡影",   kind: "trap",  typeLine: "[陷阱]", level: 0, supQ: 3, role: "interrupt" },
+  ],
+};
+function presetFor(keyword) {
+  for (const k in STRATEGY_PRESETS) { if (keyword === k || keyword.indexOf(k) >= 0) return STRATEGY_PRESETS[k]; }
+  return null;
+}
+
+/* 生成器「主題快選」——點一下即填入，也可直接輸入任何主題／卡名（不在列的照樣可用）。
+   依世代分組，涵蓋原作到現在的代表系列，以及玩法導向的策略流派。 */
 const QUICK_THEMES = [
-  { group: "現環境", items: [
-    { label: "雷火沸動機", kw: "雷火沸动机" }, { label: "蛇眼", kw: "蛇眼" },
-    { label: "天盃龍", kw: "天杯龙" }, { label: "于貝爾", kw: "于贝尔" },
-    { label: "白森林", kw: "白森林" }, { label: "炎王", kw: "炎王" },
-    { label: "百夫長", kw: "百夫长" }, { label: "拉比林斯", kw: "白银之城" },
-    { label: "烙印", kw: "烙印" }, { label: "刻魔", kw: "刻魔" },
+  { group: "策略流派", items: [
+    { label: "燒血流", kw: "烧血流" }, { label: "封鎖系", kw: "封锁系" },
+    { label: "手牌破壞", kw: "手牌破坏" }, { label: "陰間阻抗", kw: "阴间阻抗" },
+    { label: "報復社會", kw: "报复社会" },
   ]},
-  { group: "經典 / 熱門", items: [
-    { label: "青眼白龍", kw: "青眼" }, { label: "黑魔導", kw: "黑魔术" },
-    { label: "真紅眼", kw: "真红眼" }, { label: "元素英雄", kw: "元素英雄" },
-    { label: "劍鬥獸", kw: "剑斗兽" }, { label: "六武眾", kw: "六武众" },
-    { label: "轉生炎獸", kw: "转生炎兽" }, { label: "捕食植物", kw: "捕食植物" },
-    { label: "水晶機巧", kw: "水晶机巧" }, { label: "龍女僕", kw: "龙女仆" },
-    { label: "森羅", kw: "森罗" }, { label: "海皇", kw: "海皇" },
-    { label: "碼語者", kw: "码语者" }, { label: "幻影騎士團", kw: "幻影骑士团" },
+  { group: "現環境", items: [
+    { label: "雷火沸動機", kw: "雷火沸动机" }, { label: "蛇眼", kw: "蛇眼" }, { label: "天盃龍", kw: "天杯龙" },
+    { label: "于貝爾", kw: "于贝尔" }, { label: "白森林", kw: "白森林" }, { label: "刻魔", kw: "刻魔" },
+    { label: "百夫長", kw: "百夫长" }, { label: "拉比林斯", kw: "白银之城" }, { label: "烙印", kw: "烙印" }, { label: "罪寶", kw: "罪宝" },
+  ]},
+  { group: "原作 / DM", items: [
+    { label: "青眼白龍", kw: "青眼" }, { label: "黑魔導", kw: "黑魔术" }, { label: "真紅眼", kw: "真红眼" },
+    { label: "栗子球", kw: "栗子球" }, { label: "古代機械", kw: "古代的机械" }, { label: "方界", kw: "方界" },
+  ]},
+  { group: "GX", items: [
+    { label: "元素英雄", kw: "元素英雄" }, { label: "命運英雄", kw: "命运英雄" }, { label: "破壞王", kw: "破坏王" },
+    { label: "寶玉獸", kw: "宝玉兽" }, { label: "究極寶玉神", kw: "究极宝玉神" }, { label: "武裝龍", kw: "武装龙" },
+    { label: "水精鱗", kw: "水精鳞" }, { label: "甲蟲裝機", kw: "甲虫装机" }, { label: "水晶機巧", kw: "水晶机巧" },
+  ]},
+  { group: "5D's", items: [
+    { label: "六武眾", kw: "六武众" }, { label: "黑羽", kw: "黑羽" }, { label: "科技屬", kw: "科技属" },
+    { label: "星塵", kw: "星尘" }, { label: "紅蓮", kw: "红莲" }, { label: "地縛神", kw: "地缚神" },
+    { label: "森羅", kw: "森罗" }, { label: "魔轟神", kw: "魔轰神" }, { label: "秘旋", kw: "秘旋" },
+  ]},
+  { group: "ZEXAL", items: [
+    { label: "希望", kw: "希望" }, { label: "冰結界", kw: "冰结界" }, { label: "忍者", kw: "忍者" },
+    { label: "武神", kw: "武神" }, { label: "炎星", kw: "炎星" }, { label: "彼岸", kw: "彼岸" },
+    { label: "影靈衣", kw: "影灵衣" }, { label: "征龍", kw: "征龙" }, { label: "魔導書", kw: "魔导书" },
+    { label: "機皇", kw: "机皇" }, { label: "代行者", kw: "代行者" },
+  ]},
+  { group: "ARC-V", items: [
+    { label: "異色眼", kw: "异色眼" }, { label: "靈擺魔術師", kw: "魔术师" }, { label: "娛樂夥伴", kw: "娱乐伙伴" },
+    { label: "霸王", kw: "霸王" }, { label: "DD", kw: "DD" }, { label: "幻奏", kw: "幻奏" }, { label: "相劍", kw: "相剑" },
+  ]},
+  { group: "VRAINS / 現代", items: [
+    { label: "碼語者", kw: "码语者" }, { label: "閃刀姬", kw: "闪刀姬" }, { label: "轉生炎獸", kw: "转生炎兽" },
+    { label: "電子界", kw: "电子界" }, { label: "召喚獸", kw: "召唤兽" }, { label: "魔彈", kw: "魔弹" },
+    { label: "電子龍", kw: "电子龙" }, { label: "劍鬥獸", kw: "剑斗兽" }, { label: "龍女僕", kw: "龙女仆" },
+    { label: "幻影騎士團", kw: "幻影骑士团" }, { label: "捕食植物", kw: "捕食植物" },
   ]},
 ];

@@ -281,8 +281,6 @@ const UI = (function () {
       box.appendChild(grp);
     });
     bindRange("#b-size", "#b-size-out");
-    bindRange("#b-ht", "#b-ht-out");
-    bindRange("#b-bk", "#b-bk-out");
     $("#b-generate").onclick = generate;
     $("#b-keyword").addEventListener("keydown", function (e) { if (e.key === "Enter") generate(); });
   }
@@ -298,16 +296,20 @@ const UI = (function () {
     const out = $("#builder-output");
     if (!kwRaw) { toast("請先輸入主題或卡名關鍵字"); return; }
     out.innerHTML = "<div class='card-panel'><p class='loading'>搜尋「" + esc(kwShow) + "」相關卡片、模擬對戰並挑選卡組中…</p></div>";
+    // 策略流派用固定卡包，不需查 API
+    const isPreset = (typeof presetFor === "function") && presetFor(kw);
     let cards = [];
-    try { cards = await YGO.search(kw); }
-    catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e.message) + "（請確認網路連線）</p></div>"; return; }
-    if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個關鍵字試試（例：青眼、劍鬥獸）。</p></div>"; return; }
+    if (!isPreset) {
+      try { cards = await YGO.search(kw); }
+      catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e.message) + "（請確認網路連線）</p></div>"; return; }
+      if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個關鍵字試試（例：青眼、劍鬥獸）。</p></div>"; return; }
+    }
     const opts = {
-      style: $("#b-style").value,
-      budget: $("#b-budget").value,
+      style: "auto",         // 已移除選項，改自動判定
+      budget: "high",        // 已移除選項，預設不限（用最佳泛用卡）
       size: Number($("#b-size").value),
-      handtraps: Number($("#b-ht").value),
-      breakers: Number($("#b-bk").value),
+      handtraps: 12,         // 已移除選項，預設值
+      breakers: 3,           // 已移除選項，預設值
     };
     // 生成→模擬對戰→估算勝率，反覆直到達門檻或用盡嘗試，回傳最佳者
     const threshold = Number($("#b-threshold").value) || 60;
