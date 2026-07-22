@@ -30,6 +30,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # 若 Pages 尚未啟用，嘗試以工作流權限自動啟用（省去手動到 Settings 開啟）
+          enablement: true
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
