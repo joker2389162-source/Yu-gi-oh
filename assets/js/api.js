@@ -35,7 +35,8 @@ const YGO = (function () {
       typeLine: first,
       desc: (x.text && x.text.desc) || "",
       pdesc: (x.text && x.text.pdesc) || "",
-      atk: d.atk, def: d.def, level: d.level,
+      // 靈擺怪的 level 欄位打包了刻度（如 0x04040007＝等級7/刻度4），取低位得真實等級
+      atk: d.atk, def: d.def, level: (d.level != null ? (d.level & 0xff) : d.level),
       race: d.race, attribute: d.attribute, typeBits: d.type,
     };
     card.kind = classify(first);   // monster / spell / trap

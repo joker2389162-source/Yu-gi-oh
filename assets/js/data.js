@@ -82,6 +82,16 @@ const ENGINE_SUPPLEMENT = {
     { id: 93969023, name: "黑钢龙",       kind: "monster", typeLine: "[怪兽|效果] 龙/暗",     level: 1, attrCN: "暗", supQ: 1, role: "starter" },
     { id: 74677422, name: "真红眼黑龙",   kind: "monster", typeLine: "[怪兽|通常] 龙/暗",     level: 7, attrCN: "暗", supQ: 2, role: "payoff" },
   ],
+  // 異色眼（Odd-Eyes，Arc-V 游矢）—— 引擎是不同名的「靈擺魔術師」群（調弦/慧眼/星讀…）
+  "异色眼": [
+    { id: 73941492, name: "调弦之魔术师", kind: "monster", typeLine: "[怪兽|效果|调整|灵摆] 魔法师/暗", level: 4, attrCN: "暗", supQ: 3, role: "starter" },
+    { id: 72714461, name: "慧眼之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/光",     level: 4, attrCN: "光", supQ: 2, role: "starter" },
+    { id: 94415058, name: "星读之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/暗",     level: 5, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 20409757, name: "时读之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/暗",     level: 3, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 48461764, name: "紫毒之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/暗",     level: 4, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 17086528, name: "相生之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 71692913, name: "相克之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/暗",     level: 7, attrCN: "暗", supQ: 1, role: "starter" },
+  ],
 };
 function supplementFor(keyword) {
   for (const k in ENGINE_SUPPLEMENT) {
