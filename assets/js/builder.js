@@ -118,7 +118,7 @@ const Builder = (function () {
     const spells = named.filter(function (c) { return c.kind === "spell"; });
     const traps = named.filter(function (c) { return c.kind === "trap"; });
 
-    // 主屬性偵測（用於提示）
+    // 主屬性偵測（用於提示與屬性配對額外卡）
     const attrCount = {};
     mons.forEach(function (c) { if (c.attrCN) attrCount[c.attrCN] = (attrCount[c.attrCN] || 0) + 1; });
     const domAttr = Object.keys(attrCount).sort(function (a, b) { return attrCount[b] - attrCount[a]; })[0] || null;
@@ -128,8 +128,18 @@ const Builder = (function () {
     function spCopies(c) { return /场地|場地/.test(c.typeLine || "") ? 1 : 2; }
     mons.sort(function (a, b) { return (Number(a.level) || 0) - (Number(b.level) || 0); });
 
-    const style = opts.style === "auto" ? null : opts.style;
-    const wantTraps = style === "control" ? 8 : style === "aggro" ? 0 : 4;
+    // 依卡組性質自動判定風格（auto）：陷阱多→控制、低星怪多→連招、其餘→中速
+    const themedN = mons.length + spells.length + traps.length;
+    const trapRatio = themedN ? traps.length / themedN : 0;
+    const avgLevel = mons.length ? mons.reduce(function (a, c) { return a + (Number(c.level) || 0); }, 0) / mons.length : 0;
+    let effStyle = opts.style === "auto" ? null : opts.style;
+    if (!effStyle) {
+      if (trapRatio >= 0.22 && traps.length >= 2) effStyle = "control";
+      else if (mons.length >= 8 && avgLevel <= 4.2) effStyle = "combo";
+      else effStyle = "midrange";
+    }
+    // 風格決定主題陷阱要放多少（受限於實際可用的主題陷阱）
+    const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 3 : 6;
 
     const ht = opts.handtraps, bk = opts.breakers;
     const engineTarget = Math.max(12, opts.size - (ht + bk));
@@ -146,11 +156,22 @@ const Builder = (function () {
     function count() { return main.reduce(function (a, x) { return a + x.q; }, 0); }
     function st(o) { return { id: o.id, name: o.n }; }
 
-    // 1) 主題主怪 → 2) 主題魔法 → 3) 主題陷阱（依風格限量）
-    for (const c of mons) { if (count() >= engineTarget) break; push(c, monCopies(c)); }
-    for (const c of spells) { if (count() >= engineTarget) break; push(c, spCopies(c)); }
+    // 引擎填充（依風格決定順序：控制先塞陷阱、其餘先塞怪獸）
     let trapsAdded = 0;
-    for (const c of traps) { if (count() >= engineTarget || trapsAdded >= wantTraps) break; push(c, 2); trapsAdded += 2; }
+    function addMonsters() { for (const c of mons) { if (count() >= engineTarget) break; push(c, monCopies(c)); } }
+    function addSpells() { for (const c of spells) { if (count() >= engineTarget) break; push(c, spCopies(c)); } }
+    function addThemedTraps() { for (const c of traps) { if (count() >= engineTarget || trapsAdded >= wantTraps) break; push(c, 2); trapsAdded += 2; } }
+    function addGenericTraps() {
+      if (effStyle !== "control") return;
+      const gtPool = GENERIC_TRAPS.filter(function (t) { return budgetOk(t, opts.budget); });
+      for (const gt of gtPool) {
+        if (count() >= engineTarget || trapsAdded >= wantTraps) break;
+        const c = Math.min(gt.copies, wantTraps - trapsAdded);
+        push(st(gt), c); trapsAdded += c;
+      }
+    }
+    if (effStyle === "control") { addThemedTraps(); addGenericTraps(); addMonsters(); addSpells(); }
+    else { addMonsters(); addSpells(); addThemedTraps(); }
 
     if (mons.length === 0)
       notes.push("此關鍵字沒有主卡組怪獸（可能全為額外卡組或魔陷），已以主題魔陷＋泛用卡填充，建議再搭配其他主怪。");
@@ -197,11 +218,14 @@ const Builder = (function () {
       }
     }
 
-    // 額外卡組：主題額外怪 + 泛用額外，補到 15
+    // 額外卡組：主題額外怪 → 主屬性配對額外（靈使）→ 泛用額外，補到 15
     const extra = [];
     function esum() { return extra.reduce(function (a, x) { return a + x.q; }, 0); }
-    extras.forEach(function (c) { if (esum() >= 15) return; extra.push({ id: c.id, n: c.name, q: 1 }); });
-    for (const g of GENERIC_EXTRA) { if (esum() >= 15) break; if (extra.some(function (x) { return x.id === g.id; })) continue; extra.push({ id: g.id, n: g.n, q: 1 }); }
+    function addExtra(o) { if (esum() >= 15) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
+    extras.forEach(addExtra);
+    const attrEx = (domAttr && ATTR_EXTRA[domAttr]) ? ATTR_EXTRA[domAttr] : [];
+    attrEx.forEach(addExtra);
+    for (const g of GENERIC_EXTRA) { if (esum() >= 15) break; addExtra(g); }
 
     // 副卡組：泛用破壞卡示意
     const side = [];
@@ -212,7 +236,7 @@ const Builder = (function () {
     });
 
     return {
-      main: main, extra: extra, side: side, notes: notes, mode: mode, domAttr: domAttr,
+      main: main, extra: extra, side: side, notes: notes, mode: mode, domAttr: domAttr, effStyle: effStyle,
       themed: { mons: mons.length, spells: spells.length, traps: traps.length, extras: extras.length },
     };
   }

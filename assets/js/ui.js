@@ -323,9 +323,11 @@ const UI = (function () {
       "主卡組 " + mCount + " · 額外 " + eCount + " · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
       " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget]) +
       (deck.domAttr ? " · 主屬性 " + esc(deck.domAttr) : "")));
+    const styleLabel = { combo: "連招", control: "控制", aggro: "快攻", midrange: "中速" }[deck.effStyle] || deck.effStyle;
     panel.appendChild(elem("p", "status",
       "偵測到主題卡：主怪 " + (t.mons || 0) + " · 魔法 " + (t.spells || 0) + " · 陷阱 " + (t.traps || 0) + " · 額外 " + (t.extras || 0) +
-      (deck.mode === "archetype" ? "（系列模式）" : "（相關卡 Goodstuff 模式）")));
+      (deck.mode === "archetype" ? "（系列模式）" : "（相關卡 Goodstuff 模式）") +
+      (styleLabel ? " · " + (opts.style === "auto" ? "偵測風格：" : "風格：") + styleLabel : "")));
     if (deck.notes && deck.notes.length)
       deck.notes.forEach(function (n) { panel.appendChild(elem("p", "note-line", "· " + esc(n))); });
 
