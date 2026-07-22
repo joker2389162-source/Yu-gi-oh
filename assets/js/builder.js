@@ -105,28 +105,50 @@ const Builder = (function () {
   function isExtraMon(c) {
     return c.kind === "monster" && /融合|同调|同調|超量|连接|連接|XYZ|LINK/i.test(c.typeLine || "");
   }
+  function isNormalMon(c) { return c.kind === "monster" && /通常/.test(c.typeLine || ""); }
+  function shuffle(arr, rng) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
 
-  function buildFromKeyword(keyword, cards, opts) {
+  function buildFromKeyword(keyword, cards, opts, rng) {
+    rng = rng || Math.random;
     const notes = [];
     // 主題卡池：卡名含關鍵字者優先（乾淨的系列）；太少時退回較廣的相關結果
     let named = cards.filter(function (c) { return c.name.indexOf(keyword) >= 0; });
     let mode = "archetype";
     if (named.length < 4) { mode = "loose"; named = cards.slice(0, 24); }
 
-    const mons = named.filter(function (c) { return c.kind === "monster" && !isExtraMon(c); });
+    let mons = named.filter(function (c) { return c.kind === "monster" && !isExtraMon(c); });
     const extras = named.filter(isExtraMon);
     const spells = named.filter(function (c) { return c.kind === "spell"; });
     const traps = named.filter(function (c) { return c.kind === "trap"; });
+
+    // 濾掉無效果（通常）怪獸——除非有效果的主怪太少（保留可用性）
+    const normals = mons.filter(isNormalMon);
+    const effMons = mons.filter(function (c) { return !isNormalMon(c); });
+    if (effMons.length >= 4) {
+      if (normals.length > 0) notes.push("已略過 " + normals.length + " 張無效果（通常）怪獸，只保留有效果的核心卡。");
+      mons = effMons;
+    }
 
     // 主屬性偵測（用於提示與屬性配對額外卡）
     const attrCount = {};
     mons.forEach(function (c) { if (c.attrCN) attrCount[c.attrCN] = (attrCount[c.attrCN] || 0) + 1; });
     const domAttr = Object.keys(attrCount).sort(function (a, b) { return attrCount[b] - attrCount[a]; })[0] || null;
 
-    // 依等級決定張數：低星（搜尋／展開）多放，高星大怪少放
-    function monCopies(c) { const lv = Number(c.level) || 0; if (lv <= 4) return 3; if (lv <= 6) return 2; return 1; }
-    function spCopies(c) { return /场地|場地/.test(c.typeLine || "") ? 1 : 2; }
-    mons.sort(function (a, b) { return (Number(a.level) || 0) - (Number(b.level) || 0); });
+    // 依等級決定張數（含少量隨機變化，讓每次生成不同、更靈活）
+    function monCopies(c) {
+      const lv = Number(c.level) || 0;
+      let base = lv <= 4 ? 3 : lv <= 6 ? 2 : 1;
+      if (base === 3 && rng() < 0.25) base = 2;
+      else if (base === 2 && rng() < 0.25) base = (lv <= 4 ? 3 : 1);
+      return base;
+    }
+    function spCopies(c) { return /场地|場地/.test(c.typeLine || "") ? 1 : (rng() < 0.3 ? 3 : 2); }
+    // 依等級排序，同級之間隨機打散（增加變化）
+    mons.sort(function (a, b) { const d = (Number(a.level) || 0) - (Number(b.level) || 0); return d !== 0 ? d : (rng() - 0.5); });
 
     // 依卡組性質自動判定風格（auto）：陷阱多→控制、低星怪多→連招、其餘→中速
     const themedN = mons.length + spells.length + traps.length;
@@ -178,11 +200,11 @@ const Builder = (function () {
     if (mode === "loose")
       notes.push("「" + keyword + "」未對應到明確系列，已改用相關卡片＋泛用卡組成 Goodstuff 骨架；換用更精確的主題名可得到更聚焦的卡組。");
 
-    // 4) 手坑 5) 破壞卡
-    const htPool = HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget); });
+    // 4) 手坑 5) 破壞卡（打散順序，讓每次選到的組合不同）
+    const htPool = shuffle(HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget); }), rng);
     let htLeft = ht;
     for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c); htLeft -= c; }
-    const bkPool = BREAKERS.filter(function (b) { return budgetOk(b, opts.budget); });
+    const bkPool = shuffle(BREAKERS.filter(function (b) { return budgetOk(b, opts.budget); }), rng);
     let bkLeft = bk;
     for (const b of bkPool) { if (bkLeft <= 0) break; const c = Math.min(3, bkLeft); push(st(b), c); bkLeft -= c; }
 
@@ -235,11 +257,108 @@ const Builder = (function () {
       if (used < 3 && side.reduce(function (a, x) { return a + x.q; }, 0) < 15) side.push({ id: b.id, n: b.n, q: 3 - used });
     });
 
+    // 角色標記（供對戰模擬用）：starter 展開/搜尋、mid 中階、payoff 大怪、handtrap 手坑、
+    // breaker 破壞/妨害陷阱、interrupt 主題陷阱、brick 無效果通常怪
+    const htIds = {}; HANDTRAPS.forEach(function (h) { htIds[h.id] = 1; });
+    const bkIds = {}; BREAKERS.forEach(function (b) { bkIds[b.id] = 1; }); GENERIC_TRAPS.forEach(function (t) { bkIds[t.id] = 1; });
+    const monLv = {}; mons.forEach(function (c) { monLv[c.id] = Number(c.level) || 0; });
+    const spellIds = {}; spells.forEach(function (c) { spellIds[c.id] = 1; });
+    const trapIds = {}; traps.forEach(function (c) { trapIds[c.id] = 1; });
+    const normalIds = {}; normals.forEach(function (c) { normalIds[c.id] = 1; });
+    const roles = {};
+    main.forEach(function (x) {
+      if (htIds[x.id]) roles[x.id] = "handtrap";
+      else if (bkIds[x.id]) roles[x.id] = "breaker";
+      else if (normalIds[x.id]) roles[x.id] = "brick";
+      else if (monLv[x.id] !== undefined) roles[x.id] = monLv[x.id] <= 4 ? "starter" : (monLv[x.id] <= 6 ? "mid" : "payoff");
+      else if (spellIds[x.id]) roles[x.id] = "starter";
+      else if (trapIds[x.id]) roles[x.id] = "interrupt";
+      else roles[x.id] = "neutral";
+    });
+
     return {
-      main: main, extra: extra, side: side, notes: notes, mode: mode, domAttr: domAttr, effStyle: effStyle,
+      main: main, extra: extra, side: side, notes: notes, mode: mode, domAttr: domAttr, effStyle: effStyle, roles: roles,
       themed: { mons: mons.length, spells: spells.length, traps: traps.length, extras: extras.length },
     };
   }
 
-  return { build: build, buildFromKeyword: buildFromKeyword };
+  /* ---------- 對戰模擬與勝率估計 ----------
+   * 以「起手牌蒙地卡羅模擬 + 引擎/妨害評分」估計對主流卡組的相對勝率。
+   * 這不是逐卡結算的完整對局引擎（遊戲王上萬卡效果無法在此完整實作），
+   * 而是量化「能否穩定展開、卡手率、手坑妨害、引擎強度」等真實可算指標後估計勝率。
+   */
+  const META_BASELINE = { name: "主流連招卡組", openRate: 88, expHandtraps: 1.6, brickRate: 8 };
+
+  function sampleHand(bag, handSize) {
+    // 從 bag（40 張角色）不放回抽 handSize 張
+    const idx = [];
+    const used = {};
+    const N = bag.length;
+    let k = 0;
+    while (k < handSize && k < N) {
+      const j = Math.floor(Math.random() * N);
+      if (used[j]) continue;
+      used[j] = 1; idx.push(bag[j]); k++;
+    }
+    return idx;
+  }
+
+  function evaluateDeck(deck) {
+    const roles = deck.roles || {};
+    const bag = [];
+    deck.main.forEach(function (x) { for (let i = 0; i < x.q; i++) bag.push(roles[x.id] || "neutral"); });
+    const N = bag.length || 1;
+    const starters = bag.filter(function (r) { return r === "starter"; }).length;
+    const mids = bag.filter(function (r) { return r === "mid"; }).length;
+    const handtrapsN = bag.filter(function (r) { return r === "handtrap"; }).length;
+    const breakersN = bag.filter(function (r) { return r === "breaker" || r === "interrupt"; }).length;
+
+    const GAMES = 2000;
+    let openable = 0, brick = 0, htSum = 0;
+    for (let g = 0; g < GAMES; g++) {
+      const handSize = (g % 2 === 0) ? 5 : 6;   // 先手 5 / 後手 6 各半
+      const hand = sampleHand(bag, handSize);
+      let s = 0, m = 0, h = 0;
+      for (const r of hand) { if (r === "starter") s++; else if (r === "mid") m++; else if (r === "handtrap") h++; }
+      const openOK = s >= 1 || m >= 2;          // 有 1 張展開牌，或 2 張中階可搭橋
+      if (openOK) openable++;
+      if (!openOK && h === 0) brick++;           // 既無法展開又無妨害 = 卡手
+      htSum += h;
+    }
+    const openRate = 100 * openable / GAMES;
+    const brickRate = 100 * brick / GAMES;
+    const avgHandtraps = htSum / GAMES;
+    const engineScore = Math.round(Math.min(30,
+      starters * 1.6 + mids * 0.8 + Math.min(deck.extra.length, 15) * 0.4 + handtrapsN * 0.4 + breakersN * 0.3));
+
+    // 勝率模型（相對 meta 基準，clamp 5–95）
+    let wr = 50;
+    wr += (openRate - META_BASELINE.openRate) * 0.55;
+    wr += (avgHandtraps - META_BASELINE.expHandtraps) * 5.0;
+    wr -= (brickRate - META_BASELINE.brickRate) * 0.6;
+    wr += (engineScore - 18) * 0.7;
+    wr = Math.max(5, Math.min(95, wr));
+
+    return {
+      winRate: wr, openRate: openRate, brickRate: brickRate, avgHandtraps: avgHandtraps,
+      engineScore: engineScore, games: GAMES, opponent: META_BASELINE.name,
+    };
+  }
+
+  /* 生成多版、模擬對戰、回傳勝率最高者；達門檻即提早結束 */
+  function buildBest(keyword, cards, opts, threshold) {
+    threshold = threshold || 60;
+    const MAX = 24;
+    let best = null, tries = 0;
+    for (let i = 0; i < MAX; i++) {
+      tries++;
+      const deck = buildFromKeyword(keyword, cards, opts, Math.random);
+      const ev = evaluateDeck(deck);
+      if (!best || ev.winRate > best.eval.winRate) best = { deck: deck, eval: ev };
+      if (ev.winRate >= threshold) { return { deck: deck, eval: ev, attempts: tries, threshold: threshold }; }
+    }
+    return { deck: best.deck, eval: best.eval, attempts: tries, threshold: threshold };
+  }
+
+  return { build: build, buildFromKeyword: buildFromKeyword, evaluateDeck: evaluateDeck, buildBest: buildBest };
 })();

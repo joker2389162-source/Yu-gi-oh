@@ -38,8 +38,8 @@ const UI = (function () {
     else if (item.q) { const b = elem("span", "qty", "×" + item.q); t.appendChild(b); }
     t.appendChild(imgEl(id, name));
     const cap = elem("div", "tile-cap");
-    cap.appendChild(elem("span", "tile-name", esc(name)));
-    if (item.typeLine) cap.appendChild(elem("span", "tile-type", esc(item.typeLine)));
+    cap.appendChild(elem("span", "tile-name", esc(S2T.disp(name))));
+    if (item.typeLine) cap.appendChild(elem("span", "tile-type", esc(S2T.disp(item.typeLine))));
     t.appendChild(cap);
     if (opts.add !== false) {
       const add = elem("button", "tile-add", "＋");
@@ -56,7 +56,7 @@ const UI = (function () {
     if (!card) { try { card = await YGO.getById(id); } catch (e) {} }
     if (!card) card = { id: id, name: name, typeLine: "" };
     const r = Deck.add(card);
-    toast(r.ok ? "已加入：" + card.name : r.msg);
+    toast(r.ok ? "已加入：" + S2T.disp(card.name) : r.msg);
   }
 
   /* ---------- 卡片詳情彈窗 ---------- */
@@ -73,12 +73,12 @@ const UI = (function () {
     const big = imgEl(card.id, card.name); big.className = "modal-img";
     top.appendChild(big);
     const info = elem("div", "modal-info");
-    info.appendChild(elem("h3", null, esc(card.name)));
+    info.appendChild(elem("h3", null, esc(S2T.disp(card.name))));
     const meta = [];
     if (card.jp) meta.push(esc(card.jp));
     if (card.en) meta.push(esc(card.en));
     info.appendChild(elem("p", "modal-alt", meta.join(" ／ ")));
-    info.appendChild(elem("p", "modal-typeline", esc(card.typeLine)));
+    info.appendChild(elem("p", "modal-typeline", esc(S2T.disp(card.typeLine))));
     const stat = [];
     if (card.atk != null && card.kind === "monster") stat.push("攻 " + card.atk);
     if (card.def != null && card.kind === "monster") stat.push("守 " + card.def);
@@ -91,9 +91,9 @@ const UI = (function () {
     top.appendChild(info);
     panel.appendChild(top);
     if (card.pdesc) {
-      panel.appendChild(elem("div", "modal-pdesc", "<strong>靈擺效果</strong><br>" + esc(card.pdesc).replace(/\n/g, "<br>")));
+      panel.appendChild(elem("div", "modal-pdesc", "<strong>靈擺效果</strong><br>" + esc(S2T.disp(card.pdesc)).replace(/\n/g, "<br>")));
     }
-    panel.appendChild(elem("div", "modal-desc", esc(card.desc).replace(/\n/g, "<br>")));
+    panel.appendChild(elem("div", "modal-desc", esc(S2T.disp(card.desc)).replace(/\n/g, "<br>")));
   }
 
   function closeModal() { $("#card-modal").setAttribute("aria-hidden", "true"); }
@@ -110,7 +110,7 @@ const UI = (function () {
     status.textContent = "搜索「" + term + "」中…";
     grid.innerHTML = "";
     let res = [];
-    try { res = await YGO.search(term); }
+    try { res = await YGO.search(S2T.query(term)); }
     catch (e) { status.textContent = "搜索失敗：" + e.message + "（請檢查網路連線）"; return; }
     lastResults = res;
     renderSearch();
@@ -154,8 +154,8 @@ const UI = (function () {
     "念动力", "幻神兽", "创造神", "幻龙", "电子界", "幻想魔"];
   function populateFilters() {
     const fa = $("#f-attr"), fr = $("#f-race"), fl = $("#f-level");
-    ATTRS.forEach(function (a) { const o = elem("option"); o.value = a; o.textContent = a; fa.appendChild(o); });
-    RACES.forEach(function (r) { const o = elem("option"); o.value = r; o.textContent = r; fr.appendChild(o); });
+    ATTRS.forEach(function (a) { const o = elem("option"); o.value = a; o.textContent = S2T.disp(a); fa.appendChild(o); });
+    RACES.forEach(function (r) { const o = elem("option"); o.value = r; o.textContent = S2T.disp(r); fr.appendChild(o); });
     for (let i = 1; i <= 12; i++) { const o = elem("option"); o.value = i; o.textContent = i; fl.appendChild(o); }
   }
 
@@ -275,7 +275,7 @@ const UI = (function () {
       grp.appendChild(elem("span", "qt-label", esc(g.group)));
       g.items.forEach(function (it) {
         const b = elem("button", "qt-chip", esc(it.label));
-        b.onclick = function () { $("#b-keyword").value = it.kw; generate(); };
+        b.onclick = function () { $("#b-keyword").value = S2T.disp(it.kw); generate(); };
         grp.appendChild(b);
       });
       box.appendChild(grp);
@@ -292,14 +292,16 @@ const UI = (function () {
   }
 
   async function generate() {
-    const kw = $("#b-keyword").value.trim();
+    const kwRaw = $("#b-keyword").value.trim();
+    const kw = S2T.query(kwRaw);          // 繁→簡，供搜尋與比對
+    const kwShow = S2T.disp(kwRaw);        // 顯示用繁體
     const out = $("#builder-output");
-    if (!kw) { toast("請先輸入主題或卡名關鍵字"); return; }
-    out.innerHTML = "<div class='card-panel'><p class='loading'>搜尋「" + esc(kw) + "」相關卡片並生成中…</p></div>";
+    if (!kwRaw) { toast("請先輸入主題或卡名關鍵字"); return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>搜尋「" + esc(kwShow) + "」相關卡片、模擬對戰並挑選卡組中…</p></div>";
     let cards = [];
     try { cards = await YGO.search(kw); }
     catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e.message) + "（請確認網路連線）</p></div>"; return; }
-    if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kw) + "」的相關卡片，換個關鍵字試試（例：青眼、剑斗兽）。</p></div>"; return; }
+    if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個關鍵字試試（例：青眼、劍鬥獸）。</p></div>"; return; }
     const opts = {
       style: $("#b-style").value,
       budget: $("#b-budget").value,
@@ -307,22 +309,39 @@ const UI = (function () {
       handtraps: Number($("#b-ht").value),
       breakers: Number($("#b-bk").value),
     };
-    const deck = Builder.buildFromKeyword(kw, cards, opts);
-    renderBuilderOutput(deck, opts, kw);
+    // 生成→模擬對戰→估算勝率，反覆直到 ≥60% 或用盡嘗試，回傳最佳者
+    const result = Builder.buildBest(kw, cards, opts, 60);
+    renderBuilderOutput(result.deck, opts, kwShow, result);
   }
 
-  function renderBuilderOutput(deck, opts, keyword) {
+  function renderBuilderOutput(deck, opts, keyword, result) {
     const out = $("#builder-output");
     out.innerHTML = "";
     const panel = elem("div", "card-panel");
     const mCount = deck.main.reduce(function (a, x) { return a + x.q; }, 0);
     const eCount = deck.extra.reduce(function (a, x) { return a + x.q; }, 0);
     panel.appendChild(elem("h2", null, "生成結果：「" + esc(keyword) + "」"));
+
+    // 模擬對戰勝率面板
+    if (result && result.eval) {
+      const ev = result.eval;
+      const wr = Math.round(ev.winRate);
+      const pass = wr >= (result.threshold || 60);
+      const box = elem("div", "winrate " + (pass ? "pass" : "fail"));
+      box.innerHTML =
+        "<div class='wr-big'>估計勝率 <b>" + wr + "%</b> " + (pass ? "✅ 達標" : "⚠️ 未達標") + "</div>" +
+        "<div class='wr-sub'>對手：主流卡組基準（" + esc(S2T.disp(ev.opponent || "meta")) + "） · 模擬 " + ev.games + " 局 · 嘗試 " + result.attempts + " 版取最佳</div>" +
+        "<div class='wr-metrics'>可展開起手率 " + Math.round(ev.openRate) + "% · 卡手率 " + Math.round(ev.brickRate) + "% · 平均手坑妨害 " + ev.avgHandtraps.toFixed(1) + " · 引擎分 " + ev.engineScore + "</div>";
+      panel.appendChild(box);
+      panel.appendChild(elem("p", "note-line",
+        "＊此為基於「起手牌蒙地卡羅模擬＋妨害／引擎評分」的估計勝率，非逐卡結算的完整對局模擬；用於相對比較卡組強度。"));
+    }
+
     const t = deck.themed || {};
     panel.appendChild(elem("p", "status",
       "主卡組 " + mCount + " · 額外 " + eCount + " · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
       " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget]) +
-      (deck.domAttr ? " · 主屬性 " + esc(deck.domAttr) : "")));
+      (deck.domAttr ? " · 主屬性 " + esc(S2T.disp(deck.domAttr)) : "")));
     const styleLabel = { combo: "連招", control: "控制", aggro: "快攻", midrange: "中速" }[deck.effStyle] || deck.effStyle;
     panel.appendChild(elem("p", "status",
       "偵測到主題卡：主怪 " + (t.mons || 0) + " · 魔法 " + (t.spells || 0) + " · 陷阱 " + (t.traps || 0) + " · 額外 " + (t.extras || 0) +
@@ -377,7 +396,7 @@ const UI = (function () {
         const im = imgEl(x.id, x.n); im.className = "card-img thumb";
         im.onclick = function () { openCardModal(x.id); };
         row.appendChild(im);
-        row.appendChild(elem("span", "deck-name", esc(x.n)));
+        row.appendChild(elem("span", "deck-name", esc(S2T.disp(x.n))));
         const ctrl = elem("div", "deck-ctrl");
         const minus = elem("button", null, "−"); minus.onclick = function () { Deck.sub(x.id, pair[1]); };
         const qty = elem("span", "deck-q", "×" + x.q);

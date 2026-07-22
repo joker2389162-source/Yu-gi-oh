@@ -195,6 +195,14 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px 14px 60px; }
 .form-grid input[type=range] { accent-color: var(--accent); width: 100%; }
 #b-generate { width: 100%; }
 .note-line { font-size: 12.5px; color: #f3d5a8; margin: 2px 0; }
+.winrate { border-radius: 10px; padding: 12px 14px; margin: 10px 0; border: 1px solid var(--line); }
+.winrate.pass { background: rgba(70,201,139,.1); border-color: rgba(70,201,139,.5); }
+.winrate.fail { background: rgba(229,85,95,.1); border-color: rgba(229,85,95,.5); }
+.wr-big { font-size: 16px; }
+.wr-big b { font-size: 22px; color: var(--accent); }
+.winrate.pass .wr-big b { color: var(--ok); }
+.wr-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.wr-metrics { font-size: 12.5px; color: #cdd8ec; margin-top: 6px; }
 
 /* ---------- drawer ---------- */
 .drawer { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
