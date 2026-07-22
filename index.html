@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>遊戲王中文卡表工具 · 環境構築 / 卡組生成器</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">遊</span>
+      <div>
+        <h1>遊戲王中文卡表工具</h1>
+        <p class="sub">中文卡查 · 現環境流行構築 · 依條件生成卡組</p>
+      </div>
+    </div>
+    <button id="deck-btn" class="deck-btn">🗂️ 我的卡組 <span id="deck-count" class="badge">0</span></button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="search">🔍 卡片搜索</button>
+    <button class="tab" data-tab="meta">🏆 流行構築</button>
+    <button class="tab" data-tab="builder">🛠️ 卡組生成器</button>
+  </nav>
+
+  <main>
+    <!-- 卡片搜索 -->
+    <section id="tab-search" class="tab-panel active">
+      <div class="searchbar">
+        <input id="q" type="search" placeholder="輸入卡名或效果關鍵字（中／日文皆可），例：灰流丽、篝火、增殖" />
+        <button id="q-btn">搜索</button>
+      </div>
+      <div class="filters">
+        <div class="chips" id="kind-chips">
+          <button class="chip active" data-kind="all">全部</button>
+          <button class="chip" data-kind="monster">怪獸</button>
+          <button class="chip" data-kind="spell">魔法</button>
+          <button class="chip" data-kind="trap">陷阱</button>
+        </div>
+        <div class="quick">
+          <span>快速：</span>
+          <button class="qbtn" data-q="灰流丽">灰流麗</button>
+          <button class="qbtn" data-q="增殖的G">增殖G</button>
+          <button class="qbtn" data-q="无限泡影">無限泡影</button>
+          <button class="qbtn" data-q="三战之才">三戰之才</button>
+          <button class="qbtn" data-q="尼比鲁">尼比魯</button>
+        </div>
+      </div>
+      <p id="search-status" class="status">輸入關鍵字開始搜索。資料來自 ygocdb 中文卡庫，卡圖來自 ygoprodeck。</p>
+      <div id="search-results" class="grid"></div>
+    </section>
+
+    <!-- 流行構築 -->
+    <section id="tab-meta" class="tab-panel">
+      <div class="notice">
+        ⚠️ 以下為代表性<strong>構築骨架</strong>（依 2025 下半 ~ 2026 上半環境知識整理），比例僅供參考，實戰請對照<strong>最新禁限表</strong>。
+        每個主題可點「載入系列全卡」即時抓取資料庫中該系列所有卡片（永遠是最新收錄）。
+      </div>
+      <div id="meta-list" class="meta-list"></div>
+    </section>
+
+    <!-- 卡組生成器 -->
+    <section id="tab-builder" class="tab-panel">
+      <div class="builder-form card-panel">
+        <h2>依你的條件生成卡組</h2>
+        <div class="form-grid">
+          <label>主題引擎
+            <select id="b-archetype"></select>
+          </label>
+          <label>卡組風格
+            <select id="b-style">
+              <option value="auto">跟隨主題（建議）</option>
+              <option value="combo">連招 Combo</option>
+              <option value="control">控制 Control</option>
+              <option value="aggro">快攻 / OTK</option>
+            </select>
+          </label>
+          <label>預算
+            <select id="b-budget">
+              <option value="high">不限（含高價手坑）</option>
+              <option value="mid" selected>中等</option>
+              <option value="low">省錢（便宜卡優先）</option>
+            </select>
+          </label>
+          <label>主卡組張數 <output id="b-size-out">40</output>
+            <input id="b-size" type="range" min="40" max="60" value="40" />
+          </label>
+          <label>手坑數量 <output id="b-ht-out">12</output>
+            <input id="b-ht" type="range" min="0" max="18" value="12" />
+          </label>
+          <label>破壞 / 拆場卡 <output id="b-bk-out">4</output>
+            <input id="b-bk" type="range" min="0" max="9" value="4" />
+          </label>
+        </div>
+        <button id="b-generate" class="primary">⚙️ 生成卡組</button>
+      </div>
+      <div id="builder-output"></div>
+    </section>
+  </main>
+
+  <!-- 我的卡組抽屜 -->
+  <div id="deck-drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2>我的卡組</h2>
+        <button id="deck-close" class="icon-btn">✕</button>
+      </div>
+      <div id="deck-summary" class="deck-summary"></div>
+      <div id="deck-validate" class="deck-validate"></div>
+      <div id="deck-body" class="deck-body"></div>
+      <div class="drawer-actions">
+        <button id="export-ydk">匯出 .ydk</button>
+        <button id="export-txt">複製文字</button>
+        <button id="deck-clear" class="danger">清空</button>
+      </div>
+    </div>
+    <div class="drawer-scrim" id="drawer-scrim"></div>
+  </div>
+
+  <!-- 卡片詳情彈窗 -->
+  <div id="card-modal" class="modal" aria-hidden="true">
+    <div class="modal-scrim" id="modal-scrim"></div>
+    <div class="modal-panel" id="modal-panel"></div>
+  </div>
+
+  <footer class="foot">
+    資料來源：<a href="https://ygocdb.com" target="_blank" rel="noopener">ygocdb 百鴿中文卡庫</a> ·
+    卡圖：<a href="https://ygoprodeck.com" target="_blank" rel="noopener">ygoprodeck</a>。
+    本工具僅供學習與卡組規劃，卡片版權屬 KONAMI。
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/deck.js"></script>
+  <script src="assets/js/builder.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
