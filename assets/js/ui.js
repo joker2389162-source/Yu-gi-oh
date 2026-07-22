@@ -116,15 +116,47 @@ const UI = (function () {
     renderSearch();
   }
 
+  function readFilters() {
+    return {
+      attr: $("#f-attr").value,
+      race: $("#f-race").value,
+      level: $("#f-level").value,
+      atk: $("#f-atk").value === "" ? null : Number($("#f-atk").value),
+      def: $("#f-def").value === "" ? null : Number($("#f-def").value),
+    };
+  }
+
+  function passFilters(c, f) {
+    if (kindFilter !== "all" && c.kind !== kindFilter) return false;
+    if (f.attr && c.attrCN !== f.attr) return false;
+    if (f.race && c.raceCN !== f.race) return false;
+    if (f.level && Number(c.level) !== Number(f.level)) return false;
+    if (f.atk != null) { if (c.atk == null || c.atk < 0 || c.atk < f.atk) return false; }
+    if (f.def != null) { if (c.isLink || c.def == null || c.def < 0 || c.def < f.def) return false; }
+    return true;
+  }
+
   function renderSearch() {
     const grid = $("#search-results");
     const status = $("#search-status");
     grid.innerHTML = "";
-    const list = lastResults.filter(function (c) { return kindFilter === "all" || c.kind === kindFilter; });
-    status.textContent = "共 " + lastResults.length + " 筆" +
-      (kindFilter === "all" ? "" : "（顯示 " + list.length + " 筆" + ({ monster: "怪獸", spell: "魔法", trap: "陷阱" }[kindFilter]) + "）");
-    if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合的卡片。</p>"; return; }
+    const f = readFilters();
+    const list = lastResults.filter(function (c) { return passFilters(c, f); });
+    const filtered = list.length !== lastResults.length;
+    status.textContent = "共 " + lastResults.length + " 筆" + (filtered ? "（篩選後顯示 " + list.length + " 筆）" : "");
+    if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合條件的卡片。可放寬篩選或按「重設」。</p>"; return; }
     list.forEach(function (c) { grid.appendChild(tile(c)); });
+  }
+
+  const ATTRS = ["光", "暗", "地", "水", "炎", "风", "神"];
+  const RACES = ["战士", "魔法师", "天使", "恶魔", "不死", "机械", "水", "炎", "岩石", "鸟兽",
+    "植物", "昆虫", "雷", "龙", "兽", "兽战士", "恐龙", "鱼", "海龙", "爬虫类",
+    "念动力", "幻神兽", "创造神", "幻龙", "电子界", "幻想魔"];
+  function populateFilters() {
+    const fa = $("#f-attr"), fr = $("#f-race"), fl = $("#f-level");
+    ATTRS.forEach(function (a) { const o = elem("option"); o.value = a; o.textContent = a; fa.appendChild(o); });
+    RACES.forEach(function (r) { const o = elem("option"); o.value = r; o.textContent = r; fr.appendChild(o); });
+    for (let i = 1; i <= 12; i++) { const o = elem("option"); o.value = i; o.textContent = i; fl.appendChild(o); }
   }
 
   /* ---------- 流行構築 ---------- */
@@ -399,6 +431,20 @@ const UI = (function () {
         c.classList.add("active"); kindFilter = c.dataset.kind; renderSearch();
       };
     });
+
+    populateFilters();
+    $("#adv-toggle").onclick = function () {
+      const box = $("#adv-filters");
+      box.hidden = !box.hidden;
+      $("#adv-toggle").classList.toggle("active", !box.hidden);
+    };
+    ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).onchange = renderSearch; });
+    ["#f-atk", "#f-def"].forEach(function (s) { $(s).oninput = renderSearch; });
+    $("#f-reset").onclick = function () {
+      ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).value = ""; });
+      $("#f-atk").value = ""; $("#f-def").value = "";
+      renderSearch();
+    };
 
     $("#deck-btn").onclick = openDrawer;
     $("#deck-close").onclick = closeDrawer;

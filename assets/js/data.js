@@ -156,6 +156,50 @@ const ENGINES = {
     ],
     recommend: { handtraps: 10, breakers: 3 },
   },
+  centurion: {
+    name: "百夫長（Centur-Ion）", style: "control",
+    keywords: ["百夫长", "重骑士", "从骑士", "骑士皇"],
+    core: [
+      { id: 15005145, n: "重骑士 普莉梅拉", q: 3 },
+      { id: 42493140, n: "从骑士 特露迪娅", q: 2 },
+      { id: 18060565, n: "龙骑兵团-首席百夫长", q: 1 },
+      { id: 78888899, n: "重骑兵 真理6", q: 1 },
+      { id: 41371602, n: "起立吧百夫长骑士！", q: 3 },
+    ],
+    extra: [
+      { id: 15982593, n: "骑士皇 雷加蒂娅", q: 1 },
+    ],
+    recommend: { handtraps: 12, breakers: 5 },
+  },
+  labrynth: {
+    name: "拉比林斯（Labrynth）", style: "control",
+    keywords: ["白银之城", "拉比林斯"],
+    core: [
+      { id: 75730490, n: "白银之城的召使 阿里亚娜", q: 3 },
+      { id: 1225009,  n: "白银之城的召使 阿里安娜", q: 1 },
+      { id: 2347656,  n: "白银之城的拉比林斯", q: 1 },
+      { id: 48745395, n: "白银之城的魔神像", q: 1 },
+      { id: 37629703, n: "白银之城的龙饰灯", q: 1 },
+      { id: 74018812, n: "白银之城的火吹炉", q: 1 },
+    ],
+    extra: [],
+    recommend: { handtraps: 6, breakers: 3 },
+  },
+  branded: {
+    name: "烙印（Branded Despia）", style: "midrange",
+    keywords: ["烙印"],
+    core: [
+      { id: 44362883, n: "烙印融合", q: 3 },
+      { id: 36637374, n: "烙印开幕", q: 3 },
+      { id: 34995106, n: "白之烙印", q: 1 },
+      { id: 67100549, n: "烙印凶鸣", q: 1 },
+      { id: 93595154, n: "烙印的裁决", q: 1 },
+    ],
+    extra: [
+      { id: 87746184, n: "烙印龙 白界龙", q: 1 },
+    ],
+    recommend: { handtraps: 10, breakers: 3 },
+  },
 };
 
 /* ---------- 流行構築（代表骨架） ---------- */
@@ -264,6 +308,53 @@ const META_DECKS = [
       { id: 29301450, n: "S：P小夜骑士", q: 1 }, { id: 4280258, n: "召命之神弓-阿波罗萨", q: 1 },
     ],
   },
+  {
+    id: "centurion", name: "百夫長（Centur-Ion）", tier: "T2", styleLabel: "同調 / 控制",
+    keywords: ["百夫长", "重骑士", "从骑士", "骑士皇"],
+    blurb: "以永續陷阱般的百夫長怪獸自我特召循環，鋪出同調妨害並持續補牌的中速控制。展開消耗低、抗手坑，適合喜歡穩健壓場的玩家。",
+    core: ENGINES.centurion.core,
+    engine: [],
+    staples: [
+      { id: 23434538, n: "增殖的G", q: 3 }, { id: 14558127, n: "灰流丽", q: 3 },
+      { id: 10045474, n: "无限泡影", q: 3 }, { id: 73642296, n: "屋敷童", q: 2 },
+      { id: 25311006, n: "三战之才", q: 2 }, { id: 27204311, n: "原始生命态 尼比鲁", q: 1 },
+    ],
+    extra: [
+      { id: 15982593, n: "骑士皇 雷加蒂娅", q: 1 }, { id: 29301450, n: "S：P小夜骑士", q: 1 },
+      { id: 4280258, n: "召命之神弓-阿波罗萨", q: 1 },
+    ],
+  },
+  {
+    id: "labrynth", name: "拉比林斯（Labrynth）", tier: "T2", styleLabel: "陷阱控制",
+    keywords: ["白银之城", "拉比林斯"],
+    blurb: "以「白銀之城」惡魔搭配大量泛用通常陷阱的純控制卡組。用陷阱清場、以家具循環補充資源，對連招卡組耐性高；節奏慢但續戰穩定，需要熟練的陷阱運用。",
+    core: ENGINES.labrynth.core,
+    engine: [],
+    staples: [
+      { id: 10045474, n: "无限泡影", q: 3 }, { id: 15693423, n: "颉颃胜负", q: 2 },
+      { id: 23434538, n: "增殖的G", q: 3 }, { id: 14558127, n: "灰流丽", q: 3 },
+      { id: 25311006, n: "三战之才", q: 2 }, { id: 18144506, n: "鹰身女妖的羽毛扫", q: 1 },
+    ],
+    extra: [
+      { id: 29301450, n: "S：P小夜骑士", q: 1 }, { id: 4280258, n: "召命之神弓-阿波罗萨", q: 1 },
+    ],
+  },
+  {
+    id: "branded", name: "烙印（Branded Despia）", tier: "T2", styleLabel: "融合 / 中速",
+    keywords: ["烙印"],
+    blurb: "以「烙印融合」一張起手鋪出多張融合大怪的中速卡組，兼具妨害與續戰。單卡爆發力高、後手也能靠融合翻盤，是長青的高泛用主題。",
+    core: ENGINES.branded.core,
+    engine: [],
+    staples: [
+      { id: 23434538, n: "增殖的G", q: 3 }, { id: 14558127, n: "灰流丽", q: 3 },
+      { id: 10045474, n: "无限泡影", q: 3 }, { id: 25311006, n: "三战之才", q: 3 },
+      { id: 27204311, n: "原始生命态 尼比鲁", q: 1 },
+    ],
+    extra: [
+      { id: 87746184, n: "烙印龙 白界龙", q: 1 }, { id: 29301450, n: "S：P小夜骑士", q: 1 },
+      { id: 4280258, n: "召命之神弓-阿波罗萨", q: 1 },
+    ],
+  },
 ];
 
 /* 生成器主題下拉 */
@@ -274,5 +365,8 @@ const BUILDER_ARCHETYPES = [
   { key: "yubel",      label: "于貝爾 Yubel（控制）" },
   { key: "whitewood",  label: "白森林 White Forest（連招）" },
   { key: "fireking",   label: "炎王 Fire King（中速）" },
+  { key: "centurion",  label: "百夫長 Centur-Ion（同調控制）" },
+  { key: "labrynth",   label: "拉比林斯 Labrynth（陷阱控制）" },
+  { key: "branded",    label: "烙印 Branded（融合中速）" },
   { key: "fiendsmith", label: "純手坑 Goodstuff（刻魔引擎）" },
 ];

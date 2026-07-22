@@ -39,6 +39,11 @@ const YGO = (function () {
       race: d.race, attribute: d.attribute, typeBits: d.type,
     };
     card.kind = classify(first);   // monster / spell / trap
+    // 由類型行解析中文「種族/屬性」（例：「不死/炎」）供進階篩選
+    const rm = first.match(/\]\s*([^\s\/\[\]]+)\/([^\s\/\[\]]+)\s*$/);
+    if (rm && card.kind === "monster") { card.raceCN = rm[1]; card.attrCN = rm[2]; }
+    card.isLink = /连接|連接|LINK/i.test(first);
+    card.isXyz = /超量|XYZ/i.test(first);
     mem[x.id] = card;
     persist();
     return card;
@@ -90,17 +95,22 @@ const YGO = (function () {
   }
 
   // 多關鍵字合併查系列（去重）
+  // ygocdb 對系列關鍵字會回傳整個系列（含名字不含該詞的成員，如查「百夫长」也回「重骑士 普莉梅拉」）。
+  // 因此預設信任 API 結果；只有當單一關鍵字回傳過多（>40，疑似模糊文字汙染）時，才退回名稱過濾。
+  const FUZZY_THRESHOLD = 40;
   async function searchSeries(keywords) {
     const seen = {};
     const merged = [];
     for (const kw of keywords) {
       let arr = [];
       try { arr = await search(kw); } catch (e) { arr = []; }
+      const polluted = arr.length > FUZZY_THRESHOLD;
       arr.forEach(function (c) {
-        // 僅保留卡名確實含關鍵字者，避免模糊配對汙染
-        if (keywords.some(function (k) { return c.name.indexOf(k) >= 0 || (c.jp && c.jp.indexOf(k) >= 0); })) {
-          if (!seen[c.id]) { seen[c.id] = 1; merged.push(c); }
+        if (polluted) {
+          const hit = keywords.some(function (k) { return c.name.indexOf(k) >= 0 || (c.jp && c.jp.indexOf(k) >= 0); });
+          if (!hit) return;
         }
+        if (!seen[c.id]) { seen[c.id] = 1; merged.push(c); }
       });
     }
     return merged;

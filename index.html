@@ -2,8 +2,19 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>遊戲王中文卡表工具 · 環境構築 / 卡組生成器</title>
+
+  <!-- PWA / iOS 加入主畫面 -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1017" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="遊戲王卡表" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -46,6 +57,15 @@
           <button class="qbtn" data-q="三战之才">三戰之才</button>
           <button class="qbtn" data-q="尼比鲁">尼比魯</button>
         </div>
+        <button id="adv-toggle" class="adv-toggle">⚙️ 進階篩選</button>
+      </div>
+      <div id="adv-filters" class="adv-filters" hidden>
+        <label>屬性<select id="f-attr"><option value="">全部</option></select></label>
+        <label>種族<select id="f-race"><option value="">全部</option></select></label>
+        <label>等級/階級<select id="f-level"><option value="">全部</option></select></label>
+        <label>攻擊力 ≥<input id="f-atk" type="number" min="0" step="100" placeholder="不限" /></label>
+        <label>守備力 ≥<input id="f-def" type="number" min="0" step="100" placeholder="不限" /></label>
+        <button id="f-reset" class="f-reset">重設</button>
       </div>
       <p id="search-status" class="status">輸入關鍵字開始搜索。資料來自 ygocdb 中文卡庫，卡圖來自 ygoprodeck。</p>
       <div id="search-results" class="grid"></div>
