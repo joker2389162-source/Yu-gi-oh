@@ -269,51 +269,63 @@ const UI = (function () {
 
   /* ---------- 生成器 ---------- */
   function initBuilder() {
-    const sel = $("#b-archetype");
-    BUILDER_ARCHETYPES.forEach(function (a) {
-      const o = elem("option"); o.value = a.key; o.textContent = a.label; sel.appendChild(o);
+    const box = $("#quick-themes");
+    QUICK_THEMES.forEach(function (g) {
+      const grp = elem("div", "qt-group");
+      grp.appendChild(elem("span", "qt-label", esc(g.group)));
+      g.items.forEach(function (it) {
+        const b = elem("button", "qt-chip", esc(it.label));
+        b.onclick = function () { $("#b-keyword").value = it.kw; generate(); };
+        grp.appendChild(b);
+      });
+      box.appendChild(grp);
     });
     bindRange("#b-size", "#b-size-out");
     bindRange("#b-ht", "#b-ht-out");
     bindRange("#b-bk", "#b-bk-out");
-    sel.onchange = function () {
-      const eng = ENGINES[sel.value];
-      if (eng && eng.recommend) {
-        $("#b-ht").value = eng.recommend.handtraps; $("#b-ht-out").value = eng.recommend.handtraps;
-        $("#b-bk").value = eng.recommend.breakers; $("#b-bk-out").value = eng.recommend.breakers;
-      }
-    };
     $("#b-generate").onclick = generate;
+    $("#b-keyword").addEventListener("keydown", function (e) { if (e.key === "Enter") generate(); });
   }
   function bindRange(inSel, outSel) {
     const i = $(inSel), o = $(outSel);
     i.oninput = function () { o.value = i.value; };
   }
 
-  function generate() {
+  async function generate() {
+    const kw = $("#b-keyword").value.trim();
+    const out = $("#builder-output");
+    if (!kw) { toast("請先輸入主題或卡名關鍵字"); return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>搜尋「" + esc(kw) + "」相關卡片並生成中…</p></div>";
+    let cards = [];
+    try { cards = await YGO.search(kw); }
+    catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e.message) + "（請確認網路連線）</p></div>"; return; }
+    if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kw) + "」的相關卡片，換個關鍵字試試（例：青眼、剑斗兽）。</p></div>"; return; }
     const opts = {
-      archetype: $("#b-archetype").value,
       style: $("#b-style").value,
       budget: $("#b-budget").value,
       size: Number($("#b-size").value),
       handtraps: Number($("#b-ht").value),
       breakers: Number($("#b-bk").value),
     };
-    const deck = Builder.build(opts);
-    renderBuilderOutput(deck, opts);
+    const deck = Builder.buildFromKeyword(kw, cards, opts);
+    renderBuilderOutput(deck, opts, kw);
   }
 
-  function renderBuilderOutput(deck, opts) {
+  function renderBuilderOutput(deck, opts, keyword) {
     const out = $("#builder-output");
     out.innerHTML = "";
     const panel = elem("div", "card-panel");
-    const eng = ENGINES[opts.archetype];
     const mCount = deck.main.reduce(function (a, x) { return a + x.q; }, 0);
     const eCount = deck.extra.reduce(function (a, x) { return a + x.q; }, 0);
-    panel.appendChild(elem("h2", null, "生成結果：" + esc(eng.name)));
+    panel.appendChild(elem("h2", null, "生成結果：「" + esc(keyword) + "」"));
+    const t = deck.themed || {};
     panel.appendChild(elem("p", "status",
-      "主卡組 " + mCount + " 張 · 額外 " + eCount + " 張 · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
-      " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget])));
+      "主卡組 " + mCount + " · 額外 " + eCount + " · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
+      " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget]) +
+      (deck.domAttr ? " · 主屬性 " + esc(deck.domAttr) : "")));
+    panel.appendChild(elem("p", "status",
+      "偵測到主題卡：主怪 " + (t.mons || 0) + " · 魔法 " + (t.spells || 0) + " · 陷阱 " + (t.traps || 0) + " · 額外 " + (t.extras || 0) +
+      (deck.mode === "archetype" ? "（系列模式）" : "（相關卡 Goodstuff 模式）")));
     if (deck.notes && deck.notes.length)
       deck.notes.forEach(function (n) { panel.appendChild(elem("p", "note-line", "· " + esc(n))); });
 

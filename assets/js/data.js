@@ -32,10 +32,13 @@ const BREAKERS = [
   { id: 18144506, n: "鹰身女妖的羽毛扫",   tier: "B", budget: "low",  desc: "破壞對方全部魔陷，剋擺場陷阱" },
 ];
 
-// 泛用額外（連接／超量）
+// 泛用額外（連接／超量）—— 幾乎任何卡組都能放的萬用額外卡
 const GENERIC_EXTRA = [
   { id: 29301450, n: "S：P小夜骑士",       desc: "2 星連接，除外妨害＋除外自解，泛用" },
+  { id: 41999284, n: "连接栗子球",         desc: "1 星連接（Linkuriboh），解放調整、萬用連接素材" },
   { id: 4280258,  n: "召命之神弓-阿波罗萨", desc: "多素材連接，全體無效怪獸效果" },
+  { id: 86066372, n: "访问码语者",         desc: "Link-4 打點終結者，連續破壞收尾" },
+  { id: 98127546, n: "闭锁世界的冥神",     desc: "Link-5 大王，奪取對方怪獸壓場" },
   { id: 48815792, n: "灼热之火灵使 希塔",  desc: "炎屬性泛用連接，回收除外資源" },
 ];
 
@@ -357,16 +360,23 @@ const META_DECKS = [
   },
 ];
 
-/* 生成器主題下拉 */
-const BUILDER_ARCHETYPES = [
-  { key: "ryzeal",     label: "雷火沸動機 Ryzeal（連招）" },
-  { key: "snakeeye",   label: "蛇眼炎 Snake-Eye（連招）" },
-  { key: "tenpai",     label: "天盃龍 Tenpai（後手 OTK）" },
-  { key: "yubel",      label: "于貝爾 Yubel（控制）" },
-  { key: "whitewood",  label: "白森林 White Forest（連招）" },
-  { key: "fireking",   label: "炎王 Fire King（中速）" },
-  { key: "centurion",  label: "百夫長 Centur-Ion（同調控制）" },
-  { key: "labrynth",   label: "拉比林斯 Labrynth（陷阱控制）" },
-  { key: "branded",    label: "烙印 Branded（融合中速）" },
-  { key: "fiendsmith", label: "純手坑 Goodstuff（刻魔引擎）" },
+/* 生成器「關鍵字快選」——點一下即填入關鍵字，但你也可以直接輸入任何主題／卡名。
+   涵蓋現代環境與經典主題；不在此列的主題一樣可用（直接輸入即可）。 */
+const QUICK_THEMES = [
+  { group: "現環境", items: [
+    { label: "雷火沸動機", kw: "雷火沸动机" }, { label: "蛇眼", kw: "蛇眼" },
+    { label: "天盃龍", kw: "天杯龙" }, { label: "于貝爾", kw: "于贝尔" },
+    { label: "白森林", kw: "白森林" }, { label: "炎王", kw: "炎王" },
+    { label: "百夫長", kw: "百夫长" }, { label: "拉比林斯", kw: "白银之城" },
+    { label: "烙印", kw: "烙印" }, { label: "刻魔", kw: "刻魔" },
+  ]},
+  { group: "經典 / 熱門", items: [
+    { label: "青眼白龍", kw: "青眼" }, { label: "黑魔導", kw: "黑魔术" },
+    { label: "真紅眼", kw: "真红眼" }, { label: "元素英雄", kw: "元素英雄" },
+    { label: "劍鬥獸", kw: "剑斗兽" }, { label: "六武眾", kw: "六武众" },
+    { label: "轉生炎獸", kw: "转生炎兽" }, { label: "捕食植物", kw: "捕食植物" },
+    { label: "水晶機巧", kw: "水晶机巧" }, { label: "龍女僕", kw: "龙女仆" },
+    { label: "森羅", kw: "森罗" }, { label: "海皇", kw: "海皇" },
+    { label: "碼語者", kw: "码语者" }, { label: "幻影騎士團", kw: "幻影骑士团" },
+  ]},
 ];

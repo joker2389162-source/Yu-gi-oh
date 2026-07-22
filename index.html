@@ -83,14 +83,18 @@
     <!-- 卡組生成器 -->
     <section id="tab-builder" class="tab-panel">
       <div class="builder-form card-panel">
-        <h2>依你的條件生成卡組</h2>
+        <h2>輸入關鍵字，生成可對戰卡組</h2>
+        <p class="builder-intro">輸入任何<strong>主題或卡名關鍵字</strong>（不限現環境），系統會即時搜尋相關／可連動的卡片，
+          自動分類並配上泛用卡，組出一副能對戰的卡組。例：<code>青眼</code>、<code>剑斗兽</code>、<code>转生炎兽</code>、<code>活死人的呼声</code>。</p>
+        <div class="keyword-row">
+          <input id="b-keyword" type="search" placeholder="輸入主題／卡名關鍵字（中／日文皆可）" />
+          <button id="b-generate" class="primary">⚙️ 生成卡組</button>
+        </div>
+        <div id="quick-themes" class="quick-themes"></div>
         <div class="form-grid">
-          <label>主題引擎
-            <select id="b-archetype"></select>
-          </label>
           <label>卡組風格
             <select id="b-style">
-              <option value="auto">跟隨主題（建議）</option>
+              <option value="auto">自動（建議）</option>
               <option value="combo">連招 Combo</option>
               <option value="control">控制 Control</option>
               <option value="aggro">快攻 / OTK</option>
@@ -106,14 +110,13 @@
           <label>主卡組張數 <output id="b-size-out">40</output>
             <input id="b-size" type="range" min="40" max="60" value="40" />
           </label>
-          <label>手坑數量 <output id="b-ht-out">12</output>
-            <input id="b-ht" type="range" min="0" max="18" value="12" />
+          <label>手坑數量 <output id="b-ht-out">10</output>
+            <input id="b-ht" type="range" min="0" max="18" value="10" />
           </label>
-          <label>破壞 / 拆場卡 <output id="b-bk-out">4</output>
-            <input id="b-bk" type="range" min="0" max="9" value="4" />
+          <label>破壞 / 拆場卡 <output id="b-bk-out">3</output>
+            <input id="b-bk" type="range" min="0" max="9" value="3" />
           </label>
         </div>
-        <button id="b-generate" class="primary">⚙️ 生成卡組</button>
       </div>
       <div id="builder-output"></div>
     </section>

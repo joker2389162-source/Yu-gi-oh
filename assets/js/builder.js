@@ -96,5 +96,126 @@ const Builder = (function () {
     return { main: main, extra: extra, side: side, notes: notes, style: eng.style };
   }
 
-  return { build: build };
+  /* ---------- 通用關鍵字生成器 ----------
+   * keyword：使用者輸入的主題／卡名關鍵字
+   * cards  ：YGO.search(keyword) 撈回的卡片陣列（已正規化）
+   * opts   ：{ style, budget, size, handtraps, breakers }
+   * 不侷限於預設主題：任何能查到相關卡的關鍵字都能組出可對戰卡組。
+   */
+  function isExtraMon(c) {
+    return c.kind === "monster" && /融合|同调|同調|超量|连接|連接|XYZ|LINK/i.test(c.typeLine || "");
+  }
+
+  function buildFromKeyword(keyword, cards, opts) {
+    const notes = [];
+    // 主題卡池：卡名含關鍵字者優先（乾淨的系列）；太少時退回較廣的相關結果
+    let named = cards.filter(function (c) { return c.name.indexOf(keyword) >= 0; });
+    let mode = "archetype";
+    if (named.length < 4) { mode = "loose"; named = cards.slice(0, 24); }
+
+    const mons = named.filter(function (c) { return c.kind === "monster" && !isExtraMon(c); });
+    const extras = named.filter(isExtraMon);
+    const spells = named.filter(function (c) { return c.kind === "spell"; });
+    const traps = named.filter(function (c) { return c.kind === "trap"; });
+
+    // 主屬性偵測（用於提示）
+    const attrCount = {};
+    mons.forEach(function (c) { if (c.attrCN) attrCount[c.attrCN] = (attrCount[c.attrCN] || 0) + 1; });
+    const domAttr = Object.keys(attrCount).sort(function (a, b) { return attrCount[b] - attrCount[a]; })[0] || null;
+
+    // 依等級決定張數：低星（搜尋／展開）多放，高星大怪少放
+    function monCopies(c) { const lv = Number(c.level) || 0; if (lv <= 4) return 3; if (lv <= 6) return 2; return 1; }
+    function spCopies(c) { return /场地|場地/.test(c.typeLine || "") ? 1 : 2; }
+    mons.sort(function (a, b) { return (Number(a.level) || 0) - (Number(b.level) || 0); });
+
+    const style = opts.style === "auto" ? null : opts.style;
+    const wantTraps = style === "control" ? 8 : style === "aggro" ? 0 : 4;
+
+    const ht = opts.handtraps, bk = opts.breakers;
+    const engineTarget = Math.max(12, opts.size - (ht + bk));
+
+    const main = [];
+    function push(card, q) {
+      if (q <= 0) return;
+      const e = main.find(function (x) { return x.id === card.id; });
+      const cur = e ? e.q : 0;
+      const add = Math.min(3 - cur, q);
+      if (add <= 0) return;
+      if (e) e.q += add; else main.push({ id: card.id, n: card.name || card.n, q: add });
+    }
+    function count() { return main.reduce(function (a, x) { return a + x.q; }, 0); }
+    function st(o) { return { id: o.id, name: o.n }; }
+
+    // 1) 主題主怪 → 2) 主題魔法 → 3) 主題陷阱（依風格限量）
+    for (const c of mons) { if (count() >= engineTarget) break; push(c, monCopies(c)); }
+    for (const c of spells) { if (count() >= engineTarget) break; push(c, spCopies(c)); }
+    let trapsAdded = 0;
+    for (const c of traps) { if (count() >= engineTarget || trapsAdded >= wantTraps) break; push(c, 2); trapsAdded += 2; }
+
+    if (mons.length === 0)
+      notes.push("此關鍵字沒有主卡組怪獸（可能全為額外卡組或魔陷），已以主題魔陷＋泛用卡填充，建議再搭配其他主怪。");
+    if (mode === "loose")
+      notes.push("「" + keyword + "」未對應到明確系列，已改用相關卡片＋泛用卡組成 Goodstuff 骨架；換用更精確的主題名可得到更聚焦的卡組。");
+
+    // 4) 手坑 5) 破壞卡
+    const htPool = HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget); });
+    let htLeft = ht;
+    for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c); htLeft -= c; }
+    const bkPool = BREAKERS.filter(function (b) { return budgetOk(b, opts.budget); });
+    let bkLeft = bk;
+    for (const b of bkPool) { if (bkLeft <= 0) break; const c = Math.min(3, bkLeft); push(st(b), c); bkLeft -= c; }
+
+    // 6) 補足到目標張數
+    let deficit = opts.size - count();
+    if (deficit > 0) {
+      const fillers = mons.concat(spells);
+      for (const c of fillers) {
+        if (deficit <= 0) break;
+        const e = main.find(function (x) { return x.id === c.id; });
+        const room = 3 - (e ? e.q : 0);
+        if (room <= 0) continue;
+        const add = Math.min(room, deficit); push(c, add); deficit -= add;
+      }
+    }
+    deficit = opts.size - count();
+    if (deficit > 0) {
+      for (const h of htPool) {
+        if (deficit <= 0) break;
+        const e = main.find(function (x) { return x.id === h.id; });
+        const room = 3 - (e ? e.q : 0);
+        if (room <= 0) continue;
+        const add = Math.min(room, deficit); push(st(h), add); deficit -= add;
+      }
+    }
+    deficit = opts.size - count();
+    if (deficit > 0) notes.push("主卡組僅 " + count() + " 張（此主題可用卡＋預算限制），可再手動補入更多主題卡至 " + opts.size + " 張。");
+    else if (deficit < 0) {
+      let over = -deficit;
+      for (let i = main.length - 1; i >= 0 && over > 0; i--) {
+        const take = Math.min(main[i].q, over); main[i].q -= take; over -= take;
+        if (main[i].q <= 0) main.splice(i, 1);
+      }
+    }
+
+    // 額外卡組：主題額外怪 + 泛用額外，補到 15
+    const extra = [];
+    function esum() { return extra.reduce(function (a, x) { return a + x.q; }, 0); }
+    extras.forEach(function (c) { if (esum() >= 15) return; extra.push({ id: c.id, n: c.name, q: 1 }); });
+    for (const g of GENERIC_EXTRA) { if (esum() >= 15) break; if (extra.some(function (x) { return x.id === g.id; })) continue; extra.push({ id: g.id, n: g.n, q: 1 }); }
+
+    // 副卡組：泛用破壞卡示意
+    const side = [];
+    bkPool.forEach(function (b) {
+      const inMain = main.find(function (x) { return x.id === b.id; });
+      const used = inMain ? inMain.q : 0;
+      if (used < 3 && side.reduce(function (a, x) { return a + x.q; }, 0) < 15) side.push({ id: b.id, n: b.n, q: 3 - used });
+    });
+
+    return {
+      main: main, extra: extra, side: side, notes: notes, mode: mode, domAttr: domAttr,
+      themed: { mons: mons.length, spells: spells.length, traps: traps.length, extras: extras.length },
+    };
+  }
+
+  return { build: build, buildFromKeyword: buildFromKeyword };
 })();
