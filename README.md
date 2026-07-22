@@ -58,19 +58,31 @@ python3 -m http.server 8000
 # 然後瀏覽器開 http://localhost:8000
 ```
 
+## 🌐 部署成線上網站（GitHub Pages）
+
+本工具是純靜態網站，用 GitHub Pages 免費上線。**首次啟用 Pages 需要 repo 擁有者手動點一次設定**（GitHub 的權限限制，無法由程式代開）。有兩種方式，推薦「方式 A」最簡單：
+
+### 方式 A：從分支部署（最簡單，不需工作流）
+1. 開 repo 的 **Settings → Pages**。
+2. **Build and deployment → Source** 選 **Deploy from a branch**。
+3. **Branch** 選你要上線的分支（例：`main`，或本功能分支 `claude/yugioh-card-search-tool-a8jqet`），資料夾選 **`/ (root)`**，按 **Save**。
+4. 等 1～2 分鐘，頁面上方會出現網址：`https://<你的帳號>.github.io/Yu-gi-oh/` —— 打開即上線。
+
+### 方式 B：GitHub Actions 部署（用內建工作流）
+1. 開 **Settings → Pages**，**Source** 選 **GitHub Actions**。
+2. 已合併到 `main` 後會自動部署；或到 **Actions → Deploy to GitHub Pages → Run workflow** 手動觸發。
+3. 完成後同樣得到 `https://<你的帳號>.github.io/Yu-gi-oh/`。
+
+> 註：在 Pages 尚未啟用前，Actions 的部署工作流會失敗（這是正常的，啟用後即會成功）。
+> 純靜態網站用「方式 A」通常最省事。
+
 ## 📱 安裝成 iPhone / iPad App（PWA）
 
-本工具是 **PWA（漸進式網頁應用）**，可「加入主畫面」後像原生 App 一樣使用
-（獨立圖示、全螢幕、離線可開介面）。
-
-**步驟：**
-1. 先讓工具有個 **https 網址**——最簡單是用本 repo 內建的 GitHub Pages 部署：
-   - 到 GitHub repo 的 **Settings → Pages**，把 **Source** 設為 **GitHub Actions**。
-   - 內建的 `.github/workflows/pages.yml` 會自動部署，完成後會得到形如
-     `https://<你的帳號>.github.io/Yu-gi-oh/` 的網址。
-2. 用 **iPhone 的 Safari** 打開該網址。
-3. 點下方**分享**按鈕 → **加入主畫面（Add to Home Screen）** → 完成。
-4. 主畫面就會出現「遊戲王卡表」App 圖示，點開即全螢幕運行。
+網站上線後，它同時是 **PWA（漸進式網頁應用）**，可加到 iPhone 主畫面像原生 App 使用
+（獨立圖示、全螢幕、離線可開介面）：
+1. 用 **iPhone 的 Safari** 打開上面的網址。
+2. 點下方**分享**按鈕 → **加入主畫面（Add to Home Screen）** → 完成。
+3. 主畫面出現「遊戲王卡表」App 圖示，點開即全螢幕運行。
 
 > 說明：iOS 只能透過 Safari 的「加入主畫面」安裝 PWA。
 > 若要上架 App Store 的原生 App，需要 macOS + Xcode + Apple 開發者帳號另行封裝

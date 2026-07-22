@@ -1,13 +1,12 @@
 name: Deploy to GitHub Pages
 
-# 部署整個網站到 GitHub Pages，取得可在 iPhone「加入主畫面」安裝的網址。
-# 首次使用請到 repo 的 Settings → Pages，將 Source 設為「GitHub Actions」。
+# 部署整個網站到 GitHub Pages（方式 B）。首次需到 Settings → Pages 將 Source 設為「GitHub Actions」。
+# 純靜態網站也可改用更簡單的「方式 A：Deploy from a branch」，完全不需此工作流（見 README）。
 
 on:
   push:
     branches:
       - main
-      - claude/yugioh-card-search-tool-a8jqet
   workflow_dispatch:
 
 permissions:
