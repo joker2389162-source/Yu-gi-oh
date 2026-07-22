@@ -1,5 +1,5 @@
 /* Service Worker：App 殼層離線快取 + 卡圖執行時快取 */
-const VERSION = "ygo-v2";
+const VERSION = "ygo-v3";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 
@@ -44,8 +44,18 @@ self.addEventListener("fetch", function (e) {
   const sameOrigin = url.origin === self.location.origin;
 
   if (sameOrigin) {
-    // App 殼層：cache-first
-    e.respondWith(caches.match(req).then(function (hit) { return hit || fetch(req); }));
+    // App 殼層：network-first（線上永遠拿最新，離線才回退快取），避免更新後看到舊版
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(SHELL).then(function (c) { c.put(req, copy); });
+        }
+        return res;
+      }).catch(function () {
+        return caches.match(req).then(function (hit) { return hit || caches.match("./index.html"); });
+      })
+    );
     return;
   }
 
