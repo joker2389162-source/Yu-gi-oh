@@ -133,6 +133,21 @@ const Builder = (function () {
       mons = effMons;
     }
 
+    // 經典主題引擎補全：補上與主題不同名的核心展開/搜尋卡
+    const supRole = {}, supIds = {};
+    const sup = (typeof supplementFor === "function") ? supplementFor(keyword) : [];
+    sup.forEach(function (c) {
+      supIds[c.id] = 1; if (c.role) supRole[c.id] = c.role;
+      if (c.kind === "monster" && !isExtraMon(c)) { if (!isNormalMon(c) || c.role) mons.push(c); }
+      else if (c.kind === "spell") spells.push(c);
+      else if (c.kind === "trap") traps.push(c);
+    });
+    if (sup.length) notes.push("已補上此主題的核心引擎卡（" + sup.length + " 種，與主題不同名，keyword 搜不到）。");
+
+    // 特殊召喚怪：視為半個展開牌（自我特召可接續）
+    const ssIds = {};
+    mons.forEach(function (c) { if (/特殊召唤|特殊召喚/.test(c.typeLine || "")) ssIds[c.id] = 1; });
+
     // 主屬性偵測（用於提示與屬性配對額外卡）
     const attrCount = {};
     mons.forEach(function (c) { if (c.attrCN) attrCount[c.attrCN] = (attrCount[c.attrCN] || 0) + 1; });
@@ -140,13 +155,14 @@ const Builder = (function () {
 
     // 依等級決定張數（含少量隨機變化，讓每次生成不同、更靈活）
     function monCopies(c) {
+      if (c.supQ != null) return c.supQ;
       const lv = Number(c.level) || 0;
       let base = lv <= 4 ? 3 : lv <= 6 ? 2 : 1;
       if (base === 3 && rng() < 0.25) base = 2;
       else if (base === 2 && rng() < 0.25) base = (lv <= 4 ? 3 : 1);
       return base;
     }
-    function spCopies(c) { return /场地|場地/.test(c.typeLine || "") ? 1 : (rng() < 0.3 ? 3 : 2); }
+    function spCopies(c) { if (c.supQ != null) return c.supQ; return /场地|場地/.test(c.typeLine || "") ? 1 : (rng() < 0.3 ? 3 : 2); }
     // 依等級排序，同級之間隨機打散（增加變化）
     mons.sort(function (a, b) { const d = (Number(a.level) || 0) - (Number(b.level) || 0); return d !== 0 ? d : (rng() - 0.5); });
 
@@ -269,8 +285,13 @@ const Builder = (function () {
     main.forEach(function (x) {
       if (htIds[x.id]) roles[x.id] = "handtrap";
       else if (bkIds[x.id]) roles[x.id] = "breaker";
+      else if (supRole[x.id]) roles[x.id] = supRole[x.id];       // 引擎補全卡的既定角色
       else if (normalIds[x.id]) roles[x.id] = "brick";
-      else if (monLv[x.id] !== undefined) roles[x.id] = monLv[x.id] <= 4 ? "starter" : (monLv[x.id] <= 6 ? "mid" : "payoff");
+      else if (monLv[x.id] !== undefined) {
+        if (monLv[x.id] <= 4) roles[x.id] = "starter";
+        else if (ssIds[x.id]) roles[x.id] = "mid";               // 特殊召喚大怪＝半個展開牌
+        else roles[x.id] = monLv[x.id] <= 6 ? "mid" : "payoff";
+      }
       else if (spellIds[x.id]) roles[x.id] = "starter";
       else if (trapIds[x.id]) roles[x.id] = "interrupt";
       else roles[x.id] = "neutral";

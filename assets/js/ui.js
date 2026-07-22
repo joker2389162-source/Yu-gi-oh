@@ -309,8 +309,9 @@ const UI = (function () {
       handtraps: Number($("#b-ht").value),
       breakers: Number($("#b-bk").value),
     };
-    // 生成→模擬對戰→估算勝率，反覆直到 ≥60% 或用盡嘗試，回傳最佳者
-    const result = Builder.buildBest(kw, cards, opts, 60);
+    // 生成→模擬對戰→估算勝率，反覆直到達門檻或用盡嘗試，回傳最佳者
+    const threshold = Number($("#b-threshold").value) || 60;
+    const result = Builder.buildBest(kw, cards, opts, threshold);
     renderBuilderOutput(result.deck, opts, kwShow, result);
   }
 

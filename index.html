@@ -116,6 +116,14 @@
           <label>破壞 / 拆場卡 <output id="b-bk-out">3</output>
             <input id="b-bk" type="range" min="0" max="9" value="3" />
           </label>
+          <label>目標勝率門檻
+            <select id="b-threshold">
+              <option value="55">55%（較寬鬆）</option>
+              <option value="60" selected>60%（建議）</option>
+              <option value="65">65%（較嚴格）</option>
+              <option value="70">70%（很嚴格）</option>
+            </select>
+          </label>
         </div>
       </div>
       <div id="builder-output"></div>

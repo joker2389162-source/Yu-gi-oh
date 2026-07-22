@@ -53,6 +53,26 @@ const GENERIC_EXTRA = [
   { id: 48815792, n: "灼热之火灵使 希塔",  desc: "炎屬性泛用連接，回收除外資源" },
 ];
 
+// 經典主題「引擎補全」：有些主題的核心展開/搜尋卡與主題不同名（keyword 搜不到），
+// 在此補上驗證過的引擎卡，讓生成的卡組能真正運作。可自行擴充更多主題。
+const ENGINE_SUPPLEMENT = {
+  "青眼": [
+    { id: 8240199,  name: "青色眼睛的贤士", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 3, role: "starter" },
+    { id: 36734924, name: "青色眼睛的巫女", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 71039903, name: "太古的白石",     kind: "monster", typeLine: "[怪兽|效果|调整] 龙/光",     level: 1, attrCN: "光", supQ: 2, role: "starter" },
+    { id: 79814787, name: "传说的白石",     kind: "monster", typeLine: "[怪兽|效果|调整] 龙/光",     level: 1, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 41620959, name: "龙之灵庙",       kind: "spell",   typeLine: "[魔法]",                     level: 0, supQ: 3, role: "starter" },
+    { id: 73398797, name: "白龙之圣骑士",   kind: "monster", typeLine: "[怪兽|效果|仪式] 龙/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 89631139, name: "青眼白龙",       kind: "monster", typeLine: "[怪兽|通常] 龙/光",          level: 8, attrCN: "光", supQ: 3, role: "payoff" },
+  ],
+};
+function supplementFor(keyword) {
+  for (const k in ENGINE_SUPPLEMENT) {
+    if (keyword.indexOf(k) >= 0 || k.indexOf(keyword) >= 0) return ENGINE_SUPPLEMENT[k];
+  }
+  return [];
+}
+
 // 依主屬性配對的泛用額外（靈使 Charmer 連接怪，每屬性一張，可 splash 進同屬性卡組）
 const ATTR_EXTRA = {
   "炎": [{ id: 48815792, n: "灼热之火灵使 希塔" }],
