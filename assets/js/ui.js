@@ -102,17 +102,24 @@ const UI = (function () {
   let lastResults = [];
   let kindFilter = "all";
 
+  let lastNameCount = 0;
   async function runSearch(term) {
     term = (term || "").trim();
     if (!term) return;
     const status = $("#search-status");
     const grid = $("#search-results");
-    status.textContent = "搜索「" + term + "」中…";
+    status.textContent = YGO.indexReady() ? "搜索「" + term + "」中…" : "首次載入完整卡庫（約 1.5MB，含效果全文）…";
     grid.innerHTML = "";
-    let res = [];
-    try { res = await YGO.search(S2T.query(term)); }
-    catch (e) { status.textContent = "搜索失敗：" + e.message + "（請檢查網路連線）"; return; }
-    lastResults = res;
+    const q = S2T.query(term);
+    let res;
+    try { res = await YGO.searchLocal(q); }
+    catch (e) {
+      // 索引載入失敗時回退線上卡名查詢
+      try { const arr = await YGO.search(q); res = { cards: arr, nameCount: arr.length }; }
+      catch (e2) { status.textContent = "搜索失敗：" + e2.message + "（請檢查網路連線）"; return; }
+    }
+    lastResults = res.cards;
+    lastNameCount = res.nameCount;
     renderSearch();
   }
 
@@ -136,16 +143,22 @@ const UI = (function () {
     return true;
   }
 
+  const RESULT_CAP = 300;
   function renderSearch() {
     const grid = $("#search-results");
     const status = $("#search-status");
     grid.innerHTML = "";
     const f = readFilters();
     const list = lastResults.filter(function (c) { return passFilters(c, f); });
-    const filtered = list.length !== lastResults.length;
-    status.textContent = "共 " + lastResults.length + " 筆" + (filtered ? "（篩選後顯示 " + list.length + " 筆）" : "");
+    // 計算卡名/效果文本各多少（name hits 為 lastResults 前段）
+    const nameSet = {};
+    for (let i = 0; i < lastNameCount && i < lastResults.length; i++) nameSet[lastResults[i].id] = 1;
+    const nameCnt = list.filter(function (c) { return nameSet[c.id]; }).length;
+    const textCnt = list.length - nameCnt;
+    status.textContent = "共 " + list.length + " 筆（卡名 " + nameCnt + " · 效果文本 " + textCnt + "）" +
+      (list.length > RESULT_CAP ? " · 顯示前 " + RESULT_CAP : "");
     if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合條件的卡片。可放寬篩選或按「重設」。</p>"; return; }
-    list.forEach(function (c) { grid.appendChild(tile(c)); });
+    list.slice(0, RESULT_CAP).forEach(function (c) { grid.appendChild(tile(c)); });
   }
 
   const ATTRS = ["光", "暗", "地", "水", "炎", "风", "神"];
@@ -289,31 +302,63 @@ const UI = (function () {
     i.oninput = function () { o.value = i.value; };
   }
 
+  // 需求解析：從自由文字擷取風格／預算／張數／手坑偏好／策略流派／主題
+  function parseIntent(raw) {
+    const t = S2T.query(raw);   // 轉簡體便於比對
+    const o = { style: "auto", budget: "high", handtraps: 12, breakers: 3, size: null, presetKey: null };
+    if (/快攻|otk|爆发|先攻杀|一回合|速攻/i.test(t)) o.style = "aggro";
+    else if (/控制|控场|防守|后手|耐久|长期|铁壁/.test(t)) o.style = "control";
+    else if (/连招|展开|连锁|combo/i.test(t)) o.style = "combo";
+    if (/便宜|省钱|平价|低价|新手|入门|穷|预算低/.test(t)) o.budget = "low";
+    else if (/中价|中等预算/.test(t)) o.budget = "mid";
+    if (/多手坑|手坑多|很多手坑|防手坑|重手坑/.test(t)) o.handtraps = 15;
+    else if (/少手坑|无手坑|纯build|不放手坑/.test(t)) o.handtraps = 4;
+    if (/多破坏|拆场多|后手强/.test(t)) o.breakers = 6;
+    const sz = t.match(/(\d{2})\s*张/); if (sz) { const n = Number(sz[1]); if (n >= 40 && n <= 60) o.size = n; }
+    // 策略流派關鍵詞
+    if (/封锁|锁死|铁壁|站桩/.test(t)) o.presetKey = "封锁系";
+    else if (/烧血|烧伤|灼烧|燃烧|烧脸|burn/i.test(t)) o.presetKey = "烧血流";
+    else if (/手牌破坏|破坏手牌|弃牌|拆手|扒手/.test(t)) o.presetKey = "手牌破坏";
+    else if (/墓地妨害|除外封锁|阴间|陰間|反墓地/.test(t)) o.presetKey = "阴间阻抗";
+    else if (/报复社会|拆场恶心|反制流|恶心人/.test(t)) o.presetKey = "报复社会";
+    else if (typeof presetFor === "function" && presetFor(t)) o.presetKey = t;
+    // 主題：移除已辨識的需求詞，剩餘作為主題關鍵字
+    let theme = t.replace(/快攻|otk|爆发|先攻杀|一回合|速攻|控制|控场|防守|后手|耐久|长期|铁壁|连招|展开|连锁|combo|便宜|省钱|平价|低价|新手|入门|穷|预算低|中价|中等预算|多手坑|手坑多|很多手坑|防手坑|重手坑|少手坑|无手坑|纯build|不放手坑|多破坏|拆场多|后手强|\d{2}\s*张|的|我要|想要|一套|一副|卡组|牌组|帮我|生成|做|要/gi, "").trim();
+    o.theme = theme;
+    return o;
+  }
+
   async function generate() {
-    const kwRaw = $("#b-keyword").value.trim();
-    const kw = S2T.query(kwRaw);          // 繁→簡，供搜尋與比對
-    const kwShow = S2T.disp(kwRaw);        // 顯示用繁體
+    const raw = $("#b-keyword").value.trim();
     const out = $("#builder-output");
-    if (!kwRaw) { toast("請先輸入主題或卡名關鍵字"); return; }
-    out.innerHTML = "<div class='card-panel'><p class='loading'>搜尋「" + esc(kwShow) + "」相關卡片、模擬對戰並挑選卡組中…</p></div>";
-    // 策略流派用固定卡包，不需查 API
+    if (!raw) { toast("請輸入主題或你的需求（例：便宜的封鎖控制、青眼 後手OTK）"); return; }
+    const intent = parseIntent(raw);
+    const kw = intent.presetKey ? intent.presetKey : S2T.query(intent.theme || raw);
+    const kwShow = S2T.disp(intent.presetKey || intent.theme || raw);
     const isPreset = (typeof presetFor === "function") && presetFor(kw);
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" +
+      (YGO.indexReady() || isPreset ? "" : "首次載入完整卡庫（約 1.5MB，含效果全文）· ") +
+      "解析需求「" + esc(S2T.disp(raw)) + "」、搜尋相關卡片、模擬對戰並挑選卡組中…</p></div>";
     let cards = [];
     if (!isPreset) {
-      try { cards = await YGO.search(kw); }
-      catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e.message) + "（請確認網路連線）</p></div>"; return; }
-      if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個關鍵字試試（例：青眼、劍鬥獸）。</p></div>"; return; }
+      try { const r = await YGO.searchLocal(kw); cards = r.cards; }
+      catch (e) {
+        try { cards = await YGO.search(kw); } catch (e2) {
+          out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e2.message) + "（請確認網路連線）</p></div>"; return;
+        }
+      }
+      if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個主題或說法試試（例：青眼、劍鬥獸、便宜的封鎖控制）。</p></div>"; return; }
     }
     const opts = {
-      style: "auto",         // 已移除選項，改自動判定
-      budget: "high",        // 已移除選項，預設不限（用最佳泛用卡）
-      size: Number($("#b-size").value),
-      handtraps: 12,         // 已移除選項，預設值
-      breakers: 3,           // 已移除選項，預設值
+      style: intent.style,
+      budget: intent.budget,
+      size: intent.size || Number($("#b-size").value),
+      handtraps: intent.handtraps,
+      breakers: intent.breakers,
     };
-    // 生成→模擬對戰→估算勝率，反覆直到達門檻或用盡嘗試，回傳最佳者
     const threshold = Number($("#b-threshold").value) || 60;
     const result = Builder.buildBest(kw, cards, opts, threshold);
+    result.intent = intent;
     renderBuilderOutput(result.deck, opts, kwShow, result);
   }
 

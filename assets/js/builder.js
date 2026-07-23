@@ -151,6 +151,27 @@ const Builder = (function () {
     if (sup.length && !preset) notes.push("已補上此主題的核心引擎卡（" + sup.length + " 種，與主題不同名，keyword 搜不到）。");
     if (preset) notes.push("此為玩法導向的「策略流派」卡包，以固定核心卡＋泛用卡組成，非單一系列。");
 
+    // 自動關聯支援：效果文本提及主題、且為主卡組低星怪／魔法的相關卡（由本地全文搜索帶入）
+    let relCount = 0;
+    if (!preset) {
+      const seen = {};
+      mons.concat(spells, traps).forEach(function (c) { seen[c.id] = 1; });
+      const rel = cards.filter(function (c) {
+        if (c.name.indexOf(keyword) >= 0 || seen[c.id]) return false;   // 已是系列卡
+        if (isExtraMon(c)) return false;
+        if (c.kind === "monster") return (Number(c.level) || 0) <= 4 && !isNormalMon(c);
+        return c.kind === "spell";
+      });
+      rel.sort(function (a, b) { return (a.kind === "spell" ? 1 : 0) - (b.kind === "spell" ? 1 : 0) || (Number(a.level) || 0) - (Number(b.level) || 0); });
+      rel.slice(0, 10).forEach(function (c) {
+        const rc = { id: c.id, name: c.name, kind: c.kind, typeLine: c.typeLine, level: c.level, attrCN: c.attrCN, supQ: 1, role: "starter" };
+        if (rc.kind === "monster") mons.push(rc); else spells.push(rc);
+        supIds[rc.id] = 1; supRole[rc.id] = "starter";
+        relCount++;
+      });
+      if (relCount) notes.push("已由效果文本關聯帶入 " + relCount + " 張相關支援卡（含可連動的跨系列卡）。");
+    }
+
     // 特殊召喚怪：視為半個展開牌（自我特召可接續）
     const ssIds = {};
     mons.forEach(function (c) { if (/特殊召唤|特殊召喚/.test(c.typeLine || "")) ssIds[c.id] = 1; });

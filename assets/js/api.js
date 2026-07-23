@@ -95,6 +95,68 @@ const YGO = (function () {
     return out;
   }
 
+  // ---------- 本地全文索引（含效果文本）----------
+  let indexPromise = null;
+  let INDEX = null;     // 卡片陣列（已轉為內部卡片物件）
+  function normMini(m) {
+    const first = m.t || "";
+    const card = {
+      id: m.id,
+      name: m.n || String(m.id),
+      jp: m.j || "", en: m.e || "",
+      typeLine: first,
+      desc: m.d || "", pdesc: m.p || "",
+      atk: m.a, def: m.f,
+      level: (m.l != null ? (m.l & 0xff) : m.l),
+      attribute: m.r,
+    };
+    card.kind = classify(first);
+    const rm = first.match(/\]\s*([^\s\/\[\]]+)\/([^\s\/\[\]]+)\s*$/);
+    if (rm && card.kind === "monster") { card.raceCN = rm[1]; card.attrCN = rm[2]; }
+    card.isLink = /连接|連接|LINK/i.test(first);
+    card.isXyz = /超量|XYZ/i.test(first);
+    return card;
+  }
+  function loadIndex() {
+    if (indexPromise) return indexPromise;
+    // 以 <script> 動態載入（file:// 與 https 皆可，避開 fetch 的 CORS 限制）
+    indexPromise = new Promise(function (resolve, reject) {
+      if (window.__YGO_INDEX) return resolve(window.__YGO_INDEX);
+      const s = document.createElement("script");
+      s.src = "assets/data/cards.min.js";
+      s.async = true;
+      s.onload = function () {
+        if (window.__YGO_INDEX) resolve(window.__YGO_INDEX);
+        else reject(new Error("index empty"));
+      };
+      s.onerror = function () { reject(new Error("index load failed")); };
+      document.head.appendChild(s);
+    }).then(function (arr) {
+      INDEX = arr.map(normMini);
+      INDEX.forEach(function (c) { mem[c.id] = c; });
+      window.__YGO_INDEX = null;   // 釋放原始陣列記憶體
+      return INDEX;
+    }).catch(function (e) { indexPromise = null; throw e; });
+    return indexPromise;
+  }
+  function indexReady() { return !!INDEX; }
+
+  // 本地全文搜索：卡名優先，其次效果文本／靈擺文本。回傳 { cards, nameCount }
+  async function searchLocal(query) {
+    const q = (query || "").trim();
+    if (!q) return { cards: [], nameCount: 0 };
+    await loadIndex();
+    const nameHits = [], textHits = [];
+    for (const c of INDEX) {
+      if (c.name.indexOf(q) >= 0 || (c.jp && c.jp.indexOf(q) >= 0) || (c.en && c.en.toLowerCase().indexOf(q.toLowerCase()) >= 0)) {
+        nameHits.push(c);
+      } else if ((c.desc && c.desc.indexOf(q) >= 0) || (c.pdesc && c.pdesc.indexOf(q) >= 0)) {
+        textHits.push(c);
+      }
+    }
+    return { cards: nameHits.concat(textHits), nameCount: nameHits.length };
+  }
+
   // 多關鍵字合併查系列（去重）
   // ygocdb 對系列關鍵字會回傳整個系列（含名字不含該詞的成員，如查「百夫长」也回「重骑士 普莉梅拉」）。
   // 因此預設信任 API 結果；只有當單一關鍵字回傳過多（>40，疑似模糊文字汙染）時，才退回名稱過濾。
@@ -117,5 +179,5 @@ const YGO = (function () {
     return merged;
   }
 
-  return { imgUrl, search, getById, getMany, searchSeries, classify, _cache: mem };
+  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, _cache: mem };
 })();
