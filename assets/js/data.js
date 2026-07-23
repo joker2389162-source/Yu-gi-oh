@@ -28,8 +28,19 @@ const HANDTRAPS = [
 // 破壞／拆場（泛用魔陷）
 const BREAKERS = [
   { id: 25311006, n: "三战之才",           tier: "A", budget: "high", desc: "後手抽卡／奪控／無效，環境萬用單卡" },
+  { id: 24299458, n: "禁忌的一滴",         tier: "A", budget: "mid",  desc: "無效對方怪獸並降攻，突破封鎖／成形盤" },
+  { id: 14532163, n: "闪电风暴",           tier: "B", budget: "low",  desc: "後手清光對方攻表怪或魔陷，破場地" },
   { id: 15693423, n: "颉颃胜负",           tier: "B", budget: "mid",  desc: "後手僅留 1 隻，強力清場陷阱" },
+  { id: 12580477, n: "雷击",               tier: "B", budget: "low",  desc: "破壞對方全部怪獸，經典清場" },
   { id: 18144506, n: "鹰身女妖的羽毛扫",   tier: "B", budget: "low",  desc: "破壞對方全部魔陷，剋擺場陷阱" },
+];
+
+// 順牌／穩定性泛用魔法（減少卡手，供引擎不足時填充，不佔手坑額度）
+const GENERIC_SPELLS = [
+  { id: 84211599, n: "金满而谦虚之壶",     tier: "A", budget: "mid",  desc: "除外額外6張後看6抽1，強力穩定抽卡" },
+  { id: 49238328, n: "强欲而金满之壶",     tier: "A", budget: "mid",  desc: "除外額外卡抽2，補牌穩定" },
+  { id: 98645731, n: "强欲而谦虚之壶",     tier: "B", budget: "low",  desc: "看3抽1（該回合不特召），純抽卡向可用" },
+  { id: 70368879, n: "成金哥布林",         tier: "C", budget: "low",  desc: "抽1（對方回5000），壓縮卡組穩定度" },
 ];
 
 // 泛用強力陷阱（供控制／陷阱風格卡組填充）。copies 為建議張數。

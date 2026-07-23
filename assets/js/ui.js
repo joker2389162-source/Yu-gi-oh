@@ -294,6 +294,7 @@ const UI = (function () {
       box.appendChild(grp);
     });
     bindRange("#b-size", "#b-size-out");
+    bindRange("#b-extra", "#b-extra-out");
     $("#b-generate").onclick = generate;
     $("#b-keyword").addEventListener("keydown", function (e) { if (e.key === "Enter") generate(); });
   }
@@ -353,6 +354,7 @@ const UI = (function () {
       style: intent.style,
       budget: intent.budget,
       size: intent.size || Number($("#b-size").value),
+      extraMax: Number($("#b-extra").value),
       handtraps: intent.handtraps,
       breakers: intent.breakers,
     };
@@ -379,15 +381,17 @@ const UI = (function () {
       box.innerHTML =
         "<div class='wr-big'>估計勝率 <b>" + wr + "%</b> " + (pass ? "✅ 達標" : "⚠️ 未達標") + "</div>" +
         "<div class='wr-sub'>對手：主流卡組基準（" + esc(S2T.disp(ev.opponent || "meta")) + "） · 模擬 " + ev.games + " 局 · 嘗試 " + result.attempts + " 版取最佳</div>" +
-        "<div class='wr-metrics'>可展開起手率 " + Math.round(ev.openRate) + "% · 卡手率 " + Math.round(ev.brickRate) + "% · 平均手坑妨害 " + ev.avgHandtraps.toFixed(1) + " · 引擎分 " + ev.engineScore + "</div>";
+        "<div class='wr-metrics'>先手可展開 " + Math.round(ev.openFirstRate != null ? ev.openFirstRate : ev.openRate) + "% · 後手可行動 " + Math.round(ev.openSecondRate != null ? ev.openSecondRate : ev.openRate) + "%" +
+        " · 後手破場率 " + Math.round(ev.breakRate || 0) + "% · 卡手率 " + Math.round(ev.brickRate) + "%</div>" +
+        "<div class='wr-metrics'>引擎怪 " + (ev.engineMons != null ? ev.engineMons : "-") + " 張 · 手坑 " + (ev.handtrapsN != null ? ev.handtrapsN : "-") + " · 破場卡 " + (ev.breakersN != null ? ev.breakersN : "-") + " · 引擎分 " + ev.engineScore + "</div>";
       panel.appendChild(box);
       panel.appendChild(elem("p", "note-line",
-        "＊此為基於「起手牌蒙地卡羅模擬＋妨害／引擎評分」的估計勝率，非逐卡結算的完整對局模擬；用於相對比較卡組強度。"));
+        "＊估計勝率＝起手牌蒙地卡羅模擬（先手5/後手6各半）＋能否鋪場·展開·破場·不卡手的評分，非逐卡完整對局；用於相對比較。"));
     }
 
     const t = deck.themed || {};
     panel.appendChild(elem("p", "status",
-      "主卡組 " + mCount + " · 額外 " + eCount + " · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
+      "主卡組 " + mCount + " · 額外 " + eCount +
       " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget]) +
       (deck.domAttr ? " · 主屬性 " + esc(S2T.disp(deck.domAttr)) : "")));
     const styleLabel = { combo: "連招", control: "控制", aggro: "快攻", midrange: "中速" }[deck.effStyle] || deck.effStyle;

@@ -181,117 +181,161 @@ const Builder = (function () {
     mons.forEach(function (c) { if (c.attrCN) attrCount[c.attrCN] = (attrCount[c.attrCN] || 0) + 1; });
     const domAttr = Object.keys(attrCount).sort(function (a, b) { return attrCount[b] - attrCount[a]; })[0] || null;
 
-    // 依等級決定張數（含少量隨機變化，讓每次生成不同、更靈活）
-    function monCopies(c) {
+    // ---- 效果文本分析：判斷功能角色（搜尋/展開/破場），引擎優先 ----
+    function eff(c) { return (c.desc || "") + " " + (c.pdesc || ""); }
+    function analyze(c) {
+      const d = eff(c);
+      return {
+        searcher: /加入手[卡札]|檢索|检索/.test(d),
+        ssDeck: /从卡组[^。；\n]{0,16}特殊召唤|從卡組[^。；\n]{0,16}特殊召喚/.test(d),
+        ssSelf: /这张卡[^。；\n]{0,14}特殊召唤|這張卡[^。；\n]{0,14}特殊召喚/.test(d),
+        breaker: /破坏对方|破壞對方|送去墓地|除外对方|返回卡组|回到持有者手[卡札]|的效果无效|無效並破壞/.test(d),
+      };
+    }
+    const roleMap = {};
+    function monRole(c) {
+      if (supRole[c.id]) return supRole[c.id];
+      const a = analyze(c), lv = Number(c.level) || 0;
+      if (a.searcher || a.ssDeck) return "starter";
+      if (a.ssSelf) return "extender";
+      if (lv <= 4) return "starter";
+      if (lv <= 6) return "mid";
+      return "payoff";
+    }
+    function spRole(c) {
+      if (supRole[c.id]) return supRole[c.id];
+      const a = analyze(c);
+      if (a.searcher || a.ssDeck) return "starter";
+      if (a.breaker) return "breaker";
+      return "spell";
+    }
+    function copiesFor(c, role) {
       if (c.supQ != null) return c.supQ;
       const lv = Number(c.level) || 0;
-      let base = lv <= 4 ? 3 : lv <= 6 ? 2 : 1;
-      if (base === 3 && rng() < 0.25) base = 2;
-      else if (base === 2 && rng() < 0.25) base = (lv <= 4 ? 3 : 1);
-      return base;
+      if (role === "starter") return 3;
+      if (role === "extender") return lv <= 4 ? 3 : 2;
+      if (role === "mid") return 2;
+      if (role === "payoff") return 1;
+      if (/场地|場地/.test(c.typeLine || "")) return 1;   // 場地魔法
+      return 2;                                            // 一般魔法
     }
-    function spCopies(c) { if (c.supQ != null) return c.supQ; return /场地|場地/.test(c.typeLine || "") ? 1 : (rng() < 0.3 ? 3 : 2); }
-    // 依等級排序，同級之間隨機打散（增加變化）
-    mons.sort(function (a, b) { const d = (Number(a.level) || 0) - (Number(b.level) || 0); return d !== 0 ? d : (rng() - 0.5); });
+    const RANK = { starter: 0, extender: 1, mid: 2, breaker: 2, spell: 3, payoff: 4 };
+    const monInfo = mons.map(function (c) { return { c: c, role: monRole(c) }; });
+    monInfo.sort(function (a, b) { return (RANK[a.role] - RANK[b.role]) || (rng() - 0.5); });
+    const spInfo = spells.map(function (c) { return { c: c, role: spRole(c) }; });
+    spInfo.sort(function (a, b) { return (RANK[a.role] - RANK[b.role]) || (rng() - 0.5); });
 
-    // 依卡組性質自動判定風格（auto）：陷阱多→控制、低星怪多→連招、其餘→中速
+    // ---- 風格判定：依可展開牌數與陷阱比例 ----
     const themedN = mons.length + spells.length + traps.length;
     const trapRatio = themedN ? traps.length / themedN : 0;
-    const avgLevel = mons.length ? mons.reduce(function (a, c) { return a + (Number(c.level) || 0); }, 0) / mons.length : 0;
+    const starterN = monInfo.filter(function (m) { return m.role === "starter" || m.role === "extender"; }).length +
+                     spInfo.filter(function (s) { return s.role === "starter"; }).length;
     let effStyle = opts.style === "auto" ? null : opts.style;
     if (!effStyle) {
       if (trapRatio >= 0.22 && traps.length >= 2) effStyle = "control";
-      else if (mons.length >= 8 && avgLevel <= 4.2) effStyle = "combo";
+      else if (starterN >= 6) effStyle = "combo";
       else effStyle = "midrange";
     }
-    // 風格決定主題陷阱要放多少（受限於實際可用的主題陷阱）
-    const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 3 : 6;
 
-    const ht = opts.handtraps, bk = opts.breakers;
-    const engineTarget = Math.max(12, opts.size - (ht + bk));
+    // ---- 配比：引擎優先，手坑只補剩餘，並保留後手破場卡 ----
+    const size = opts.size;
+    let htTarget = effStyle === "combo" ? 10 : effStyle === "control" ? 6 : 9;   // 比舊版低
+    if (opts.handtraps != null && opts.style !== "auto") htTarget = opts.handtraps;
+    else if (opts.handtraps != null) htTarget = Math.min(opts.handtraps, htTarget + 2);
+    let bkTarget = Math.max(2, (opts.breakers != null) ? opts.breakers : (effStyle === "aggro" ? 5 : 3));
+    // 引擎上限＝總張數 − 破場卡 − 目標手坑：確保手坑約 htTarget、引擎聚焦不臃腫
+    const engineCap = Math.max(10, size - bkTarget - htTarget);
+    const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 2 : 5;
 
     const main = [];
-    function push(card, q) {
+    function push(card, q, role) {
       if (q <= 0) return;
       const e = main.find(function (x) { return x.id === card.id; });
       const cur = e ? e.q : 0;
       const add = Math.min(3 - cur, q);
       if (add <= 0) return;
       if (e) e.q += add; else main.push({ id: card.id, n: card.name || card.n, q: add });
+      if (role && !roleMap[card.id]) roleMap[card.id] = role;
     }
     function count() { return main.reduce(function (a, x) { return a + x.q; }, 0); }
     function st(o) { return { id: o.id, name: o.n }; }
 
-    // 引擎填充（依風格決定順序：控制先塞陷阱、其餘先塞怪獸）
+    // 1) 主題怪：starter→extender→mid→payoff（payoff 設上限，避免大怪太多卡手）
     let trapsAdded = 0;
-    function addMonsters() { for (const c of mons) { if (count() >= engineTarget) break; push(c, monCopies(c)); } }
-    function addSpells() { for (const c of spells) { if (count() >= engineTarget) break; push(c, spCopies(c)); } }
-    function addThemedTraps() { for (const c of traps) { if (count() >= engineTarget || trapsAdded >= wantTraps) break; push(c, 2); trapsAdded += 2; } }
-    function addGenericTraps() {
-      if (effStyle !== "control") return;
-      const gtPool = GENERIC_TRAPS.filter(function (t) { return budgetOk(t, opts.budget); });
-      for (const gt of gtPool) {
-        if (count() >= engineTarget || trapsAdded >= wantTraps) break;
-        const c = Math.min(gt.copies, wantTraps - trapsAdded);
-        push(st(gt), c); trapsAdded += c;
+    let payoffN = 0; const PAYOFF_CAP = Math.max(3, Math.round(engineCap * 0.18));
+    for (const it of monInfo) {
+      if (count() >= engineCap) break;
+      let q = copiesFor(it.c, it.role);
+      if (it.role === "payoff") { q = Math.min(q, Math.max(0, PAYOFF_CAP - payoffN)); if (q <= 0) continue; payoffN += q; }
+      push(it.c, q, it.role);
+    }
+    // 2) 主題魔法：searcher→breaker→其他
+    for (const it of spInfo) { if (count() >= engineCap) break; push(it.c, copiesFor(it.c, it.role), it.role); }
+    // 3) 主題陷阱（控制風格較多）＋控制風格補泛用陷阱
+    for (const c of traps) { if (count() >= engineCap || trapsAdded >= wantTraps) break; push(c, 2, "interrupt"); trapsAdded += 2; }
+    if (effStyle === "control") {
+      for (const gt of GENERIC_TRAPS.filter(function (t) { return budgetOk(t, opts.budget); })) {
+        if (count() >= engineCap || trapsAdded >= wantTraps) break;
+        const c = Math.min(gt.copies, wantTraps - trapsAdded); push(st(gt), c, "interrupt"); trapsAdded += c;
       }
     }
-    if (effStyle === "control") { addThemedTraps(); addGenericTraps(); addMonsters(); addSpells(); }
-    else { addMonsters(); addSpells(); addThemedTraps(); }
 
-    if (mons.length === 0)
-      notes.push("此關鍵字沒有主卡組怪獸（可能全為額外卡組或魔陷），已以主題魔陷＋泛用卡填充，建議再搭配其他主怪。");
+    const engineCount = count();
+    if (starterN === 0 && mons.length === 0)
+      notes.push("此關鍵字沒有主卡組怪獸（可能全為額外卡組或魔陷），已以魔陷＋泛用卡填充，建議再搭配其他主怪。");
     if (mode === "loose")
       notes.push("「" + keyword + "」未對應到明確系列，已改用相關卡片＋泛用卡組成 Goodstuff 骨架；換用更精確的主題名可得到更聚焦的卡組。");
 
-    // 4) 手坑 5) 破壞卡（打散順序，讓每次選到的組合不同）
-    const htPool = shuffle(HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget); }), rng);
-    let htLeft = ht;
-    for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c); htLeft -= c; }
+    // 4) 後手破封鎖：破場卡（禁忌的一滴／閃電風暴／雷擊等）
     const bkPool = shuffle(BREAKERS.filter(function (b) { return budgetOk(b, opts.budget); }), rng);
-    let bkLeft = bk;
-    for (const b of bkPool) { if (bkLeft <= 0) break; const c = Math.min(3, bkLeft); push(st(b), c); bkLeft -= c; }
+    let bkLeft = bkTarget;
+    for (const b of bkPool) { if (bkLeft <= 0 || count() >= size) break; const c = Math.min(2, bkLeft, size - count()); push(st(b), c, "breaker"); bkLeft -= c; }
 
-    // 6) 補足到目標張數
-    let deficit = opts.size - count();
+    // 5) 手坑：填到 htTarget 或剩餘空間（引擎已優先，手坑只補位）
+    const htPool = shuffle(HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget); }), rng);
+    let htLeft = Math.min(htTarget, size - count());
+    for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c, "handtrap"); htLeft -= c; }
+
+    // 6) 補足剩餘：順牌泛用魔法（減卡手）→ 更多主題卡 → 最後才補手坑
+    let deficit = size - count();
     if (deficit > 0) {
-      const fillers = mons.concat(spells);
-      for (const c of fillers) {
-        if (deficit <= 0) break;
-        const e = main.find(function (x) { return x.id === c.id; });
-        const room = 3 - (e ? e.q : 0);
-        if (room <= 0) continue;
-        const add = Math.min(room, deficit); push(c, add); deficit -= add;
+      for (const g of GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget); })) {
+        if (deficit <= 0) break; const e = main.find(function (x) { return x.id === g.id; }); const room = 2 - (e ? e.q : 0); if (room <= 0) continue;
+        const add = Math.min(room, deficit); push(st(g), add, "spell"); deficit -= add;
       }
     }
-    deficit = opts.size - count();
+    deficit = size - count();
     if (deficit > 0) {
-      for (const h of htPool) {
-        if (deficit <= 0) break;
-        const e = main.find(function (x) { return x.id === h.id; });
-        const room = 3 - (e ? e.q : 0);
-        if (room <= 0) continue;
-        const add = Math.min(room, deficit); push(st(h), add); deficit -= add;
-      }
+      const more = monInfo.map(function (x) { return x.c; }).concat(spInfo.map(function (x) { return x.c; }));
+      for (const c of more) { if (deficit <= 0) break; const e = main.find(function (x) { return x.id === c.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue; const add = Math.min(room, deficit); push(c, add); deficit -= add; }
     }
-    deficit = opts.size - count();
-    if (deficit > 0) notes.push("主卡組僅 " + count() + " 張（此主題可用卡＋預算限制），可再手動補入更多主題卡至 " + opts.size + " 張。");
+    deficit = size - count();
+    if (deficit > 0) {
+      for (const h of htPool) { if (deficit <= 0) break; const e = main.find(function (x) { return x.id === h.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue; const add = Math.min(room, deficit); push(st(h), add, "handtrap"); deficit -= add; }
+    }
+    deficit = size - count();
+    if (deficit > 0) notes.push("主卡組僅 " + count() + " 張（此主題可用卡＋預算限制），可再手動補入更多主題卡至 " + size + " 張。");
     else if (deficit < 0) {
       let over = -deficit;
+      // 先修剪手坑／順牌魔法，保留引擎與破場卡
       for (let i = main.length - 1; i >= 0 && over > 0; i--) {
-        const take = Math.min(main[i].q, over); main[i].q -= take; over -= take;
-        if (main[i].q <= 0) main.splice(i, 1);
+        const r = roleMap[main[i].id]; if (r !== "handtrap" && r !== "spell") continue;
+        const take = Math.min(main[i].q, over); main[i].q -= take; over -= take; if (main[i].q <= 0) main.splice(i, 1);
+      }
+      for (let i = main.length - 1; i >= 0 && over > 0; i--) {
+        const take = Math.min(main[i].q, over); main[i].q -= take; over -= take; if (main[i].q <= 0) main.splice(i, 1);
       }
     }
 
-    // 額外卡組：主題額外怪 → 主屬性配對額外（靈使）→ 泛用額外，補到 15
+    // 額外卡組：主題額外怪 → 主屬性配對額外（靈使）→ 泛用額外，補到指定張數
+    const extraMax = (opts.extraMax != null) ? Math.max(0, Math.min(15, opts.extraMax)) : 15;
     const extra = [];
     function esum() { return extra.reduce(function (a, x) { return a + x.q; }, 0); }
-    function addExtra(o) { if (esum() >= 15) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
+    function addExtra(o) { if (esum() >= extraMax) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
     extras.forEach(addExtra);
     const attrEx = (domAttr && ATTR_EXTRA[domAttr]) ? ATTR_EXTRA[domAttr] : [];
     attrEx.forEach(addExtra);
-    for (const g of GENERIC_EXTRA) { if (esum() >= 15) break; addExtra(g); }
+    for (const g of GENERIC_EXTRA) { if (esum() >= extraMax) break; addExtra(g); }
 
     // 副卡組：泛用破壞卡示意
     const side = [];
@@ -301,27 +345,17 @@ const Builder = (function () {
       if (used < 3 && side.reduce(function (a, x) { return a + x.q; }, 0) < 15) side.push({ id: b.id, n: b.n, q: 3 - used });
     });
 
-    // 角色標記（供對戰模擬用）：starter 展開/搜尋、mid 中階、payoff 大怪、handtrap 手坑、
-    // breaker 破壞/妨害陷阱、interrupt 主題陷阱、brick 無效果通常怪
+    // 角色標記（供對戰模擬用）：組牌過程已記錄於 roleMap，其餘用備援判定
     const htIds = {}; HANDTRAPS.forEach(function (h) { htIds[h.id] = 1; });
-    const bkIds = {}; BREAKERS.forEach(function (b) { bkIds[b.id] = 1; }); GENERIC_TRAPS.forEach(function (t) { bkIds[t.id] = 1; });
-    const monLv = {}; mons.forEach(function (c) { monLv[c.id] = Number(c.level) || 0; });
-    const spellIds = {}; spells.forEach(function (c) { spellIds[c.id] = 1; });
-    const trapIds = {}; traps.forEach(function (c) { trapIds[c.id] = 1; });
+    const bkIds2 = {}; BREAKERS.forEach(function (b) { bkIds2[b.id] = 1; }); GENERIC_TRAPS.forEach(function (t) { bkIds2[t.id] = 1; });
     const normalIds = {}; normals.forEach(function (c) { normalIds[c.id] = 1; });
     const roles = {};
     main.forEach(function (x) {
-      if (htIds[x.id]) roles[x.id] = "handtrap";
-      else if (bkIds[x.id]) roles[x.id] = "breaker";
-      else if (supRole[x.id]) roles[x.id] = supRole[x.id];       // 引擎補全卡的既定角色
+      if (roleMap[x.id]) roles[x.id] = roleMap[x.id];
+      else if (htIds[x.id]) roles[x.id] = "handtrap";
+      else if (bkIds2[x.id]) roles[x.id] = "breaker";
+      else if (supRole[x.id]) roles[x.id] = supRole[x.id];
       else if (normalIds[x.id]) roles[x.id] = "brick";
-      else if (monLv[x.id] !== undefined) {
-        if (monLv[x.id] <= 4) roles[x.id] = "starter";
-        else if (ssIds[x.id]) roles[x.id] = "mid";               // 特殊召喚大怪＝半個展開牌
-        else roles[x.id] = monLv[x.id] <= 6 ? "mid" : "payoff";
-      }
-      else if (spellIds[x.id]) roles[x.id] = "starter";
-      else if (trapIds[x.id]) roles[x.id] = "interrupt";
       else roles[x.id] = "neutral";
     });
 
@@ -356,45 +390,53 @@ const Builder = (function () {
     const roles = deck.roles || {};
     const bag = [];
     deck.main.forEach(function (x) { for (let i = 0; i < x.q; i++) bag.push(roles[x.id] || "neutral"); });
-    const N = bag.length || 1;
-    const starters = bag.filter(function (r) { return r === "starter"; }).length;
+    const starters = bag.filter(function (r) { return r === "starter" || r === "extender"; }).length;
     const mids = bag.filter(function (r) { return r === "mid"; }).length;
     const handtrapsN = bag.filter(function (r) { return r === "handtrap"; }).length;
-    const breakersN = bag.filter(function (r) { return r === "breaker" || r === "interrupt"; }).length;
+    const breakersN = bag.filter(function (r) { return r === "breaker"; }).length;
+    const engineMons = starters + mids;   // 能運轉的引擎怪張數
 
-    const GAMES = 2000;
-    let openable = 0, brick = 0, htSum = 0;
+    const GAMES = 2000, HALF = GAMES / 2;
+    let openFirst = 0, openSecond = 0, brick = 0, htSum = 0, breakHand = 0;
     for (let g = 0; g < GAMES; g++) {
-      const handSize = (g % 2 === 0) ? 5 : 6;   // 先手 5 / 後手 6 各半
-      const hand = sampleHand(bag, handSize);
-      let s = 0, m = 0, h = 0, iv = 0;
+      const going2 = g % 2 === 1;
+      const hand = sampleHand(bag, going2 ? 6 : 5);
+      let s = 0, m = 0, h = 0, iv = 0, bk = 0;
       for (const r of hand) {
-        if (r === "starter") s++; else if (r === "mid") m++; else if (r === "handtrap") h++;
-        else if (r === "interrupt" || r === "breaker") iv++;
+        if (r === "starter" || r === "extender") s++; else if (r === "mid") m++;
+        else if (r === "handtrap") h++; else if (r === "breaker") bk++; else if (r === "interrupt") iv++;
       }
-      // 可用起手：有展開牌／2 張中階／2 張妨害（控制·封鎖·擾亂流亦算成形）
-      const openOK = s >= 1 || m >= 2 || (h + iv) >= 2;
-      if (openOK) openable++;
-      if (!openOK && h === 0 && iv === 0) brick++;   // 既不能展開又無妨害 = 卡手
+      const canDevelop = s >= 1 || m >= 2;             // 能鋪場/展開
+      const canAct = canDevelop || (h + iv + bk) >= 2; // 或有妨害/破場可行動
+      if (going2) { if (canAct) openSecond++; if (bk >= 1 || s >= 1) breakHand++; }
+      else { if (canAct) openFirst++; }
+      if (!canAct && h === 0 && iv === 0 && bk === 0) brick++;
       htSum += h;
     }
-    const openRate = 100 * openable / GAMES;
+    const openRate = 100 * (openFirst + openSecond) / GAMES;
+    const openFirstRate = 100 * openFirst / HALF;
+    const openSecondRate = 100 * openSecond / HALF;
     const brickRate = 100 * brick / GAMES;
+    const breakRate = 100 * breakHand / HALF;    // 後手可破場/展開率（突破封鎖）
     const avgHandtraps = htSum / GAMES;
     const engineScore = Math.round(Math.min(30,
-      starters * 1.6 + mids * 0.8 + Math.min(deck.extra.length, 15) * 0.4 + handtrapsN * 0.4 + breakersN * 0.3));
+      starters * 1.6 + mids * 0.8 + Math.min(deck.extra.length, 15) * 0.4 + handtrapsN * 0.3 + breakersN * 0.3));
 
     // 勝率模型（相對 meta 基準，clamp 5–95）
     let wr = 50;
-    wr += (openRate - META_BASELINE.openRate) * 0.55;
-    wr += (avgHandtraps - META_BASELINE.expHandtraps) * 5.0;
+    wr += (openRate - META_BASELINE.openRate) * 0.5;
+    wr += (avgHandtraps - META_BASELINE.expHandtraps) * 4.0;
     wr -= (brickRate - META_BASELINE.brickRate) * 0.6;
     wr += (engineScore - 18) * 0.7;
+    wr += (breakRate - 55) * 0.12;                 // 後手破場能力
+    if (engineMons < 10) wr -= (10 - engineMons) * 1.2;   // 引擎怪太少＝運轉不起來
     wr = Math.max(5, Math.min(95, wr));
 
     return {
-      winRate: wr, openRate: openRate, brickRate: brickRate, avgHandtraps: avgHandtraps,
-      engineScore: engineScore, games: GAMES, opponent: META_BASELINE.name,
+      winRate: wr, openRate: openRate, openFirstRate: openFirstRate, openSecondRate: openSecondRate,
+      brickRate: brickRate, breakRate: breakRate, avgHandtraps: avgHandtraps,
+      engineScore: engineScore, engineMons: engineMons, handtrapsN: handtrapsN, breakersN: breakersN,
+      games: GAMES, opponent: META_BASELINE.name,
     };
   }
 
