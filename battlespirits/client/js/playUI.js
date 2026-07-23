@@ -298,7 +298,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
       onConfirmUltimate: () => {
         if (!selectionMode || selectionMode.type !== 'ultimate') return;
         try {
-          g.specialSummonUltimate(viewer, selectionMode.handIndex, selectionMode.chosen);
+          g.playCard(viewer, selectionMode.handIndex, { sacrificeUids: selectionMode.chosen });
         } catch (e) {
           return alert(e.message);
         }
@@ -329,6 +329,9 @@ export function initPlayTab({ db, deckStore, startersData }) {
         } catch (e) {
           return alert(e.message);
         }
+        // 人類剛剛回應完AI的攻擊，如果還是AI的回合（AI可能還有下一隻攻擊者、或該推進步驟），
+        // 要繼續讓AI跑下去，不然遊戲會卡住不動。
+        if (lm.mode === 'pve' && g.activePlayerIndex === lm.aiIndex) runAiUntilBlocked();
         renderBoard();
       },
       onActivateBurst: (uid) => {
@@ -404,7 +407,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
       },
       onConfirmUltimate: () => {
         if (!selectionMode || selectionMode.type !== 'ultimate') return;
-        net.action('special-summon-ultimate', { handIndex: selectionMode.handIndex, sacrificeUids: selectionMode.chosen });
+        net.action('play', { handIndex: selectionMode.handIndex, sacrificeUids: selectionMode.chosen });
         selectionMode = null;
         renderBoard();
       },
@@ -518,6 +521,15 @@ export function initPlayTab({ db, deckStore, startersData }) {
           </div>
         ` : ''}
 
+        ${state.pendingUTriggerResult ? `
+          <div class="utrigger-box">
+            🎯 U觸發：把${state.pendingUTriggerResult.defenderIdx === ctx.viewer ? '自己' : '對手'}牌庫最上面的
+            「${db.getCard(state.pendingUTriggerResult.milledCardId).name}」（費${state.pendingUTriggerResult.milledCost}）送進棄卻區，
+            比較究極卡費用（${state.pendingUTriggerResult.attackerCost}）——
+            ${state.pendingUTriggerResult.hit ? '<strong>命中！</strong>發動效果（抽1張牌）' : '未命中（費用沒有比較低）'}
+          </div>
+        ` : ''}
+
         <div class="my-area">
           <div class="field">${renderField(me, 'me')}</div>
           <div class="player-stats">你 ・ 生命核心 ${me.life} ・ 儲備 ${me.reserve} ・ 棄核 ${me.coreTrash} ・ 牌庫 ${me.deckCount} 張 ・ 爆發區 ${me.burstZoneCount} 張</div>
@@ -527,8 +539,8 @@ export function initPlayTab({ db, deckStore, startersData }) {
           ${sel ? `
             <div class="selection-box">
               ${sel.type === 'kourin' ? `煌臨：請點選自己場上要疊放的目標卡片（${db.getCard(me.hand[sel.handIndex]).kourin.targetFamily?.length ? '限 ' + db.getCard(me.hand[sel.handIndex]).kourin.targetFamily.join('/') + ' 系' : '不限系統'}）` : ''}
-              ${sel.type === 'ultimate' ? `究極特殊召喚：請點選 ${db.getCard(me.hand[sel.handIndex]).ultimateSummon.sacrificeCount} 張自己場上的卡片作為犧牲（已選 ${sel.chosen.length} 張）` : ''}
-              ${sel.type === 'ultimate' ? `<button id="confirm-ultimate-btn" ${sel.chosen.length >= db.getCard(me.hand[sel.handIndex]).ultimateSummon.sacrificeCount ? '' : 'disabled'}>確認特殊召喚</button>` : ''}
+              ${sel.type === 'ultimate' ? `究極召喚條件：請點選 ${db.getCard(me.hand[sel.handIndex]).summonCondition.value} 張自己場上的卡片作為犧牲（已選 ${sel.chosen.length} 張）` : ''}
+              ${sel.type === 'ultimate' ? `<button id="confirm-ultimate-btn" ${sel.chosen.length >= db.getCard(me.hand[sel.handIndex]).summonCondition.value ? '' : 'disabled'}>確認召喚</button>` : ''}
               <button id="cancel-selection-btn">取消</button>
             </div>
           ` : ''}
@@ -540,16 +552,17 @@ export function initPlayTab({ db, deckStore, startersData }) {
                 if (cardId === null) return `<div class="hand-card hand-card--back">🂠</div>`;
                 const card = db.getCard(cardId);
                 const affordable = card.cost <= me.reserve;
+                const needsSacrificeUI = card.type === 'ultimate' && card.summonCondition?.type === 'sacrifice';
                 return `<div class="hand-card${affordable ? '' : ' hand-card--unaffordable'}" data-idx="${i}">
                   ${cardArtHtml(card, { small: true })}
                   <div class="hc-name">${card.name}${card.contractCard ? ' <span class="tag tag--contract">契約</span>' : ''}</div>
                   <div class="hc-meta">費${card.cost}${card.bp != null ? ` BP${card.bp}` : ''}</div>
                   <div class="hc-text">${card.text}</div>
                   <div class="hc-actions">
-                    ${ctx.isMyTurnMain && card.type !== 'ultimate' ? `<button class="play-btn" data-idx="${i}" ${affordable ? '' : 'disabled'}>打出</button>` : ''}
+                    ${ctx.isMyTurnMain && !needsSacrificeUI ? `<button class="play-btn" data-idx="${i}" ${affordable ? '' : 'disabled'}>打出</button>` : ''}
                     ${ctx.isMyTurnMain && card.burst ? `<button class="setburst-btn" data-idx="${i}">設置爆發</button>` : ''}
                     ${ctx.isMyTurnMain && card.kourin ? `<button class="kourin-btn" data-idx="${i}">煌臨</button>` : ''}
-                    ${ctx.isMyTurnMain && card.type === 'ultimate' ? `<button class="ultimate-btn" data-idx="${i}">特殊召喚（究極）</button>` : ''}
+                    ${ctx.isMyTurnMain && needsSacrificeUI ? `<button class="ultimate-btn" data-idx="${i}">召喚（需犧牲卡片）</button>` : ''}
                   </div>
                 </div>`;
               }).join('') || '<p class="hint-small">（沒有手牌）</p>'}

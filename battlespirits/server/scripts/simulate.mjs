@@ -136,24 +136,78 @@ console.log('\n== 手動測試：煌臨（Kourin）====');
   if (after.cardId !== 'DEMO-037') { console.error('煌臨後 cardId 應變成 DEMO-037！'); process.exitCode = 1; }
 }
 
-console.log('\n== 手動測試：究極（Ultimate）特殊召喚 ====');
+console.log('\n== 手動測試：究極（Ultimate）召喚（跟精靈一樣走一般召喚程序）====');
 {
   const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
   const g4 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
   g4.start();
   const p = g4._p(0);
-  p.field.push({ uid: 'sac1', cardId: 'DEMO-001', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-001'] });
-  p.field.push({ uid: 'sac2', cardId: 'DEMO-006', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-006'] });
+  p.reserve = 10;
+
+  // 1. 召喚條件是「犧牲2張」的 DEMO-038：條件不足時應該噴錯誤
   p.hand.unshift('DEMO-038');
-  let threwOnNormalPlay = false;
+  let threwWithoutSacrifice = false;
   try {
     g4.playCard(0, 0);
   } catch (e) {
-    threwOnNormalPlay = true;
-    console.log('（預期行為）究極卡不能一般召喚：', e.message);
+    threwWithoutSacrifice = true;
+    console.log('（預期行為）沒有犧牲對象時召喚失敗：', e.message);
   }
-  if (!threwOnNormalPlay) { console.error('究極卡不應該能用 playCard 一般召喚！'); process.exitCode = 1; }
-  const inst = g4.specialSummonUltimate(0, 0, ['sac1', 'sac2']);
-  console.log('特殊召喚成功:', inst.cardId, 'BP=', g4.effectiveBp(inst), '場上剩餘卡片數=', p.field.length);
+  if (!threwWithoutSacrifice) { console.error('沒有犧牲對象應該要失敗！'); process.exitCode = 1; }
+
+  // 補2張場上卡片當犧牲對象，再試一次
+  p.field.push({ uid: 'sac1', cardId: 'DEMO-001', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-001'] });
+  p.field.push({ uid: 'sac2', cardId: 'DEMO-006', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-006'] });
+  const inst = g4.playCard(0, 0, { sacrificeUids: ['sac1', 'sac2'] });
+  console.log('召喚成功:', inst.cardId, 'BP=', g4.effectiveBp(inst), '場上剩餘卡片數=', p.field.length);
   if (p.field.length !== 1) { console.error('犧牲2張後場上應只剩究極卡本身！'); process.exitCode = 1; }
+
+  // 2. 召喚條件是「自己場上BP需達標」的 DEMO-040：場上沒有高BP卡時應該失敗
+  const g5 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g5.start();
+  const p5 = g5._p(0);
+  p5.reserve = 10;
+  p5.hand.unshift('DEMO-040');
+  let threwWithoutBp = false;
+  try {
+    g5.playCard(0, 0);
+  } catch (e) {
+    threwWithoutBp = true;
+    console.log('（預期行為）場上沒有BP3000+的卡片時召喚失敗：', e.message);
+  }
+  if (!threwWithoutBp) { console.error('場上沒有高BP卡片時應該要失敗！'); process.exitCode = 1; }
+  p5.field.push({ uid: 'big1', cardId: 'DEMO-009', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-009'] }); // BP6000
+  const inst5 = g5.playCard(0, 0, {});
+  console.log('條件滿足後召喚成功:', inst5.cardId, '場上卡片數=', p5.field.length);
+  if (p5.field.length !== 2) { console.error('這次不該犧牲任何卡片，場上應該有2張！'); process.exitCode = 1; }
+}
+
+console.log('\n== 手動測試：U觸發（攻擊時棄對手牌庫頂並比較費用）====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g6 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g6.start();
+  const p0 = g6._p(0);
+  const p1 = g6._p(1);
+  p0.field.push({ uid: 'ult1', cardId: 'DEMO-038', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-038'] }); // cost 6
+  p1.deck.unshift('DEMO-001'); // cost 1 < 6，應該命中
+  while (g6.activePlayerIndex !== 0 || g6.currentStep !== 'attack') g6.nextStep();
+  const handCountBefore = p0.hand.length; // 一定要在攻擊步驟才抓，避免把回合中的抽牌步驟也算進去
+  g6.declareAttack(0, 'ult1');
+  console.log('pendingUTriggerResult:', g6.pendingUTriggerResult);
+  if (!g6.pendingUTriggerResult || !g6.pendingUTriggerResult.hit) { console.error('這次應該要命中（對手牌庫頂費用比究極卡低）！'); process.exitCode = 1; }
+  if (p0.hand.length !== handCountBefore + 1) { console.error('命中後應該要抽1張牌！'); process.exitCode = 1; }
+  g6.declareBlock(1, null);
+
+  // 換一次不會命中的情境：對手牌庫頂放費用比較高的卡
+  const g7 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g7.start();
+  const q0 = g7._p(0);
+  const q1 = g7._p(1);
+  q0.field.push({ uid: 'ult2', cardId: 'DEMO-038', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-038'] });
+  q1.deck.unshift('DEMO-038'); // cost 6，跟攻擊方同費用，同費用不算命中
+  while (g7.activePlayerIndex !== 0 || g7.currentStep !== 'attack') g7.nextStep();
+  g7.declareAttack(0, 'ult2');
+  console.log('同費用情境 pendingUTriggerResult:', g7.pendingUTriggerResult);
+  if (g7.pendingUTriggerResult.hit) { console.error('同費用不應該算命中！'); process.exitCode = 1; }
 }

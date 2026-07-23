@@ -53,6 +53,20 @@ export function cardArtHtml(card, { small } = {}) {
   </div>`;
 }
 
+const SUMMON_CONDITION_LABELS = {
+  always: () => '',
+  sacrifice: (c) => `召喚條件：犧牲自己場上${c.value}張卡片`,
+  ownFieldBpAtLeast: (c) => `召喚條件：自己場上需有BP${c.value}以上的卡片`,
+  lifeAtMost: (c) => `召喚條件：生命核心需在${c.value}個以下`,
+};
+
+function summonConditionTag(card) {
+  if (!card.summonCondition || card.summonCondition.type === 'always') return '';
+  const fn = SUMMON_CONDITION_LABELS[card.summonCondition.type];
+  const label = fn ? fn(card.summonCondition) : `召喚條件：${card.summonCondition.type}`;
+  return ` ・ <span class="tag tag--ultimate">${label}</span>`;
+}
+
 export function cardTitleLine(card) {
   const colors = (card.colors || []).map((c) => COLOR_LABELS[c] || c).join('/') || '無色';
   const bp = card.bp != null ? ` BP${card.bp}` : '';
@@ -78,7 +92,8 @@ export function renderCardCard(card, { onAdd, showQty, onAddContract } = {}) {
       ${card.awakening ? ' ・ <span class="tag tag--awaken">轉醒</span>' : ''}
       ${card.awokenForm ? ' ・ <span class="tag tag--awaken">轉醒後（不可直接入卡組）</span>' : ''}
       ${card.kourin ? ` ・ <span class="tag tag--kourin">煌臨：核心${card.kourin.cost}${card.kourin.targetFamily?.length ? '／' + card.kourin.targetFamily.join('・') + '系' : ''}</span>` : ''}
-      ${card.ultimateSummon ? ` ・ <span class="tag tag--ultimate">究極：犧牲${card.ultimateSummon.sacrificeCount}張特殊召喚</span>` : ''}
+      ${summonConditionTag(card)}
+      ${card.uTrigger ? ' ・ <span class="tag tag--ultimate">U觸發</span>' : ''}
     </div>
     <div class="bs-card-keywords">${(card.keywords || []).map(keywordLabel).join(' ／ ')}</div>
     <div class="bs-card-text">${card.text || ''}</div>

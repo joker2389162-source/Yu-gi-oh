@@ -22,8 +22,14 @@ import { RULES, TURN_STEPS } from './rules.js';
 //     「對手精靈召喚」類爆發事件），簡化為固定核心費用（見 card.kourin = { cost, targetFamily }）。
 //     官方規則中煌臨元卡片的「煌臨中」效果會持續繼承，這裡簡化為只記錄疊放歷史
 //     （kourinStack），還沒有完整的條件式效果繼承系統。
-//   - 究極（Ultimate）：新卡片種類，透過犧牲自己場上卡片達成特殊召喚條件，不能
-//     像精靈一樣直接用 playCard 打出（見 specialSummonUltimate）。
+//   - 究極（Ultimate）：跟精靈一樣走一般召喚程序（付費即可），差別在於卡片可能寫有
+//     「召喚條件」（card.summonCondition），沒滿足條件就不能召喚。目前支援
+//     type:'always'（無條件）／'sacrifice'（需犧牲自己場上N張卡片）／
+//     'ownFieldBpAtLeast'（自己場上需有BP達標的卡片）／'lifeAtMost'（自己生命核心
+//     需在門檻以下）幾種條件類型，見 playCard 的 extra.sacrificeUids 參數。
+//     另外實作了【U觸發】（U-Trigger）：帶有 card.uTrigger 的究極卡攻擊時，會把
+//     對手牌庫最上面一張牌送去棄卻區，若那張牌的費用比自己低才算「命中」並發動效果
+//     （同費用不算命中，這裡的命中效果先用「抽1張牌」等示範效果呈現）。
 //   - 契約（Contract）：契約卡不算入主卡組張數，是卡組的獨立欄位，開局時直接進入
 //     手牌，不與主卡組同一疊抽取。
 // ============================================================================
@@ -52,6 +58,7 @@ export class Game {
     this.activePlayerIndex = 0;
     this.pendingAttack = null; // { attackerUid, blockerUid }
     this.pendingBurstHint = null; // { ownerIdx, uids } - 剛觸發、還沒被消化的爆發發動機會
+    this.pendingUTriggerResult = null; // 最近一次 U觸發 的結果，供 UI 顯示
     this.burstSetThisTurn = 0;
     this.blockUsedThisTurn = new Set(); // uid 集合：本回合已用掉攔截次數的卡
 
@@ -156,6 +163,7 @@ export class Game {
   nextStep() {
     if (this.winner !== null) return;
     this.pendingBurstHint = null;
+    this.pendingUTriggerResult = null;
     this.stepIndex++;
     if (this.stepIndex >= TURN_STEPS.length) {
       this.stepIndex = 0;
@@ -191,24 +199,63 @@ export class Game {
     return base + instance.cores.length * 1000;
   }
 
+  // ---- 召喚條件檢查（僅究極卡需要；一般精靈/據點沒有這道檢查） ----
+  // 回傳 { sacrificeUids }：條件類型是 'sacrifice' 時，實際要犧牲的卡片 uid 清單。
+  _checkSummonCondition(playerIdx, card, extra = {}) {
+    const cond = card.summonCondition;
+    if (!cond || cond.type === 'always') return { sacrificeUids: [] };
+    const p = this._p(playerIdx);
+
+    if (cond.type === 'sacrifice') {
+      const uids = extra.sacrificeUids || [];
+      if (uids.length < cond.value) {
+        throw new Error(`召喚條件不足：需犧牲自己場上 ${cond.value} 張卡片${cond.text ? '（' + cond.text + '）' : ''}`);
+      }
+      for (const uid of uids) {
+        if (!p.field.some((c) => c.uid === uid)) throw new Error('犧牲對象必須是自己場上的卡片');
+      }
+      return { sacrificeUids: uids.slice(0, cond.value) };
+    }
+    if (cond.type === 'ownFieldBpAtLeast') {
+      const ok = p.field.some((c) => this.effectiveBp(c) >= cond.value);
+      if (!ok) throw new Error(`召喚條件不足：自己場上需要有一張 BP ${cond.value} 以上的卡片${cond.text ? '（' + cond.text + '）' : ''}`);
+      return { sacrificeUids: [] };
+    }
+    if (cond.type === 'lifeAtMost') {
+      if (p.life > cond.value) throw new Error(`召喚條件不足：生命核心需在 ${cond.value} 個以下${cond.text ? '（' + cond.text + '）' : ''}`);
+      return { sacrificeUids: [] };
+    }
+    throw new Error(`未知的召喚條件類型: ${cond.type}`);
+  }
+
   // ---- 主要步驟：從手牌打出卡片 ----
-  playCard(playerIdx, handIndex) {
+  // extra.sacrificeUids：究極卡若召喚條件是「犧牲場上卡片」，在此傳入要犧牲的 uid 清單。
+  playCard(playerIdx, handIndex, extra = {}) {
     this.pendingBurstHint = null;
     const p = this._p(playerIdx);
     const cardId = p.hand[handIndex];
     if (!cardId) throw new Error('手牌索引無效');
     const card = this.db.getCard(cardId);
+
+    let sacrificeUids = [];
     if (card.type === 'ultimate') {
-      throw new Error('究極卡不能用一般召喚，請使用特殊召喚（specialSummonUltimate）並犧牲自己場上卡片');
+      ({ sacrificeUids } = this._checkSummonCondition(playerIdx, card, extra));
     }
 
     this._payCost(playerIdx, card.cost);
     p.hand.splice(handIndex, 1);
 
-    if (card.type === 'spirit' || card.type === 'nexus') {
+    if (card.type === 'spirit' || card.type === 'nexus' || card.type === 'ultimate') {
+      for (const uid of sacrificeUids) {
+        const idx = p.field.findIndex((c) => c.uid === uid);
+        if (idx === -1) continue;
+        const [inst] = p.field.splice(idx, 1);
+        p.cardTrash.push(inst.cardId);
+        this.log.push({ type: 'sacrifice', player: playerIdx, cardId: inst.cardId, uid });
+      }
       const instance = { uid: nextUid(), cardId, cores: [], summonedTurn: this.turnNumber, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: [cardId] };
       p.field.push(instance);
-      this.log.push({ type: 'play', player: playerIdx, cardId, uid: instance.uid });
+      this.log.push({ type: card.type === 'ultimate' ? 'play-ultimate' : 'play', player: playerIdx, cardId, uid: instance.uid });
       if (card.type === 'spirit') {
         const oppIdx = this.opponentIndex(playerIdx);
         const uids = this._fireBurstEvent(oppIdx, 'opponent-spirit-summoned').map((b) => b.uid);
@@ -250,34 +297,6 @@ export class Game {
     this.log.push({ type: 'kourin', player: playerIdx, cardId, targetUid, stack: target.kourinStack });
     // 煌臨不是召喚，因此不觸發「對手精靈召喚」類爆發／轉醒事件。
     return target;
-  }
-
-  // ---- 究極：特殊召喚，犧牲自己場上卡片達成條件（不能用一般 playCard 打出） ----
-  specialSummonUltimate(playerIdx, handIndex, sacrificeUids) {
-    this.pendingBurstHint = null;
-    const p = this._p(playerIdx);
-    const cardId = p.hand[handIndex];
-    if (!cardId) throw new Error('手牌索引無效');
-    const card = this.db.getCard(cardId);
-    if (card.type !== 'ultimate') throw new Error('這張卡不是究極卡');
-    const need = card.ultimateSummon?.sacrificeCount || 0;
-    const uids = sacrificeUids || [];
-    if (uids.length < need) throw new Error(`特殊召喚條件不足：需犧牲 ${need} 張自己場上的卡片`);
-    for (const uid of uids) {
-      if (!p.field.some((c) => c.uid === uid)) throw new Error('犧牲對象必須是自己場上的卡片');
-    }
-    this._payCost(playerIdx, card.cost || 0);
-    for (const uid of uids.slice(0, need)) {
-      const idx = p.field.findIndex((c) => c.uid === uid);
-      const [inst] = p.field.splice(idx, 1);
-      p.cardTrash.push(inst.cardId);
-      this.log.push({ type: 'sacrifice', player: playerIdx, cardId: inst.cardId, uid });
-    }
-    p.hand.splice(handIndex, 1);
-    const instance = { uid: nextUid(), cardId, cores: [], summonedTurn: this.turnNumber, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: [cardId] };
-    p.field.push(instance);
-    this.log.push({ type: 'special-summon-ultimate', player: playerIdx, cardId, uid: instance.uid });
-    return instance;
   }
 
   // ---- 主要步驟：覆蓋設置爆發卡（免費，每回合限1張） ----
@@ -324,9 +343,29 @@ export class Game {
     return this.triggerableBursts(playerIdx, eventName);
   }
 
+  // ---- U觸發：攻擊時把對手牌庫最上面一張送進棄卻區，費用比自己低才算命中 ----
+  _resolveUTrigger(attackerIdx, attackerCard) {
+    const defenderIdx = this.opponentIndex(attackerIdx);
+    const defP = this._p(defenderIdx);
+    if (defP.deck.length === 0) return null; // 牌庫已空，無牌可棄，視為不觸發
+    const milledId = defP.deck.shift();
+    defP.cardTrash.push(milledId);
+    const milledCard = this.db.getCard(milledId);
+    const hit = milledCard.cost < attackerCard.cost; // 同費用不算命中
+    const result = { attackerIdx, defenderIdx, milledCardId: milledId, milledCost: milledCard.cost, attackerCost: attackerCard.cost, hit };
+    this.log.push({ type: 'u-trigger', ...result });
+    if (hit) {
+      // 命中效果：卡片文字（uTrigger.effectText）僅供顯示，實際效果先用「抽1張牌」示範
+      this._drawCard(attackerIdx, 1);
+      this.log.push({ type: 'u-trigger-hit-effect', player: attackerIdx, effectText: attackerCard.uTrigger?.effectText || '抽1張牌（示範效果）' });
+    }
+    return result;
+  }
+
   // ---- 攻擊步驟 ----
   declareAttack(playerIdx, attackerUid) {
     this.pendingBurstHint = null;
+    this.pendingUTriggerResult = null;
     if (playerIdx !== this.activePlayerIndex) throw new Error('現在不是你的回合');
     if (this.currentStep !== 'attack') throw new Error('現在不是攻擊步驟');
     const p = this._p(playerIdx);
@@ -338,6 +377,11 @@ export class Game {
     attacker.attackedThisTurn = true;
     this.pendingAttack = { attackerUid, blockerUid: null };
     this.log.push({ type: 'declare-attack', player: playerIdx, uid: attackerUid });
+
+    const attackerCard = this.db.getCard(attacker.cardId);
+    if (attackerCard.uTrigger) {
+      this.pendingUTriggerResult = this._resolveUTrigger(playerIdx, attackerCard);
+    }
     return this.pendingAttack;
   }
 
@@ -464,6 +508,7 @@ export class Game {
       activePlayerIndex: this.activePlayerIndex,
       pendingAttack: this.pendingAttack,
       pendingBurstHint: this.pendingBurstHint,
+      pendingUTriggerResult: this.pendingUTriggerResult,
       winner: this.winner,
       players: this.players.map((p, i) =>
         snapshotPlayer(p, forPlayerIdx !== null && i !== forPlayerIdx)

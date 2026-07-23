@@ -16,7 +16,8 @@
     "awakening": "轉醒設定，{condition, afterId} 或 null；condition事件成立時自動翻面成 afterId 那張卡",
     "awokenForm": "true 代表這是「轉醒後」的背面卡，不能直接放進卡組，只能透過轉醒抵達",
     "kourin": "煌臨設定，{cost, targetFamily} 或 null；cost=煌臨所需核心數，targetFamily=可疊放的目標系統（空陣列=不限）",
-    "ultimateSummon": "究極卡的特殊召喚條件，{sacrificeCount} 或 null；需犧牲自己場上這麼多張卡片",
+    "summonCondition": "究極卡的召喚條件（跟精靈一樣走一般召喚程序，只是多這道條件檢查），{type, value, text} 或 null（無此欄位=無條件，等同always）。type: 'always'（無條件）/ 'sacrifice'（需犧牲自己場上value張卡片）/ 'ownFieldBpAtLeast'（自己場上需有BP達value的卡片）/ 'lifeAtMost'（自己生命核心需在value以下）",
+    "uTrigger": "U觸發設定，{effectText} 或 null；有此欄位的究極卡攻擊時會把對手牌庫最上面一張送進棄卻區，那張牌費用比自己低才算命中並發動效果（同費用不算命中）",
     "text": "效果文字（示範用簡化敘述）",
     "contractCard": "是否為契約卡（不算入主卡組張數，卡組另有 contractCardId 欄位指定）",
     "collab": "是否為合作卡",
@@ -65,7 +66,9 @@
 
     { "id": "DEMO-037", "name": "煌臨．聖光天使", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 4, "costSymbols": {"white": 2}, "bp": 4000, "lv": 1, "family": ["angel"], "keywords": ["blocker"], "burst": null, "kourin": {"cost": 2, "targetFamily": ["human"]}, "text": "【煌臨：2核心／人系】也可以直接支付4費一般召喚；若改用煌臨疊放在自己場上的人系卡片上，不算召喚（不會觸發對手的「精靈召喚」類效果），且保留原本疊放對象的核心。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
 
-    { "id": "DEMO-038", "name": "究極．滅世龍神", "set": "DEMO-SET", "type": "ultimate", "colors": ["red", "purple"], "cost": 0, "costSymbols": {}, "bp": 10000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "ultimateSummon": {"sacrificeCount": 2}, "text": "【究極／特殊召喚】不能一般召喚。犧牲自己場上2張卡片即可特殊召喚，登場後獲得極高BP與【Double Attack】。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "UR" },
+    { "id": "DEMO-038", "name": "究極．滅世龍神", "set": "DEMO-SET", "type": "ultimate", "colors": ["red", "purple"], "cost": 6, "costSymbols": {"red": 2, "purple": 2}, "bp": 10000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "summonCondition": {"type": "sacrifice", "value": 2, "text": "犧牲自己場上2張卡片"}, "uTrigger": {"effectText": "命中時：抽1張牌（示範效果）"}, "text": "【究極】跟精靈一樣走一般召喚程序，但召喚條件是犧牲自己場上2張卡片。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "UR" },
+
+    { "id": "DEMO-040", "name": "究極．蒼焰爆裂者", "set": "DEMO-SET", "type": "ultimate", "colors": ["blue"], "cost": 5, "costSymbols": {"blue": 2}, "bp": 7000, "lv": 1, "family": ["dragon"], "keywords": ["blocker"], "burst": null, "summonCondition": {"type": "ownFieldBpAtLeast", "value": 3000, "text": "自己場上需有BP3000以上的卡片"}, "uTrigger": {"effectText": "命中時：抽1張牌（示範效果）"}, "text": "【究極】跟精靈一樣走一般召喚程序，召喚條件是自己場上需有一張BP3000以上的卡片（不需要犧牲卡片）。【Blocker】。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
 
     { "id": "DEMO-039", "name": "核心之礎", "set": "DEMO-SET", "type": "spirit", "colors": [], "cost": 1, "costSymbols": {}, "bp": 500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無顏色需求的最低費填充卡，用於湊卡組張數的示範用卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" }
   ]

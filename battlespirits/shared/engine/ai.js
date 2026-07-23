@@ -25,6 +25,29 @@ export function aiRunMainStep(game, playerIdx) {
     aiAutoResolveBurst(game, playerIdx);
   }
 
+  // 究極卡：跟精靈一樣走一般召喚程序，只是可能要滿足召喚條件（見 game.js 的
+  // _checkSummonCondition）。條件不符時 playCard 會丟例外，這裡直接跳過該張卡。
+  guard = 0;
+  while (guard++ < 10) {
+    const p = game._p(playerIdx);
+    const candidates = affordableHandCards(game, playerIdx).filter(({ card }) => card.type === 'ultimate');
+    if (candidates.length === 0) break;
+    const choice = candidates[0];
+    let sacrificeUids = [];
+    if (choice.card.summonCondition?.type === 'sacrifice') {
+      const need = choice.card.summonCondition.value;
+      if (p.field.length < need) break; // 場上卡片不夠犧牲，跳過本輪
+      sacrificeUids = [...p.field].sort((a, b) => game.effectiveBp(a) - game.effectiveBp(b)).slice(0, need).map((c) => c.uid);
+    }
+    try {
+      game.playCard(playerIdx, choice.handIndex, { sacrificeUids });
+      actions.push({ action: 'play-ultimate', cardId: choice.cardId });
+      aiAutoResolveBurst(game, playerIdx);
+    } catch {
+      break; // 召喚條件不符（例如 ownFieldBpAtLeast 不滿足），先跳過
+    }
+  }
+
   // 剩餘核心打魔法卡
   guard = 0;
   while (guard++ < 20) {

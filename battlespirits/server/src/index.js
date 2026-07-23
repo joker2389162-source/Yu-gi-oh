@@ -78,11 +78,11 @@ function send(ws, msg) {
 
 function assertCanAct(game, idx, name) {
   const active = game.activePlayerIndex;
-  if (['play', 'set-burst', 'attach-core', 'kourin', 'special-summon-ultimate'].includes(name)) {
+  if (['play', 'set-burst', 'attach-core', 'kourin'].includes(name)) {
     if (game.pendingAttack) throw new Error('攻擊結算中，請先處理完攻擊');
     if (idx !== active) throw new Error('現在不是你的回合');
     if (name === 'attach-core' && game.currentStep !== 'core') throw new Error('現在不是核心步驟');
-    if (['play', 'set-burst', 'kourin', 'special-summon-ultimate'].includes(name) && !['main', 'main2'].includes(game.currentStep)) {
+    if (['play', 'set-burst', 'kourin'].includes(name) && !['main', 'main2'].includes(game.currentStep)) {
       throw new Error('現在不是主要步驟');
     }
   }
@@ -103,14 +103,15 @@ function assertCanAct(game, idx, name) {
 }
 
 const ACTION_HANDLERS = {
-  play: (game, idx, payload) => game.playCard(idx, payload.handIndex),
+  // 究極卡的犧牲對象透過同一個 'play' 動作的 payload.sacrificeUids 傳入
+  // （究極卡跟精靈一樣走一般召喚程序，只是 playCard 內部多一道召喚條件檢查）。
+  play: (game, idx, payload) => game.playCard(idx, payload.handIndex, { sacrificeUids: payload.sacrificeUids || [] }),
   'set-burst': (game, idx, payload) => game.setBurst(idx, payload.handIndex),
   'attach-core': (game, idx, payload) => game.attachCore(idx, payload.targetUid),
   'declare-attack': (game, idx, payload) => game.declareAttack(idx, payload.attackerUid),
   'declare-block': (game, idx, payload) => game.declareBlock(idx, payload.blockerUid || null),
   'activate-burst': (game, idx, payload) => game.activateBurst(idx, payload.uid),
   kourin: (game, idx, payload) => game.kourinPlace(idx, payload.handIndex, payload.targetUid),
-  'special-summon-ultimate': (game, idx, payload) => game.specialSummonUltimate(idx, payload.handIndex, payload.sacrificeUids || []),
   'next-step': (game) => game.nextStep(),
 };
 
