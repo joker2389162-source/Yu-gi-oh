@@ -12,11 +12,18 @@
    `shared/data/cards.json` 裡的示範卡是為了讓引擎、卡組編輯器、對戰系統可以完整運作而做的
    **系統示範卡池**，卡名／效果文字都是原創占位內容，不是任何官方 Battle Spirits 卡片的逐字
    重製。這個開發環境的網路政策幾乎擋掉所有外部網站（不只 `battlespirits.com`／
-   `asia-tc.battlespirits.com`，連隨便一個 `example.com` 都連不上，WebFetch 也一樣被擋），
+   `asia-tc.battlespirits.com`，連隨便一個 `example.com` 都連不上，WebFetch 也一樣被擋；GitHub
+   是少數連得上的例外，但沒找到現成的 Battle Spirits 卡片 JSON 資料庫可以拉），
    所以沒辦法自動把官網（日文站／繁中亞洲站）「現行所有可用卡＋所有合作卡」跟卡圖爬下來收錄。
    要換成真正的官方現行卡表：把資料改寫成同樣的欄位格式（見 `cards.json` 內的 `schema` 說明）
    覆蓋掉示範資料即可，引擎本身不用改；卡圖只要把 `image` 欄位填上圖片網址或本機路徑，前端
    會自動顯示（沒有 `image` 時會顯示依屬性色產生的佔位卡框，不是真的官方卡圖）。
+   **`shared/data/official-reference.json`** 是使用者提供官方頁面存檔後整理出來的**真實**參考
+   資料（283筆真實系列/商品代碼與名稱、342個真實系統/家族名稱、真實稀有度代碼、確認過的
+   Standard/Eternal賽制用語、確認過的真實合作IP清單）——這些都是真的官方資料，但目前還只有
+   系列/商品層級的中繼資料，**還沒有任何一張卡片本身的名稱/費用/BP/效果文字**，因為官方卡片
+   列表頁需要先選定一個系列才會動態載入該系列的卡片內容，存檔時沒有連帶存到。要繼續往下收錄，
+   需要使用者提供某個系列展開後的卡片列表頁存檔（同樣用瀏覽器 Ctrl+S 存起來即可）。
 2. **合作卡（collab）目前只有 1 組虛構示範聯名**（`DEMO-COLLAB-01`，「銀河守護隊」），
    刻意用假的 IP 名稱，不代表任何真實作品的合作卡。要收錄真正的官方合作卡，一樣是往
    `cards.json` / `sets.json` 加資料即可，資料結構已經支援 `collab` / `collabSeries` 欄位。
@@ -62,6 +69,7 @@ battlespirits/
       sets.json           系列/彈清單與標準賽輪替設定
       banlist.json        禁止・制限卡表（Standard / Eternal 各自獨立）
       starters.json        現行可用預組（示範版）
+      official-reference.json  真實官方參考資料（系列/家族/稀有度代碼，見上方限制說明第1點）
   server/                自架用 WebSocket 連線對戰伺服器（Node.js）
     src/index.js
     scripts/simulate.mjs  開發用自我測試（跑一整場 AI vs AI 模擬對局）

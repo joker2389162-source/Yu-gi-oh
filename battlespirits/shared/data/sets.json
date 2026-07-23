@@ -1,5 +1,5 @@
 {
-  "_readme": "系列(彈)清單，用來判斷標準賽輪替合法性。此檔案為資料驅動設計：新增新彈只要加一筆物件即可，不用改引擎程式碼。releaseDate/standardFrom 等日期請對照官方最新公告校正 —— 目前環境無法直接爬取 battlespirits.com，此處僅先建立結構與少量示範資料。",
+  "_readme": "系列(彈)清單，用來判斷標準賽輪替合法性。此檔案為資料驅動設計：新增新彈只要加一筆物件即可，不用改引擎程式碼。releaseDate/standardFrom 等日期請對照官方最新公告校正 —— 目前環境無法直接爬取 battlespirits.com，此處僅先建立結構與少量示範資料。下方 real_* 開頭的條目是使用者提供官方頁面存檔後，2026-07-23 加入的『真實』系列代碼/名稱（見 official-reference.json 有完整283筆清單），但目前底下還沒有任何卡片資料指向它們（還沒有拿到個別卡片的數值/效果文字），standardLegal/collab 等欄位是依代碼命名規律（26R開頭=2026年新彈）與官方繁中站新聞內容推斷，不是逐字對照官方規則手冊，請之後校正。",
   "sets": [
     {
       "code": "DEMO-SET",
@@ -15,10 +15,22 @@
       "standardLegal": true,
       "collab": true,
       "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）"
-    }
+    },
+    { "code": "real_26RBS02", "name": "幻惑の翔風", "releaseDate": "2026-06-01", "standardLegal": true, "collab": false, "note": "真實官方彈代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RBS01", "name": "創世の鼓動", "releaseDate": "2026-04-01", "standardLegal": true, "collab": false, "note": "真實官方彈代碼/名稱，尚無卡片資料" },
+    { "code": "real_BS76", "name": "エターナルブースター 永皇の輝き", "releaseDate": "2026-05-01", "standardLegal": false, "collab": false, "note": "真實官方彈；名稱本身標明是 Eternal 用補充包（非 Standard），尚無卡片資料" },
+    { "code": "real_26RSD07", "name": "コラボスターター 仮面ライダー AGENT OF DREAM", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RCB01", "name": "コラボブースター 仮面ライダー 運命の戦線", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD06", "name": "バトスピエントリーデッキ 蒼淵ノ凶獣", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD05", "name": "バトスピエントリーデッキ 煌陽ノ雷竜", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD04", "name": "バトスピエントリーデッキ 白命ノ鉱人", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD03", "name": "バトスピエントリーデッキ 翆海ノ甲魚", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD02", "name": "バトスピエントリーデッキ 紫幻ノ血醒", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_26RSD01", "name": "バトスピエントリーデッキ 赫焔ノ風牙", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "real_BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" }
   ],
   "standardRotation": {
-    "_note": "官方標準賽採輪替制：僅特定期間後發售的系列可用（依 2026 現行公告，約為近期彈）。請以最新官方標準賽規則手冊/禁限公告校正下列日期。",
+    "_note": "官方標準賽採輪替制：僅特定期間後發售的系列可用（依 2026 現行公告，約為近期彈）。cutoffDate 目前僅為佔位值，尚未逐字對照官方規則手冊確認精確日期，請校正。",
     "cutoffDate": "2024-04-01"
   }
 }
