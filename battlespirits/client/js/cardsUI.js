@@ -10,6 +10,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
         <option value="spirit">精靈</option>
         <option value="nexus">據點</option>
         <option value="magic">魔法</option>
+        <option value="ultimate">究極</option>
       </select>
       <select id="card-color-filter">
         <option value="all">全部顏色</option>
@@ -21,8 +22,9 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
         <option value="purple">紫</option>
       </select>
       <label class="chk"><input type="checkbox" id="card-collab-filter" /> 只看合作卡</label>
+      <label class="chk"><input type="checkbox" id="card-awoken-filter" /> 顯示轉醒背面卡（僅供查閱，不能直接加入卡組）</label>
     </div>
-    <p class="hint">目前為系統示範卡池（34張，含1組虛構合作卡示範）。要加入卡組請先到「卡組編輯」分頁建立/選擇一副卡組。</p>
+    <p class="hint">目前為系統示範卡池（含1組虛構合作卡示範、轉醒／煌臨／究極系統示範卡）。要加入卡組請先到「卡組編輯」分頁建立/選擇一副卡組。</p>
     <div id="card-grid" class="bs-card-grid"></div>
   `;
 
@@ -31,15 +33,18 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
   const typeEl = root.querySelector('#card-type-filter');
   const colorEl = root.querySelector('#card-color-filter');
   const collabEl = root.querySelector('#card-collab-filter');
+  const awokenEl = root.querySelector('#card-awoken-filter');
 
   function render() {
     const q = searchEl.value.trim().toLowerCase();
     const type = typeEl.value;
     const color = colorEl.value;
     const collabOnly = collabEl.checked;
+    const showAwoken = awokenEl.checked;
     const editingId = getEditingDeckId();
 
     const list = db.allCards().filter((c) => {
+      if (!showAwoken && c.awokenForm) return false;
       if (type !== 'all' && c.type !== type) return false;
       if (color !== 'all' && !(c.colors || []).includes(color)) return false;
       if (collabOnly && !c.collab) return false;
@@ -60,6 +65,13 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
               refreshDeckUI();
             }
           : () => alert('請先到「卡組編輯」分頁建立或選擇一副要編輯的卡組。'),
+        onAddContract: editingId
+          ? () => {
+              deckStore.update(editingId, { contractCardId: card.id });
+              render();
+              refreshDeckUI();
+            }
+          : () => alert('請先到「卡組編輯」分頁建立或選擇一副要編輯的卡組。'),
       });
       grid.appendChild(el);
     }
@@ -70,6 +82,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
   typeEl.onchange = render;
   colorEl.onchange = render;
   collabEl.onchange = render;
+  awokenEl.onchange = render;
   render();
 
   return { render };

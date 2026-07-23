@@ -14,6 +14,18 @@ import { RULES, TURN_STEPS } from './rules.js';
 //      3. Burst（爆發）機制：卡片可在自己主要步驟覆蓋設置（免費、每回合限
 //         1張），達成條件事件時可以翻開發動、之後進卡片棄卻區。
 //      4. Bond／Brave 進化等進階機制尚未實作，屬於下一階段擴充項目。
+//
+// 已實作的進階系統（依公開規則摘要整理，非官方規則手冊原文逐字校對）：
+//   - 轉醒（Awakening）：卡片有「轉醒前」「轉醒後」兩個面，事件觸發時自動翻面，
+//     翻面不需額外付費（見 card.awakening = { condition, afterId }）。
+//   - 煌臨（Kourin）：從手牌把卡片疊放到場上一張卡片上，不算是「召喚」（不會觸發
+//     「對手精靈召喚」類爆發事件），簡化為固定核心費用（見 card.kourin = { cost, targetFamily }）。
+//     官方規則中煌臨元卡片的「煌臨中」效果會持續繼承，這裡簡化為只記錄疊放歷史
+//     （kourinStack），還沒有完整的條件式效果繼承系統。
+//   - 究極（Ultimate）：新卡片種類，透過犧牲自己場上卡片達成特殊召喚條件，不能
+//     像精靈一樣直接用 playCard 打出（見 specialSummonUltimate）。
+//   - 契約（Contract）：契約卡不算入主卡組張數，是卡組的獨立欄位，開局時直接進入
+//     手牌，不與主卡組同一疊抽取。
 // ============================================================================
 
 function shuffle(arr) {
@@ -55,8 +67,9 @@ export class Game {
       index: idx,
       name: deckDef.playerName || `玩家${idx + 1}`,
       deck: shuffle(deckCardIds),
+      contractCardId: deckDef.contractCardId || null,
       hand: [],
-      field: [], // { uid, cardId, cores:[], summonedTurn, blockedThisTurn }
+      field: [], // { uid, cardId, cores:[], summonedTurn, blockedThisTurn, awakened, kourinStack }
       burstZone: [], // { uid, cardId }
       cardTrash: [],
       life: 0,
@@ -95,6 +108,12 @@ export class Game {
     }
     this._drawCard(0, RULES.startingHandSize);
     this._drawCard(1, RULES.startingHandSize);
+    for (const p of this.players) {
+      if (p.contractCardId) {
+        p.hand.push(p.contractCardId);
+        this.log.push({ type: 'contract-to-hand', player: p.index, cardId: p.contractCardId });
+      }
+    }
     this.log.push({ type: 'game-start' });
     this._runStepEntry();
   }
@@ -116,6 +135,22 @@ export class Game {
       this.burstSetThisTurn = 0;
     }
     this.log.push({ type: 'step', step, activePlayer: active, turn: this.turnNumber });
+    if (step === 'start') this._checkAwakenings('turn-start');
+  }
+
+  // ---- 轉醒：掃描雙方場上卡片，符合條件的自動翻面（不需額外付費） ----
+  _checkAwakenings(eventName) {
+    for (const p of this.players) {
+      for (const inst of p.field) {
+        if (inst.awakened) continue;
+        const card = this.db.getCard(inst.cardId);
+        if (card.awakening && card.awakening.condition === eventName) {
+          inst.cardId = card.awakening.afterId;
+          inst.awakened = true;
+          this.log.push({ type: 'awaken', player: p.index, uid: inst.uid, fromId: card.id, toId: card.awakening.afterId });
+        }
+      }
+    }
   }
 
   nextStep() {
@@ -163,18 +198,22 @@ export class Game {
     const cardId = p.hand[handIndex];
     if (!cardId) throw new Error('手牌索引無效');
     const card = this.db.getCard(cardId);
+    if (card.type === 'ultimate') {
+      throw new Error('究極卡不能用一般召喚，請使用特殊召喚（specialSummonUltimate）並犧牲自己場上卡片');
+    }
 
     this._payCost(playerIdx, card.cost);
     p.hand.splice(handIndex, 1);
 
     if (card.type === 'spirit' || card.type === 'nexus') {
-      const instance = { uid: nextUid(), cardId, cores: [], summonedTurn: this.turnNumber, blockedThisTurn: false, attackedThisTurn: false };
+      const instance = { uid: nextUid(), cardId, cores: [], summonedTurn: this.turnNumber, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: [cardId] };
       p.field.push(instance);
       this.log.push({ type: 'play', player: playerIdx, cardId, uid: instance.uid });
       if (card.type === 'spirit') {
         const oppIdx = this.opponentIndex(playerIdx);
         const uids = this._fireBurstEvent(oppIdx, 'opponent-spirit-summoned').map((b) => b.uid);
         if (uids.length) this.pendingBurstHint = { ownerIdx: oppIdx, uids };
+        this._checkAwakenings('opponent-spirit-summoned');
       }
       return instance;
     }
@@ -183,6 +222,62 @@ export class Game {
     p.cardTrash.push(cardId);
     this.log.push({ type: 'play-magic', player: playerIdx, cardId });
     return null;
+  }
+
+  // ---- 煌臨：從手牌把卡片疊放到場上一張卡片上，不是「召喚」 ----
+  kourinPlace(playerIdx, handIndex, targetUid) {
+    this.pendingBurstHint = null;
+    const p = this._p(playerIdx);
+    const cardId = p.hand[handIndex];
+    if (!cardId) throw new Error('手牌索引無效');
+    const card = this.db.getCard(cardId);
+    if (!card.kourin) throw new Error('這張卡沒有煌臨能力');
+    const target = p.field.find((c) => c.uid === targetUid);
+    if (!target) throw new Error('找不到場上目標卡片');
+    if (card.kourin.targetFamily?.length) {
+      const targetCard = this.db.getCard(target.cardId);
+      const ok = (targetCard.family || []).some((f) => card.kourin.targetFamily.includes(f));
+      if (!ok) throw new Error(`煌臨條件不符：目標須為 ${card.kourin.targetFamily.join('/')} 系統`);
+    }
+    if (p.reserve < card.kourin.cost) throw new Error('儲備核心不足，無法支付煌臨費用');
+    p.reserve -= card.kourin.cost;
+    p.coreTrash += card.kourin.cost;
+    p.hand.splice(handIndex, 1);
+
+    target.cardId = cardId;
+    target.awakened = false;
+    target.kourinStack = [...(target.kourinStack || []), cardId];
+    this.log.push({ type: 'kourin', player: playerIdx, cardId, targetUid, stack: target.kourinStack });
+    // 煌臨不是召喚，因此不觸發「對手精靈召喚」類爆發／轉醒事件。
+    return target;
+  }
+
+  // ---- 究極：特殊召喚，犧牲自己場上卡片達成條件（不能用一般 playCard 打出） ----
+  specialSummonUltimate(playerIdx, handIndex, sacrificeUids) {
+    this.pendingBurstHint = null;
+    const p = this._p(playerIdx);
+    const cardId = p.hand[handIndex];
+    if (!cardId) throw new Error('手牌索引無效');
+    const card = this.db.getCard(cardId);
+    if (card.type !== 'ultimate') throw new Error('這張卡不是究極卡');
+    const need = card.ultimateSummon?.sacrificeCount || 0;
+    const uids = sacrificeUids || [];
+    if (uids.length < need) throw new Error(`特殊召喚條件不足：需犧牲 ${need} 張自己場上的卡片`);
+    for (const uid of uids) {
+      if (!p.field.some((c) => c.uid === uid)) throw new Error('犧牲對象必須是自己場上的卡片');
+    }
+    this._payCost(playerIdx, card.cost || 0);
+    for (const uid of uids.slice(0, need)) {
+      const idx = p.field.findIndex((c) => c.uid === uid);
+      const [inst] = p.field.splice(idx, 1);
+      p.cardTrash.push(inst.cardId);
+      this.log.push({ type: 'sacrifice', player: playerIdx, cardId: inst.cardId, uid });
+    }
+    p.hand.splice(handIndex, 1);
+    const instance = { uid: nextUid(), cardId, cores: [], summonedTurn: this.turnNumber, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: [cardId] };
+    p.field.push(instance);
+    this.log.push({ type: 'special-summon-ultimate', player: playerIdx, cardId, uid: instance.uid });
+    return instance;
   }
 
   // ---- 主要步驟：覆蓋設置爆發卡（免費，每回合限1張） ----
@@ -323,6 +418,7 @@ export class Game {
         const bursts = this._fireBurstEvent(defenderIdx, 'life-reduced');
         if (bursts.length) result.availableBursts = (result.availableBursts || []).concat(bursts.map((b) => b.uid));
       }
+      if (result.lifeLost > 0) this._checkAwakenings('life-reduced');
       if (result.availableBursts?.length) {
         this.pendingBurstHint = { ownerIdx: defenderIdx, uids: result.availableBursts };
       }

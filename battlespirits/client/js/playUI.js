@@ -3,6 +3,11 @@ import { aiRunMainStep, aiRunCoreStep, aiDecideBlockForOpponent, aiAutoResolveBu
 import { validateDeck } from '../../shared/engine/format.js';
 import { STEP_LABELS } from '../../shared/engine/rules.js';
 import { NetClient } from './netClient.js';
+import { cardArtHtml, KEYWORD_LABELS } from './cardView.js';
+
+function keywordLabel(k) {
+  return KEYWORD_LABELS[k] || k;
+}
 
 const AI_ATTACK_BP_RATIO = 0.6;
 
@@ -18,9 +23,13 @@ function pickAiAttacker(game, aiIdx) {
 export function initPlayTab({ db, deckStore, startersData }) {
   const root = document.getElementById('tab-play');
   let match = null; // { kind:'local', game, mode, aiIndex } | { kind:'online', net }
+  // 煌臨／究極特殊召喚的「選擇目標」互動狀態：
+  //   { type:'kourin', handIndex } 或 { type:'ultimate', handIndex, chosen: [uid,...] }
+  let selectionMode = null;
 
   function renderSetup() {
     match = null;
+    selectionMode = null;
     root.innerHTML = `
       <div class="play-setup">
         <h3>開始對戰</h3>
@@ -168,6 +177,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
     const game = new Game([deckA, deckB], db);
     game.start();
     match = { kind: 'local', game, mode, aiIndex };
+    selectionMode = null;
     runAiUntilBlocked();
     renderBoard();
   }
@@ -233,7 +243,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
       canAdvance: viewer === g.activePlayerIndex && !g.pendingAttack && g.winner === null,
     };
 
-    root.innerHTML = boardHtml(state, { viewer, mode: lm.mode, ...viewFlags });
+    root.innerHTML = boardHtml(state, { viewer, mode: lm.mode, selectionMode, ...viewFlags });
     wireBoardControls({
       ...viewFlags,
       onPlay: (handIndex) => {
@@ -258,6 +268,45 @@ export function initPlayTab({ db, deckStore, startersData }) {
         } catch (e) {
           return alert(e.message);
         }
+        renderBoard();
+      },
+      onStartKourin: (handIndex) => {
+        selectionMode = { type: 'kourin', handIndex };
+        renderBoard();
+      },
+      onStartUltimate: (handIndex) => {
+        selectionMode = { type: 'ultimate', handIndex, chosen: [] };
+        renderBoard();
+      },
+      onSelectMyField: (uid) => {
+        if (!selectionMode) return;
+        if (selectionMode.type === 'kourin') {
+          try {
+            g.kourinPlace(viewer, selectionMode.handIndex, uid);
+          } catch (e) {
+            return alert(e.message);
+          }
+          selectionMode = null;
+          renderBoard();
+        } else if (selectionMode.type === 'ultimate') {
+          const i = selectionMode.chosen.indexOf(uid);
+          if (i === -1) selectionMode.chosen.push(uid);
+          else selectionMode.chosen.splice(i, 1);
+          renderBoard();
+        }
+      },
+      onConfirmUltimate: () => {
+        if (!selectionMode || selectionMode.type !== 'ultimate') return;
+        try {
+          g.specialSummonUltimate(viewer, selectionMode.handIndex, selectionMode.chosen);
+        } catch (e) {
+          return alert(e.message);
+        }
+        selectionMode = null;
+        renderBoard();
+      },
+      onCancelSelection: () => {
+        selectionMode = null;
         renderBoard();
       },
       onDeclareAttack: (uid) => {
@@ -298,6 +347,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
       onNextStep: () => {
         if (g.pendingAttack) return alert('攻擊尚未結算完畢');
         if (lm.mode === 'pve' && g.activePlayerIndex === lm.aiIndex) return; // AI回合不給人類推進
+        selectionMode = null;
         g.nextStep();
         if (lm.mode === 'pve') runAiUntilBlocked();
         renderBoard();
@@ -321,7 +371,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
       isBlockDecision: !!state.pendingAttack && viewer !== state.activePlayerIndex,
       canAdvance: viewer === state.activePlayerIndex && !state.pendingAttack && state.winner === null,
     };
-    root.innerHTML = boardHtml(state, { viewer, mode: 'online', ...viewFlags }, net.roomCode);
+    root.innerHTML = boardHtml(state, { viewer, mode: 'online', selectionMode, ...viewFlags }, net.roomCode);
     wireBoardControls({
       ...viewFlags,
       onPlay: (handIndex) => net.action('play', { handIndex }),
@@ -331,7 +381,41 @@ export function initPlayTab({ db, deckStore, startersData }) {
       onDeclareBlock: (uid) => net.action('declare-block', { blockerUid: uid || null }),
       onActivateBurst: (uid) => net.action('activate-burst', { uid }),
       onSkipBurst: () => {},
-      onNextStep: () => net.action('next-step'),
+      onStartKourin: (handIndex) => {
+        selectionMode = { type: 'kourin', handIndex };
+        renderBoard();
+      },
+      onStartUltimate: (handIndex) => {
+        selectionMode = { type: 'ultimate', handIndex, chosen: [] };
+        renderBoard();
+      },
+      onSelectMyField: (uid) => {
+        if (!selectionMode) return;
+        if (selectionMode.type === 'kourin') {
+          net.action('kourin', { handIndex: selectionMode.handIndex, targetUid: uid });
+          selectionMode = null;
+          renderBoard();
+        } else if (selectionMode.type === 'ultimate') {
+          const i = selectionMode.chosen.indexOf(uid);
+          if (i === -1) selectionMode.chosen.push(uid);
+          else selectionMode.chosen.splice(i, 1);
+          renderBoard();
+        }
+      },
+      onConfirmUltimate: () => {
+        if (!selectionMode || selectionMode.type !== 'ultimate') return;
+        net.action('special-summon-ultimate', { handIndex: selectionMode.handIndex, sacrificeUids: selectionMode.chosen });
+        selectionMode = null;
+        renderBoard();
+      },
+      onCancelSelection: () => {
+        selectionMode = null;
+        renderBoard();
+      },
+      onNextStep: () => {
+        selectionMode = null;
+        net.action('next-step');
+      },
       onQuit: () => {
         net.ws?.close();
         renderSetup();
@@ -364,6 +448,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
     net.on('state', (m) => {
       net.lastState = m.state;
       match = { kind: 'online', net };
+      selectionMode = null;
       renderBoard();
     });
     if (join) net.joinRoom(join, deck);
@@ -373,14 +458,20 @@ export function initPlayTab({ db, deckStore, startersData }) {
   function boardHtml(state, ctx, roomCode) {
     const me = state.players[ctx.viewer];
     const opp = state.players[ctx.viewer === 0 ? 1 : 0];
+    const sel = ctx.selectionMode;
 
-    const renderField = (p) => p.field.map((c) => {
+    const renderField = (p, owner) => p.field.map((c) => {
       const card = db.getCard(c.cardId);
-      return `<div class="field-card" data-uid="${c.uid}">
+      const selectable = owner === 'me' && sel && (sel.type === 'kourin' || sel.type === 'ultimate');
+      const chosen = sel?.type === 'ultimate' && sel.chosen.includes(c.uid);
+      return `<div class="field-card${selectable ? ' field-card--selectable' : ''}${chosen ? ' field-card--chosen' : ''}" data-uid="${c.uid}" data-owner="${owner}">
+        ${cardArtHtml(card, { small: true })}
         <div class="fc-name">${card.name}</div>
         <div class="fc-bp">BP ${c.bp}</div>
-        <div class="fc-kw">${(card.keywords || []).join(',')}</div>
+        <div class="fc-kw">${(card.keywords || []).map(keywordLabel).join('／')}</div>
         ${c.attackedThisTurn ? '<span class="tag">已攻擊</span>' : ''}
+        ${c.awakened ? '<span class="tag tag--awaken">已轉醒</span>' : ''}
+        ${c.kourinStack && c.kourinStack.length > 1 ? '<span class="tag tag--kourin">已煌臨</span>' : ''}
       </div>`;
     }).join('') || '<p class="hint-small">（場上沒有卡片）</p>';
 
@@ -399,7 +490,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
 
         <div class="opp-area">
           <div class="player-stats">對手 ・ 生命核心 ${opp.life} ・ 儲備 ${opp.reserve} ・ 棄核 ${opp.coreTrash} ・ 手牌 ${opp.handCount} 張 ・ 牌庫 ${opp.deckCount} 張 ・ 爆發區 ${opp.burstZoneCount} 張</div>
-          <div class="field">${renderField(opp)}</div>
+          <div class="field">${renderField(opp, 'opp')}</div>
         </div>
 
         ${state.pendingAttack ? `
@@ -428,10 +519,19 @@ export function initPlayTab({ db, deckStore, startersData }) {
         ` : ''}
 
         <div class="my-area">
-          <div class="field">${renderField(me)}</div>
+          <div class="field">${renderField(me, 'me')}</div>
           <div class="player-stats">你 ・ 生命核心 ${me.life} ・ 儲備 ${me.reserve} ・ 棄核 ${me.coreTrash} ・ 牌庫 ${me.deckCount} 張 ・ 爆發區 ${me.burstZoneCount} 張</div>
 
           ${ctx.isMyCoreStep ? '<p class="hint-small">核心步驟：點選場上一張自己的卡片，從儲備核心貼1個上去強化 BP+1000。</p>' : ''}
+
+          ${sel ? `
+            <div class="selection-box">
+              ${sel.type === 'kourin' ? `煌臨：請點選自己場上要疊放的目標卡片（${db.getCard(me.hand[sel.handIndex]).kourin.targetFamily?.length ? '限 ' + db.getCard(me.hand[sel.handIndex]).kourin.targetFamily.join('/') + ' 系' : '不限系統'}）` : ''}
+              ${sel.type === 'ultimate' ? `究極特殊召喚：請點選 ${db.getCard(me.hand[sel.handIndex]).ultimateSummon.sacrificeCount} 張自己場上的卡片作為犧牲（已選 ${sel.chosen.length} 張）` : ''}
+              ${sel.type === 'ultimate' ? `<button id="confirm-ultimate-btn" ${sel.chosen.length >= db.getCard(me.hand[sel.handIndex]).ultimateSummon.sacrificeCount ? '' : 'disabled'}>確認特殊召喚</button>` : ''}
+              <button id="cancel-selection-btn">取消</button>
+            </div>
+          ` : ''}
 
           <div class="hand">
             <h4>手牌（${me.hand.length}）</h4>
@@ -441,12 +541,15 @@ export function initPlayTab({ db, deckStore, startersData }) {
                 const card = db.getCard(cardId);
                 const affordable = card.cost <= me.reserve;
                 return `<div class="hand-card${affordable ? '' : ' hand-card--unaffordable'}" data-idx="${i}">
-                  <div class="hc-name">${card.name}</div>
+                  ${cardArtHtml(card, { small: true })}
+                  <div class="hc-name">${card.name}${card.contractCard ? ' <span class="tag tag--contract">契約</span>' : ''}</div>
                   <div class="hc-meta">費${card.cost}${card.bp != null ? ` BP${card.bp}` : ''}</div>
                   <div class="hc-text">${card.text}</div>
                   <div class="hc-actions">
-                    ${ctx.isMyTurnMain ? `<button class="play-btn" data-idx="${i}" ${affordable ? '' : 'disabled'}>打出</button>` : ''}
+                    ${ctx.isMyTurnMain && card.type !== 'ultimate' ? `<button class="play-btn" data-idx="${i}" ${affordable ? '' : 'disabled'}>打出</button>` : ''}
                     ${ctx.isMyTurnMain && card.burst ? `<button class="setburst-btn" data-idx="${i}">設置爆發</button>` : ''}
+                    ${ctx.isMyTurnMain && card.kourin ? `<button class="kourin-btn" data-idx="${i}">煌臨</button>` : ''}
+                    ${ctx.isMyTurnMain && card.type === 'ultimate' ? `<button class="ultimate-btn" data-idx="${i}">特殊召喚（究極）</button>` : ''}
                   </div>
                 </div>`;
               }).join('') || '<p class="hint-small">（沒有手牌）</p>'}
@@ -475,9 +578,21 @@ export function initPlayTab({ db, deckStore, startersData }) {
     root.querySelectorAll('.setburst-btn').forEach((btn) => {
       btn.addEventListener('click', () => cb.onSetBurst(Number(btn.dataset.idx)));
     });
+    root.querySelectorAll('.kourin-btn').forEach((btn) => {
+      btn.addEventListener('click', () => cb.onStartKourin(Number(btn.dataset.idx)));
+    });
+    root.querySelectorAll('.ultimate-btn').forEach((btn) => {
+      btn.addEventListener('click', () => cb.onStartUltimate(Number(btn.dataset.idx)));
+    });
+    root.querySelector('#confirm-ultimate-btn')?.addEventListener('click', cb.onConfirmUltimate);
+    root.querySelector('#cancel-selection-btn')?.addEventListener('click', cb.onCancelSelection);
     root.querySelectorAll('.field-card').forEach((el) => {
       el.addEventListener('click', () => {
-        if (cb.isMyCoreStep) cb.onAttachCore(el.dataset.uid);
+        if (el.dataset.owner === 'me' && (cb.onSelectMyField && el.classList.contains('field-card--selectable'))) {
+          cb.onSelectMyField(el.dataset.uid);
+        } else if (cb.isMyCoreStep && el.dataset.owner === 'me') {
+          cb.onAttachCore(el.dataset.uid);
+        }
       });
     });
     root.querySelectorAll('.attack-btn').forEach((btn) => {

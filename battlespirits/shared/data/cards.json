@@ -4,20 +4,25 @@
     "id": "卡片唯一編號",
     "name": "卡名",
     "set": "所屬系列代碼（對應 sets.json）",
-    "type": "spirit | nexus | magic",
+    "type": "spirit | nexus | magic | ultimate（究極，見下方說明）",
     "colors": "本卡顯示的顏色符號陣列（white/red/yellow/blue/green/purple）",
-    "cost": "總核心數需求",
+    "cost": "總核心數需求（究極卡若只能特殊召喚可設為0）",
     "costSymbols": "至少需滿足的顏色符號需求 {color: count}",
-    "bp": "戰鬥力（spirit/nexus才有；magic為null）",
+    "bp": "戰鬥力（spirit/nexus/ultimate才有；magic為null）",
     "lv": "等級（多階進化預留欄位，示範資料一律為1）",
     "family": "種族/家族標籤陣列",
-    "keywords": "關鍵字能力陣列，如 blocker/flash/doubleAttack",
+    "keywords": "關鍵字能力陣列，如 blocker/flash/doubleAttack/encore",
     "burst": "可設置的爆發效果，{condition, effectText} 或 null",
+    "awakening": "轉醒設定，{condition, afterId} 或 null；condition事件成立時自動翻面成 afterId 那張卡",
+    "awokenForm": "true 代表這是「轉醒後」的背面卡，不能直接放進卡組，只能透過轉醒抵達",
+    "kourin": "煌臨設定，{cost, targetFamily} 或 null；cost=煌臨所需核心數，targetFamily=可疊放的目標系統（空陣列=不限）",
+    "ultimateSummon": "究極卡的特殊召喚條件，{sacrificeCount} 或 null；需犧牲自己場上這麼多張卡片",
     "text": "效果文字（示範用簡化敘述）",
-    "contractCard": "是否為契約卡（每副牌限1張）",
+    "contractCard": "是否為契約卡（不算入主卡組張數，卡組另有 contractCardId 欄位指定）",
     "collab": "是否為合作卡",
     "collabSeries": "合作系列名稱（虛構示範）",
-    "rarity": "稀有度代碼"
+    "rarity": "稀有度代碼",
+    "image": "卡圖網址，null 時前端會顯示依顏色產生的佔位卡框"
   },
   "cards": [
     { "id": "DEMO-001", "name": "白之新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 1, "costSymbols": {"white": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈，示範用最低費卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
@@ -53,6 +58,15 @@
     { "id": "DEMO-031", "name": "無色核心使徒", "set": "DEMO-SET", "type": "spirit", "colors": [], "cost": 2, "costSymbols": {}, "bp": 2000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無顏色需求，任意2核心即可支付。示範用泛用卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
     { "id": "DEMO-032", "name": "核心迴收術", "set": "DEMO-SET", "type": "magic", "colors": [], "cost": 1, "costSymbols": {}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：將棄核區2個核心移回儲備區。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
     { "id": "DEMO-033", "name": "終焉裁決者", "set": "DEMO-SET", "type": "spirit", "colors": ["red", "purple"], "cost": 7, "costSymbols": {"red": 2, "purple": 2}, "bp": 8000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "text": "【Double Attack】示範卡池中最重量級的雙色精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-034", "name": "微光護符", "set": "DEMO-SET", "type": "magic", "colors": ["white"], "cost": 1, "costSymbols": {"white": 1}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": {"condition": "opponent-spirit-summoned", "effectText": "對手精靈召喚後：本卡無償從手牌覆蓋放置，之後可翻開讓自己抽1張牌。"}, "text": "可設置為爆發卡；對手召喚精靈時觸發抽卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" }
+    { "id": "DEMO-034", "name": "微光護符", "set": "DEMO-SET", "type": "magic", "colors": ["white"], "cost": 1, "costSymbols": {"white": 1}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": {"condition": "opponent-spirit-summoned", "effectText": "對手精靈召喚後：本卡無償從手牌覆蓋放置，之後可翻開讓自己抽1張牌。"}, "text": "可設置為爆發卡；對手召喚精靈時觸發抽卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
+
+    { "id": "DEMO-035", "name": "見習劍士", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 1500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "awakening": {"condition": "life-reduced", "afterId": "DEMO-036"}, "text": "【轉醒】自己生命核心減少後，自動翻面成「覺醒．聖裁劍聖」，不需額外付費。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
+    { "id": "DEMO-036", "name": "覺醒．聖裁劍聖", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 4000, "lv": 1, "family": ["human"], "keywords": ["doubleAttack"], "burst": null, "awokenForm": true, "text": "【轉醒後】「見習劍士」轉醒後的樣貌，BP大幅提升並獲得【Double Attack】。此面不能直接放進卡組，只能透過轉醒抵達。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
+
+    { "id": "DEMO-037", "name": "煌臨．聖光天使", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 4, "costSymbols": {"white": 2}, "bp": 4000, "lv": 1, "family": ["angel"], "keywords": ["blocker"], "burst": null, "kourin": {"cost": 2, "targetFamily": ["human"]}, "text": "【煌臨：2核心／人系】也可以直接支付4費一般召喚；若改用煌臨疊放在自己場上的人系卡片上，不算召喚（不會觸發對手的「精靈召喚」類效果），且保留原本疊放對象的核心。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
+
+    { "id": "DEMO-038", "name": "究極．滅世龍神", "set": "DEMO-SET", "type": "ultimate", "colors": ["red", "purple"], "cost": 0, "costSymbols": {}, "bp": 10000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "ultimateSummon": {"sacrificeCount": 2}, "text": "【究極／特殊召喚】不能一般召喚。犧牲自己場上2張卡片即可特殊召喚，登場後獲得極高BP與【Double Attack】。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "UR" },
+
+    { "id": "DEMO-039", "name": "核心之礎", "set": "DEMO-SET", "type": "spirit", "colors": [], "cost": 1, "costSymbols": {}, "bp": 500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無顏色需求的最低費填充卡，用於湊卡組張數的示範用卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" }
   ]
 }

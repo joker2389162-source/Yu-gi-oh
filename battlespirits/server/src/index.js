@@ -78,11 +78,11 @@ function send(ws, msg) {
 
 function assertCanAct(game, idx, name) {
   const active = game.activePlayerIndex;
-  if (['play', 'set-burst', 'attach-core'].includes(name)) {
+  if (['play', 'set-burst', 'attach-core', 'kourin', 'special-summon-ultimate'].includes(name)) {
     if (game.pendingAttack) throw new Error('攻擊結算中，請先處理完攻擊');
     if (idx !== active) throw new Error('現在不是你的回合');
     if (name === 'attach-core' && game.currentStep !== 'core') throw new Error('現在不是核心步驟');
-    if ((name === 'play' || name === 'set-burst') && !['main', 'main2'].includes(game.currentStep)) {
+    if (['play', 'set-burst', 'kourin', 'special-summon-ultimate'].includes(name) && !['main', 'main2'].includes(game.currentStep)) {
       throw new Error('現在不是主要步驟');
     }
   }
@@ -109,6 +109,8 @@ const ACTION_HANDLERS = {
   'declare-attack': (game, idx, payload) => game.declareAttack(idx, payload.attackerUid),
   'declare-block': (game, idx, payload) => game.declareBlock(idx, payload.blockerUid || null),
   'activate-burst': (game, idx, payload) => game.activateBurst(idx, payload.uid),
+  kourin: (game, idx, payload) => game.kourinPlace(idx, payload.handIndex, payload.targetUid),
+  'special-summon-ultimate': (game, idx, payload) => game.specialSummonUltimate(idx, payload.handIndex, payload.sacrificeUids || []),
   'next-step': (game) => game.nextStep(),
 };
 

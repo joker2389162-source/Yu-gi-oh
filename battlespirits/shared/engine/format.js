@@ -7,11 +7,13 @@ export const FORMATS = {
 export const DECK_RULES = {
   mainDeckMin: 40,
   maxCopiesDefault: 3,
-  maxContractCards: 1,
 };
 
-// deck: { name, format, main: [{id, qty}] }
+// deck: { name, format, main: [{id, qty}], contractCardId?: string }
 // db: createCardDatabase() 的回傳物件
+//
+// 契約卡（Contract）不算入主卡組張數，是獨立欄位：開局時直接進手牌，
+// 不與主卡組同一疊抽取，所以主卡組（main）裡不能放契約卡本身。
 export function validateDeck(deck, db) {
   const errors = [];
   const warnings = [];
@@ -22,7 +24,6 @@ export function validateDeck(deck, db) {
   }
 
   let total = 0;
-  let contractCount = 0;
   const seen = new Map();
 
   for (const entry of deck.main) {
@@ -40,7 +41,9 @@ export function validateDeck(deck, db) {
     total += entry.qty;
     seen.set(entry.id, (seen.get(entry.id) || 0) + entry.qty);
 
-    if (card.contractCard) contractCount += entry.qty;
+    if (card.contractCard) {
+      errors.push(`${card.name} 是契約卡，不能放進主卡組，請用「契約卡」欄位指定`);
+    }
 
     if (!db.isCardLegal(entry.id, deck.format)) {
       errors.push(`${card.name}（${entry.id}）在「${FORMATS[deck.format].label}」中不合法（輪替範圍外或已被禁止）`);
@@ -52,8 +55,18 @@ export function validateDeck(deck, db) {
     }
   }
 
-  if (contractCount > DECK_RULES.maxContractCards) {
-    errors.push(`契約卡總數超過限制（最多 ${DECK_RULES.maxContractCards} 張，目前 ${contractCount} 張）`);
+  let contractCard = null;
+  if (deck.contractCardId) {
+    try {
+      contractCard = db.getCard(deck.contractCardId);
+      if (!contractCard.contractCard) {
+        errors.push(`${contractCard.name} 不是契約卡，不能放在「契約卡」欄位`);
+      } else if (!db.isCardLegal(deck.contractCardId, deck.format)) {
+        errors.push(`${contractCard.name}（${deck.contractCardId}）在「${FORMATS[deck.format].label}」中不合法`);
+      }
+    } catch {
+      errors.push(`未知的契約卡編號: ${deck.contractCardId}`);
+    }
   }
 
   if (total < DECK_RULES.mainDeckMin) {
@@ -64,5 +77,5 @@ export function validateDeck(deck, db) {
     warnings.push(`主卡組張數為 ${total} 張，官方標準構築通常剛好 ${DECK_RULES.mainDeckMin} 張，非必要但建議調整。`);
   }
 
-  return { valid: errors.length === 0, errors, warnings, total, contractCount };
+  return { valid: errors.length === 0, errors, warnings, total, contractCard };
 }

@@ -23,13 +23,19 @@ export const deckStore = {
     return cache.find((d) => d.id === id) || null;
   },
   create(name, format) {
-    const deck = { id: `deck_${Date.now()}_${Math.floor(Math.random() * 1000)}`, name, format, main: [] };
+    const deck = { id: `deck_${Date.now()}_${Math.floor(Math.random() * 1000)}`, name, format, main: [], contractCardId: null };
     cache.push(deck);
     save(cache);
     return deck;
   },
   cloneFrom(source, newName) {
-    const deck = { id: `deck_${Date.now()}_${Math.floor(Math.random() * 1000)}`, name: newName, format: source.format, main: source.main.map((e) => ({ ...e })) };
+    const deck = {
+      id: `deck_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      name: newName,
+      format: source.format,
+      main: source.main.map((e) => ({ ...e })),
+      contractCardId: source.contractCardId || null,
+    };
     cache.push(deck);
     save(cache);
     return deck;

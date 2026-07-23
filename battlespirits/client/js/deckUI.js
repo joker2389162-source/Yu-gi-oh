@@ -85,15 +85,34 @@ export function initDeckTab({ db, deckStore, startersData, setEditingDeckId, get
       </div>
       <p class="deck-desc">${FORMATS[deck.format]?.desc || ''}</p>
       <div class="deck-status ${result.valid ? 'ok' : 'bad'}">
-        ${result.valid ? `✅ 合法卡組（${total}張）` : `❌ 不合法（${total}張）`}
+        ${result.valid ? `✅ 合法卡組（主卡組${total}張）` : `❌ 不合法（主卡組${total}張）`}
         ${result.errors.map((e) => `<div class="err">・${e}</div>`).join('')}
         ${result.warnings.map((w) => `<div class="warn">・${w}</div>`).join('')}
+      </div>
+      <div class="contract-slot">
+        <strong>契約卡（不算入主卡組張數，開局直接進手牌）：</strong>
+        ${deck.contractCardId
+          ? (() => {
+              try {
+                const cc = db.getCard(deck.contractCardId);
+                return `${cc.name}（${cc.id}） <button id="deck-clear-contract" class="danger-small">移除</button>`;
+              } catch {
+                return `未知卡片：${deck.contractCardId} <button id="deck-clear-contract" class="danger-small">移除</button>`;
+              }
+            })()
+          : '（尚未指定，到「卡片資料庫」分頁找契約卡點「設為契約卡」）'}
       </div>
       <div class="deck-actions">
         <button id="deck-export-btn">複製卡表文字</button>
       </div>
       <div id="deck-card-list" class="deck-card-list"></div>
     `;
+
+    root.querySelector('#deck-clear-contract')?.addEventListener('click', () => {
+      deckStore.update(deck.id, { contractCardId: null });
+      renderEditor();
+      cardsUIRef.render();
+    });
 
     root.querySelector('#deck-name-input').onchange = (e) => {
       deckStore.update(deck.id, { name: e.target.value });
@@ -106,7 +125,8 @@ export function initDeckTab({ db, deckStore, startersData, setEditingDeckId, get
     };
     root.querySelector('#deck-export-btn').onclick = () => {
       const lines = deck.main.map((e) => `${e.qty}x ${db.getCard(e.id).name}（${e.id}）`);
-      const text = `${deck.name}\n${lines.join('\n')}`;
+      const contractLine = deck.contractCardId ? `契約卡：${db.getCard(deck.contractCardId).name}（${deck.contractCardId}）` : '';
+      const text = [`${deck.name}`, contractLine, ...lines].filter(Boolean).join('\n');
       navigator.clipboard?.writeText(text);
       alert('已複製卡表文字到剪貼簿（若瀏覽器阻擋剪貼簿權限，請手動複製下方內容）：\n\n' + text);
     };

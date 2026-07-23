@@ -10,6 +10,9 @@
   --ok: #4caf7d;
   --bad: #e0605a;
   --collab: #b98cff;
+  --awaken: #ff7ea8;
+  --kourin: #4de0c8;
+  --ultimate: #ffd166;
 }
 
 * { box-sizing: border-box; }
@@ -77,7 +80,17 @@ body {
 .tag { background: var(--panel-2); border-radius: 4px; padding: 1px 6px; font-size: 11px; }
 .tag--contract { color: var(--accent-2); }
 .tag--collab { color: var(--collab); }
+.tag--awaken { color: var(--awaken); }
+.tag--kourin { color: var(--kourin); }
+.tag--ultimate { color: var(--ultimate); }
 .bs-add-btn { margin-top: 6px; background: var(--accent); border: none; color: #0b1220; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+.bs-add-btn--contract { background: var(--accent-2); }
+.bs-card--awoken-form { opacity: .7; border-style: dashed; }
+
+.bs-card-art { width: 100%; height: 90px; border-radius: 6px; object-fit: cover; margin-bottom: 4px; }
+.bs-card-art--placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(0,0,0,.65); text-shadow: 0 1px 1px rgba(255,255,255,.3); font-size: 11px; text-align: center; padding: 4px; gap: 2px; }
+.bs-card-art--placeholder .art-type { font-size: 10px; opacity: .8; }
+.bs-card-art--placeholder .art-name { font-weight: 700; font-size: 12px; }
 
 /* ---- 卡組編輯 ---- */
 .deck-layout { display: flex; gap: 20px; align-items: flex-start; }
@@ -100,6 +113,7 @@ body {
 .deck-status.bad { background: rgba(224,96,90,.15); color: var(--bad); }
 .deck-status .err { font-size: 12px; }
 .deck-status .warn { font-size: 12px; color: var(--accent-2); }
+.contract-slot { background: var(--panel); border: 1px solid var(--accent-2); border-radius: 6px; padding: 8px 10px; font-size: 13px; margin-bottom: 10px; }
 .deck-actions { margin-bottom: 10px; }
 .deck-actions button { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); cursor: pointer; }
 .deck-card-list { display: flex; flex-direction: column; gap: 4px; }
@@ -128,6 +142,12 @@ code { background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
 .player-stats { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
 .field { display: flex; gap: 8px; flex-wrap: wrap; min-height: 60px; }
 .field-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 12px; cursor: default; min-width: 100px; }
+.field-card--selectable { cursor: pointer; border-color: var(--kourin); box-shadow: 0 0 0 1px var(--kourin); }
+.field-card--chosen { border-color: var(--ultimate); box-shadow: 0 0 0 2px var(--ultimate); }
+.selection-box { background: rgba(77,224,200,.1); border: 1px solid var(--kourin); border-radius: 8px; padding: 10px; font-size: 13px; margin: 8px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.selection-box button { padding: 6px 12px; border-radius: 6px; border: none; background: var(--kourin); color: #08201c; cursor: pointer; }
+.selection-box button:disabled { opacity: .4; cursor: not-allowed; }
+.selection-box #cancel-selection-btn { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
 .fc-name { font-weight: 600; }
 .fc-kw { color: var(--accent); font-size: 11px; }
 
