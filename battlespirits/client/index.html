@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Battle Spirits 線上對戰（地基版 / 開發中）</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">戰</span>
+      <div>
+        <h1>Battle Spirits 線上卡牌遊戲</h1>
+        <p class="sub">地基版：規則引擎／卡組編輯／單機對戰／連線對戰　—　卡片資料為系統示範資料，非官方完整卡表</p>
+      </div>
+    </div>
+  </header>
+
+  <div id="load-status" class="status">載入卡片資料中...</div>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="cards">🔍 卡片資料庫</button>
+    <button class="tab-btn" data-tab="deck">🗂️ 卡組編輯</button>
+    <button class="tab-btn" data-tab="play">⚔️ 對戰</button>
+  </nav>
+
+  <main>
+    <section id="tab-cards" class="tab-panel active"></section>
+    <section id="tab-deck" class="tab-panel"></section>
+    <section id="tab-play" class="tab-panel"></section>
+  </main>
+
+  <footer class="foot">
+    本專案為原創「地基」開發版，規則依公開規則摘要整理、卡片資料為系統示範資料（含虛構示範合作卡），非任何官方 Battle Spirits 卡表的逐字重製。
+    詳見 <a href="../README.md">README</a>。
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

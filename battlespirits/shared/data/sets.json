@@ -1,0 +1,24 @@
+{
+  "_readme": "系列(彈)清單，用來判斷標準賽輪替合法性。此檔案為資料驅動設計：新增新彈只要加一筆物件即可，不用改引擎程式碼。releaseDate/standardFrom 等日期請對照官方最新公告校正 —— 目前環境無法直接爬取 battlespirits.com，此處僅先建立結構與少量示範資料。",
+  "sets": [
+    {
+      "code": "DEMO-SET",
+      "name": "示範資料集（系統測試用，非官方彈）",
+      "releaseDate": "2026-01-01",
+      "standardLegal": true,
+      "collab": false
+    },
+    {
+      "code": "DEMO-COLLAB-01",
+      "name": "示範合作彈（虛構聯名，用於展示合作卡欄位，非任何真實作品）",
+      "releaseDate": "2026-02-01",
+      "standardLegal": true,
+      "collab": true,
+      "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）"
+    }
+  ],
+  "standardRotation": {
+    "_note": "官方標準賽採輪替制：僅特定期間後發售的系列可用（依 2026 現行公告，約為近期彈）。請以最新官方標準賽規則手冊/禁限公告校正下列日期。",
+    "cutoffDate": "2024-04-01"
+  }
+}
