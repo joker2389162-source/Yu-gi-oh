@@ -26,8 +26,18 @@
    card_no／稀有度／卡名／費用／屬性色／種類（精靈・據點・魔法）／系統(家族)，**都是真的官方
    資料，卡名沒有一個字是我編的**。但 `bp`（戰鬥力）與 `text`（效果文字）目前是 `null`——官方
    列表頁的縮圖格線視圖沒有顯示這兩項，要點開每張卡片的詳細彈窗（`detail_iframe.php`）才有，
-   靜態存檔沒有連帶存到，所以這批卡還不能直接拿來對戰。要繼續收錄其他系列或補上 bp/效果文字，
-   歡迎使用者提供更多存檔（見下方「怎麼補完卡表」）。
+   靜態存檔沒有連帶存到，所以這批卡還不能直接拿來對戰。
+   **`tools/scrape-card-detail.mjs`** 是補上 bp/效果文字用的抓取小工具——這個 repo 執行環境連不到
+   battlespirits.com，所以**要在你自己的電腦上跑**（不是在雲端沙盒裡）：
+   ```bash
+   cd battlespirits/tools
+   npm install
+   node scrape-card-detail.mjs 26RBS02   # 26RBS02 換成你要補的系列代碼
+   ```
+   跑完會直接把 `bp`／`text`／`image` 補進 `shared/data/real/26RBS02.json`，把更新後的檔案傳回來
+   給我即可。這支腳本是照著list頁面已知的 `<dt>標籤</dt><dd>內容</dd>` 格式去猜詳細彈窗的欄位
+   名稱寫的，我沒看過真正的彈窗HTML，如果抓出來的 bp/text 怪怪的，`shared/data/real/_raw/` 底下
+   會留原始HTML，傳1~2個檔案給我，我就能把解析邏輯改對再請你重跑。
 2. **合作卡（collab）目前只有 1 組虛構示範聯名**（`DEMO-COLLAB-01`，「銀河守護隊」），
    刻意用假的 IP 名稱，不代表任何真實作品的合作卡。要收錄真正的官方合作卡，一樣是往
    `cards.json` / `sets.json` 加資料即可，資料結構已經支援 `collab` / `collabSeries` 欄位。
@@ -76,6 +86,8 @@ battlespirits/
       official-reference.json  真實官方參考資料（系列/家族/稀有度代碼，見上方限制說明第1點）
       real/
         26RBS02.json        真實卡片資料（117張，缺bp/效果文字，見上方限制說明第1點）
+  tools/                 在自己電腦上跑的資料抓取小工具（不是雲端沙盒用的）
+    scrape-card-detail.mjs  補齊 shared/data/real/*.json 裡 bp/效果文字/卡圖的抓取腳本
   server/                自架用 WebSocket 連線對戰伺服器（Node.js）
     src/index.js
     scripts/simulate.mjs  開發用自我測試（跑一整場 AI vs AI 模擬對局）
