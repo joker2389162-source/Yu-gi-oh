@@ -1,5 +1,5 @@
 /* Service Worker：App 殼層離線快取 + 卡圖執行時快取 */
-const VERSION = "ygo-v6";
+const VERSION = "ygo-v7";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 

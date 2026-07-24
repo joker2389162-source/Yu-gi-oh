@@ -469,5 +469,91 @@ const Builder = (function () {
     return { deck: best.deck, eval: best.eval, attempts: tries, threshold: threshold };
   }
 
-  return { build: build, buildFromKeyword: buildFromKeyword, evaluateDeck: evaluateDeck, buildBest: buildBest };
+  /* ---------- 對戰模擬（抽象）----------
+   * 非逐卡結算，而是以「起手能否展開、手坑妨害、破場、先後手」的模型模擬雙方對局。
+   */
+  // 依卡片效果為任一卡組標記角色（供對戰/測試手牌用）。getCard(id) 回傳索引中的卡片物件。
+  function classifyRoles(deck, getCard) {
+    const roles = {};
+    const htSet = {}; HANDTRAPS.forEach(function (h) { htSet[h.id] = 1; });
+    const bkSet = {}; BREAKERS.forEach(function (b) { bkSet[b.id] = 1; }); GENERIC_TRAPS.forEach(function (t) { bkSet[t.id] = 1; });
+    (deck.main || []).forEach(function (x) {
+      if (htSet[x.id]) { roles[x.id] = "handtrap"; return; }
+      if (bkSet[x.id]) { roles[x.id] = "breaker"; return; }
+      const c = getCard ? getCard(x.id) : null;
+      if (!c) { roles[x.id] = "neutral"; return; }
+      if (c.kind === "trap") { roles[x.id] = "interrupt"; return; }
+      const d = (c.desc || "") + " " + (c.pdesc || "");
+      const searcher = /加入手[卡札]|检索|檢索/.test(d);
+      const ssDeck = /从卡组[^。；\n]{0,16}特殊召唤|從卡組[^。；\n]{0,16}特殊召喚/.test(d);
+      const ssSelf = /这张卡[^。；\n]{0,14}特殊召唤|這張卡[^。；\n]{0,14}特殊召喚/.test(d);
+      const lv = Number(c.level) || 0;
+      if (c.kind === "spell") { roles[x.id] = (searcher || ssDeck) ? "starter" : "spell"; return; }
+      if (/通常/.test(c.typeLine || "")) { roles[x.id] = "brick"; return; }
+      if (searcher || ssDeck) roles[x.id] = "starter";
+      else if (ssSelf) roles[x.id] = "extender";
+      else if (lv <= 4) roles[x.id] = "starter";
+      else if (lv <= 6) roles[x.id] = "mid";
+      else roles[x.id] = "payoff";
+    });
+    return roles;
+  }
+  function bagFromDeck(deck, roles) {
+    const bag = [];
+    (deck.main || []).forEach(function (x) { for (let i = 0; i < x.q; i++) bag.push(roles[x.id] || "neutral"); });
+    return bag;
+  }
+  function handInfo(bag, n) {
+    const used = {}; let s = 0, m = 0, h = 0, bk = 0, iv = 0; const N = bag.length; let k = 0;
+    while (k < n && k < N) { const j = Math.floor(Math.random() * N); if (used[j]) continue; used[j] = 1;
+      const r = bag[j];
+      if (r === "starter" || r === "extender") s++; else if (r === "mid") m++;
+      else if (r === "handtrap") h++; else if (r === "breaker") bk++; else if (r === "interrupt") iv++; k++;
+    }
+    return { s: s, m: m, h: h, bk: bk, iv: iv };
+  }
+  function playGame(first, second, cap) {
+    const f = handInfo(first, 5), s = handInfo(second, 6);
+    const fOpen = f.s >= 1 || f.m >= 2;
+    // 先手盤面壓縮在 2..4（不隨展開怪線性膨脹），避免引擎大就壓倒
+    let fBoard = fOpen ? (2 + (f.s >= 2 ? 1 : 0) + (f.s >= 3 && Math.random() < 0.6 ? 1 : 0)) : 0;
+    const disr = Math.min(fBoard, Math.round(s.h * 0.5 + (s.h >= 2 ? 0.3 : 0)));
+    fBoard = Math.max(0, fBoard - disr);
+    const sOpen = s.s >= 1 || s.m >= 2;
+    const sBreak = s.bk + (sOpen ? 2 : 0) + (s.s >= 2 ? 1 : 0);
+    let winner, reason;
+    if (fBoard === 0) {
+      if (sOpen) { winner = "second"; reason = fOpen ? "先手盤被手坑（" + disr + "）打空，後手接管" : "先手卡手，後手順利展開接管"; }
+      else { winner = Math.random() < 0.55 ? "first" : "second"; reason = "雙方難以展開，混戰"; }
+    } else {
+      const margin = sBreak - fBoard;
+      let pSecond = 0.2 + margin * 0.16;              // 先手立盤有利，後手需足夠破場才翻盤
+      pSecond = Math.max(0.05, Math.min(0.85, pSecond));
+      if (Math.random() < pSecond) { winner = "second"; reason = "後手破場（" + sBreak + "）壓過先手 " + fBoard + " 妨害"; }
+      else { winner = "first"; reason = "先手 " + fBoard + " 妨害擋下後手破場（" + sBreak + "）"; }
+    }
+    if (cap) cap({ fOpen: fOpen, fBoard: fBoard, disr: disr, sOpen: sOpen, sBreak: sBreak, winner: winner, reason: reason });
+    return winner;
+  }
+  // A = 我方卡組角色包，B = 對手；回傳勝率（總/先手/後手）與少量戰況樣本
+  function simulateMatch(bagA, bagB, games) {
+    games = games || 1000;
+    let aWin = 0, aF = 0, aFW = 0, aS = 0, aSW = 0; const logs = [];
+    for (let g = 0; g < games; g++) {
+      const aFirst = g % 2 === 0;
+      const first = aFirst ? bagA : bagB, second = aFirst ? bagB : bagA;
+      let cap = null;
+      if (logs.length < 5 && g % 97 === 0) cap = function (o) { o.aFirst = aFirst; logs.push(o); };
+      const w = playGame(first, second, cap);
+      const aWon = (aFirst && w === "first") || (!aFirst && w === "second");
+      if (aWon) aWin++;
+      if (aFirst) { aF++; if (aWon) aFW++; } else { aS++; if (aWon) aSW++; }
+    }
+    return { winRate: 100 * aWin / games, firstRate: aF ? 100 * aFW / aF : 0, secondRate: aS ? 100 * aSW / aS : 0, games: games, logs: logs };
+  }
+
+  return {
+    build: build, buildFromKeyword: buildFromKeyword, evaluateDeck: evaluateDeck, buildBest: buildBest,
+    classifyRoles: classifyRoles, bagFromDeck: bagFromDeck, simulateMatch: simulateMatch, handInfo: handInfo,
+  };
 })();

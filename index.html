@@ -33,6 +33,7 @@
     <button class="tab active" data-tab="search">🔍 卡片搜索</button>
     <button class="tab" data-tab="meta">🏆 流行構築</button>
     <button class="tab" data-tab="builder">🛠️ 卡組生成器</button>
+    <button class="tab" data-tab="battle">⚔️ 對戰模擬</button>
   </nav>
 
   <main>
@@ -127,6 +128,31 @@
         </div>
       </div>
       <div id="builder-output"></div>
+    </section>
+
+    <!-- 對戰模擬 -->
+    <section id="tab-battle" class="tab-panel">
+      <div class="notice">
+        ⚔️ 這是<strong>抽象對戰模擬</strong>：以「起手能否展開、手坑妨害、破場、先後手」的模型模擬雙方多局對局，
+        給出勝率與戰況摘要。<strong>並非逐卡結算的完整對局</strong>（那是 EDOPro 等級工程），用於相對比較卡組強度。
+      </div>
+      <div class="battle-form card-panel">
+        <h2>對戰模擬</h2>
+        <p id="battle-mydeck" class="status">我的卡組：載入中…</p>
+        <div class="form-grid">
+          <label>對手卡組
+            <select id="bt-oppo"></select>
+          </label>
+          <label id="bt-kw-wrap" style="display:none">對手關鍵字
+            <input id="bt-kw" type="search" placeholder="例：雷火沸动机 / 蛇眼" />
+          </label>
+        </div>
+        <div class="meta-acts">
+          <button id="bt-run" class="primary">⚔️ 開始對戰模擬（1000 局）</button>
+          <button id="bt-hand">🎴 測試手牌（我的卡組）</button>
+        </div>
+      </div>
+      <div id="battle-output"></div>
     </section>
   </main>
 

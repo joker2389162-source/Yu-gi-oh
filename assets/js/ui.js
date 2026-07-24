@@ -508,6 +508,115 @@ const UI = (function () {
     parent.appendChild(g);
   }
 
+  /* ---------- 對戰模擬 ---------- */
+  const ROLE_LABEL = { starter: "展開", extender: "延展", mid: "中階", payoff: "大怪", handtrap: "手坑", breaker: "破場", interrupt: "陷阱", spell: "魔法", brick: "素材/通常", neutral: "其他" };
+  function metaToDeck(d) {
+    const map = {}, order = [];
+    (d.core || []).concat(d.engine || [], d.staples || []).forEach(function (c) {
+      if (c.q <= 0) return;
+      if (!map[c.id]) { map[c.id] = { id: c.id, n: c.n, q: 0 }; order.push(c.id); }
+      map[c.id].q += c.q;
+    });
+    return { main: order.map(function (id) { return map[id]; }), extra: (d.extra || []).map(function (c) { return { id: c.id, n: c.n, q: c.q }; }) };
+  }
+  function initBattle() {
+    const sel = $("#bt-oppo");
+    META_DECKS.forEach(function (d) { const o = elem("option"); o.value = "meta:" + d.id; o.textContent = esc(d.name); sel.appendChild(o); });
+    const ok = elem("option"); ok.value = "kw"; ok.textContent = "自訂關鍵字生成對手…"; sel.appendChild(ok);
+    sel.onchange = function () { $("#bt-kw-wrap").style.display = sel.value === "kw" ? "" : "none"; };
+    $("#bt-run").onclick = runBattle;
+    $("#bt-hand").onclick = testHand;
+    Deck.onChange(updateMyDeckStatus);
+    updateMyDeckStatus();
+  }
+  function updateMyDeckStatus() {
+    const el = $("#battle-mydeck"); if (!el) return;
+    const n = Deck.count("main");
+    el.innerHTML = n >= 30 ? "我的卡組：主卡組 <b>" + n + "</b> 張（來自「我的卡組」）" + (n < 40 ? "（建議湊滿 40）" : "")
+      : "⚠️ 我的卡組還沒有卡。請到「卡組生成器」生成後「匯入到我的卡組」，或在「流行構築」匯入一副。";
+  }
+  async function getMyBag() {
+    await YGO.loadIndex().catch(function () {});
+    const my = Deck.get();
+    const roles = Builder.classifyRoles(my, YGO.cardSync);
+    return { deck: my, bag: Builder.bagFromDeck(my, roles), roles: roles };
+  }
+  async function getOppo() {
+    const v = $("#bt-oppo").value;
+    if (v.indexOf("meta:") === 0) {
+      const d = META_DECKS.find(function (x) { return x.id === v.slice(5); });
+      const dk = metaToDeck(d);
+      const roles = Builder.classifyRoles(dk, YGO.cardSync);
+      return { name: d.name, bag: Builder.bagFromDeck(dk, roles) };
+    }
+    const kw = S2T.query($("#bt-kw").value.trim() || "雷火沸动机");
+    const r = await YGO.searchLocal(kw);
+    const res = Builder.buildBest(kw, r.cards, { style: "auto", budget: "high", size: 40, extraMax: 15, owned: {}, ownedOnly: false }, 60);
+    return { name: S2T.disp(kw), bag: Builder.bagFromDeck(res.deck, res.deck.roles) };
+  }
+  async function runBattle() {
+    const out = $("#battle-output");
+    if (Deck.count("main") < 30) { out.innerHTML = "<div class='card-panel'><p class='status'>請先讓「我的卡組」有卡片（到生成器生成後「匯入到我的卡組」，或在流行構築匯入一副）。</p></div>"; return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" + (YGO.indexReady() ? "" : "首次載入卡庫 · ") + "模擬對戰中…</p></div>";
+    try {
+      const me = await getMyBag();
+      const op = await getOppo();
+      const r = Builder.simulateMatch(me.bag, op.bag, 1000);
+      renderBattle(r, op.name);
+    } catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>模擬失敗：" + esc(e.message) + "</p></div>"; }
+  }
+  function renderBattle(r, oppName) {
+    const out = $("#battle-output"); out.innerHTML = "";
+    const panel = elem("div", "card-panel");
+    const wr = Math.round(r.winRate);
+    const box = elem("div", "winrate " + (wr >= 50 ? "pass" : "fail"));
+    box.innerHTML = "<div class='wr-big'>對「" + esc(S2T.disp(oppName)) + "」勝率 <b>" + wr + "%</b></div>" +
+      "<div class='wr-sub'>模擬 " + r.games + " 局 · 先手勝率 " + Math.round(r.firstRate) + "% · 後手勝率 " + Math.round(r.secondRate) + "%</div>";
+    panel.appendChild(box);
+    panel.appendChild(elem("h4", null, "戰況樣本"));
+    r.logs.forEach(function (l, i) {
+      const youFirst = l.aFirst;
+      const youWon = (l.aFirst && l.winner === "first") || (!l.aFirst && l.winner === "second");
+      const line = elem("p", "battle-log " + (youWon ? "win" : "lose"));
+      line.textContent = "第 " + (i + 1) + " 局 · 你" + (youFirst ? "先攻" : "後攻") + "：" + l.reason + " → " + (youWon ? "✅ 你贏" : "❌ 對手贏");
+      panel.appendChild(line);
+    });
+    panel.appendChild(elem("p", "note-line", "＊抽象模擬（起手／手坑／破場模型），非逐卡結算；用於相對比較卡組強度。"));
+    out.appendChild(panel);
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function sampleN(N, n) { const used = {}, res = []; let k = 0; while (k < n && k < N) { const j = Math.floor(Math.random() * N); if (used[j]) continue; used[j] = 1; res.push(j); k++; } return res; }
+  async function testHand() {
+    const out = $("#battle-output");
+    if (Deck.count("main") < 30) { out.innerHTML = "<div class='card-panel'><p class='status'>請先讓「我的卡組」有卡片（生成後匯入）。</p></div>"; return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>抽牌中…</p></div>";
+    const me = await getMyBag();
+    const pool = []; me.deck.main.forEach(function (x) { for (let i = 0; i < x.q; i++) pool.push(x.id); });
+    const hand = sampleN(pool.length, 5).map(function (i) { return pool[i]; });
+    renderHand(hand, me.roles);
+  }
+  function renderHand(handIds, roles) {
+    const out = $("#battle-output"); out.innerHTML = "";
+    const panel = elem("div", "card-panel");
+    const starters = handIds.filter(function (id) { return roles[id] === "starter" || roles[id] === "extender"; }).length;
+    const hts = handIds.filter(function (id) { return roles[id] === "handtrap"; }).length;
+    const bricks = handIds.filter(function (id) { return roles[id] === "brick" || roles[id] === "payoff"; }).length;
+    panel.appendChild(elem("h2", null, "測試手牌（先手 5 張）"));
+    panel.appendChild(elem("p", "status", (starters >= 1 ? "✅ 可展開" : "⚠️ 可能卡手") + " · 展開牌 " + starters + " · 手坑 " + hts + " · 素材/大怪 " + bricks));
+    const g = elem("div", "grid small");
+    handIds.forEach(function (id) {
+      const c = YGO.cardSync(id) || { id: id };
+      const t = tile({ id: id, n: c.name || String(id), typeLine: c.typeLine }, { add: false });
+      t.appendChild(elem("span", "hand-role", ROLE_LABEL[roles[id] || "neutral"] || ""));
+      g.appendChild(t);
+    });
+    panel.appendChild(g);
+    const acts = elem("div", "meta-acts");
+    const re = elem("button", "primary", "🔄 重抽"); re.onclick = testHand;
+    acts.appendChild(re); panel.appendChild(acts);
+    out.appendChild(panel);
+  }
+
   /* ---------- 我的卡組抽屜 ---------- */
   function openDrawer() { $("#deck-drawer").setAttribute("aria-hidden", "false"); renderDeck(); }
   function closeDrawer() { $("#deck-drawer").setAttribute("aria-hidden", "true"); }
@@ -590,6 +699,7 @@ const UI = (function () {
   function init() {
     initTabs();
     initBuilder();
+    initBattle();
     renderMetaList();
 
     $("#q-btn").onclick = function () { runSearch($("#q").value); };

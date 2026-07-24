@@ -185,5 +185,6 @@ const YGO = (function () {
     return merged;
   }
 
-  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, _cache: mem };
+  function cardSync(id) { return mem[id] || null; }
+  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, cardSync, _cache: mem };
 })();
