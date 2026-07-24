@@ -37,9 +37,19 @@ const UI = (function () {
     if (opts.q) { const b = elem("span", "qty", "×" + opts.q); t.appendChild(b); }
     else if (item.q) { const b = elem("span", "qty", "×" + item.q); t.appendChild(b); }
     t.appendChild(imgEl(id, name));
+    // MD 稀有度徽章
+    const rar = (typeof Collection !== "undefined") ? Collection.rarityOf(id) : null;
+    if (rar) t.appendChild(elem("span", "rarity r-" + rar, rar));
+    // 我有此卡（◇/◆）
+    if (typeof Collection !== "undefined") {
+      const ownBtn = elem("button", "tile-own" + (Collection.has(id) ? " owned" : ""), Collection.has(id) ? "◆" : "◇");
+      ownBtn.title = "標記我有此卡";
+      ownBtn.onclick = function (ev) { ev.stopPropagation(); const now = Collection.toggle(id); ownBtn.classList.toggle("owned", now); ownBtn.textContent = now ? "◆" : "◇"; };
+      t.appendChild(ownBtn);
+    }
     const cap = elem("div", "tile-cap");
-    cap.appendChild(elem("span", "tile-name", esc(name)));
-    if (item.typeLine) cap.appendChild(elem("span", "tile-type", esc(item.typeLine)));
+    cap.appendChild(elem("span", "tile-name", esc(S2T.disp(name))));
+    if (item.typeLine) cap.appendChild(elem("span", "tile-type", esc(S2T.disp(item.typeLine))));
     t.appendChild(cap);
     if (opts.add !== false) {
       const add = elem("button", "tile-add", "＋");
@@ -56,7 +66,7 @@ const UI = (function () {
     if (!card) { try { card = await YGO.getById(id); } catch (e) {} }
     if (!card) card = { id: id, name: name, typeLine: "" };
     const r = Deck.add(card);
-    toast(r.ok ? "已加入：" + card.name : r.msg);
+    toast(r.ok ? "已加入：" + S2T.disp(card.name) : r.msg);
   }
 
   /* ---------- 卡片詳情彈窗 ---------- */
@@ -73,12 +83,12 @@ const UI = (function () {
     const big = imgEl(card.id, card.name); big.className = "modal-img";
     top.appendChild(big);
     const info = elem("div", "modal-info");
-    info.appendChild(elem("h3", null, esc(card.name)));
+    info.appendChild(elem("h3", null, esc(S2T.disp(card.name))));
     const meta = [];
     if (card.jp) meta.push(esc(card.jp));
     if (card.en) meta.push(esc(card.en));
     info.appendChild(elem("p", "modal-alt", meta.join(" ／ ")));
-    info.appendChild(elem("p", "modal-typeline", esc(card.typeLine)));
+    info.appendChild(elem("p", "modal-typeline", esc(S2T.disp(card.typeLine))));
     const stat = [];
     if (card.atk != null && card.kind === "monster") stat.push("攻 " + card.atk);
     if (card.def != null && card.kind === "monster") stat.push("守 " + card.def);
@@ -91,9 +101,9 @@ const UI = (function () {
     top.appendChild(info);
     panel.appendChild(top);
     if (card.pdesc) {
-      panel.appendChild(elem("div", "modal-pdesc", "<strong>靈擺效果</strong><br>" + esc(card.pdesc).replace(/\n/g, "<br>")));
+      panel.appendChild(elem("div", "modal-pdesc", "<strong>靈擺效果</strong><br>" + esc(S2T.disp(card.pdesc)).replace(/\n/g, "<br>")));
     }
-    panel.appendChild(elem("div", "modal-desc", esc(card.desc).replace(/\n/g, "<br>")));
+    panel.appendChild(elem("div", "modal-desc", esc(S2T.disp(card.desc)).replace(/\n/g, "<br>")));
   }
 
   function closeModal() { $("#card-modal").setAttribute("aria-hidden", "true"); }
@@ -102,29 +112,74 @@ const UI = (function () {
   let lastResults = [];
   let kindFilter = "all";
 
+  let lastNameCount = 0;
   async function runSearch(term) {
     term = (term || "").trim();
     if (!term) return;
     const status = $("#search-status");
     const grid = $("#search-results");
-    status.textContent = "搜索「" + term + "」中…";
+    status.textContent = YGO.indexReady() ? "搜索「" + term + "」中…" : "首次載入完整卡庫（約 1.5MB，含效果全文）…";
     grid.innerHTML = "";
-    let res = [];
-    try { res = await YGO.search(term); }
-    catch (e) { status.textContent = "搜索失敗：" + e.message + "（請檢查網路連線）"; return; }
-    lastResults = res;
+    const q = S2T.query(term);
+    let res;
+    try { res = await YGO.searchLocal(q); }
+    catch (e) {
+      // 索引載入失敗時回退線上卡名查詢
+      try { const arr = await YGO.search(q); res = { cards: arr, nameCount: arr.length }; }
+      catch (e2) { status.textContent = "搜索失敗：" + e2.message + "（請檢查網路連線）"; return; }
+    }
+    lastResults = res.cards;
+    lastNameCount = res.nameCount;
     renderSearch();
   }
 
+  function readFilters() {
+    return {
+      attr: $("#f-attr").value,
+      race: $("#f-race").value,
+      level: $("#f-level").value,
+      atk: $("#f-atk").value === "" ? null : Number($("#f-atk").value),
+      def: $("#f-def").value === "" ? null : Number($("#f-def").value),
+    };
+  }
+
+  function passFilters(c, f) {
+    if (kindFilter !== "all" && c.kind !== kindFilter) return false;
+    if (f.attr && c.attrCN !== f.attr) return false;
+    if (f.race && c.raceCN !== f.race) return false;
+    if (f.level && Number(c.level) !== Number(f.level)) return false;
+    if (f.atk != null) { if (c.atk == null || c.atk < 0 || c.atk < f.atk) return false; }
+    if (f.def != null) { if (c.isLink || c.def == null || c.def < 0 || c.def < f.def) return false; }
+    return true;
+  }
+
+  const RESULT_CAP = 300;
   function renderSearch() {
     const grid = $("#search-results");
     const status = $("#search-status");
     grid.innerHTML = "";
-    const list = lastResults.filter(function (c) { return kindFilter === "all" || c.kind === kindFilter; });
-    status.textContent = "共 " + lastResults.length + " 筆" +
-      (kindFilter === "all" ? "" : "（顯示 " + list.length + " 筆" + ({ monster: "怪獸", spell: "魔法", trap: "陷阱" }[kindFilter]) + "）");
-    if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合的卡片。</p>"; return; }
-    list.forEach(function (c) { grid.appendChild(tile(c)); });
+    const f = readFilters();
+    const list = lastResults.filter(function (c) { return passFilters(c, f); });
+    // 計算卡名/效果文本各多少（name hits 為 lastResults 前段）
+    const nameSet = {};
+    for (let i = 0; i < lastNameCount && i < lastResults.length; i++) nameSet[lastResults[i].id] = 1;
+    const nameCnt = list.filter(function (c) { return nameSet[c.id]; }).length;
+    const textCnt = list.length - nameCnt;
+    status.textContent = "共 " + list.length + " 筆（卡名 " + nameCnt + " · 效果文本 " + textCnt + "）" +
+      (list.length > RESULT_CAP ? " · 顯示前 " + RESULT_CAP : "");
+    if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合條件的卡片。可放寬篩選或按「重設」。</p>"; return; }
+    list.slice(0, RESULT_CAP).forEach(function (c) { grid.appendChild(tile(c)); });
+  }
+
+  const ATTRS = ["光", "暗", "地", "水", "炎", "风", "神"];
+  const RACES = ["战士", "魔法师", "天使", "恶魔", "不死", "机械", "水", "炎", "岩石", "鸟兽",
+    "植物", "昆虫", "雷", "龙", "兽", "兽战士", "恐龙", "鱼", "海龙", "爬虫类",
+    "念动力", "幻神兽", "创造神", "幻龙", "电子界", "幻想魔"];
+  function populateFilters() {
+    const fa = $("#f-attr"), fr = $("#f-race"), fl = $("#f-level");
+    ATTRS.forEach(function (a) { const o = elem("option"); o.value = a; o.textContent = S2T.disp(a); fa.appendChild(o); });
+    RACES.forEach(function (r) { const o = elem("option"); o.value = r; o.textContent = S2T.disp(r); fr.appendChild(o); });
+    for (let i = 1; i <= 12; i++) { const o = elem("option"); o.value = i; o.textContent = i; fl.appendChild(o); }
   }
 
   /* ---------- 流行構築 ---------- */
@@ -237,51 +292,198 @@ const UI = (function () {
 
   /* ---------- 生成器 ---------- */
   function initBuilder() {
-    const sel = $("#b-archetype");
-    BUILDER_ARCHETYPES.forEach(function (a) {
-      const o = elem("option"); o.value = a.key; o.textContent = a.label; sel.appendChild(o);
+    const box = $("#quick-themes");
+    QUICK_THEMES.forEach(function (g) {
+      const grp = elem("div", "qt-group");
+      grp.appendChild(elem("span", "qt-label", esc(g.group)));
+      g.items.forEach(function (it) {
+        const b = elem("button", "qt-chip", esc(it.label));
+        b.onclick = function () { $("#b-keyword").value = S2T.disp(it.kw); generate(); };
+        grp.appendChild(b);
+      });
+      box.appendChild(grp);
     });
     bindRange("#b-size", "#b-size-out");
-    bindRange("#b-ht", "#b-ht-out");
-    bindRange("#b-bk", "#b-bk-out");
-    sel.onchange = function () {
-      const eng = ENGINES[sel.value];
-      if (eng && eng.recommend) {
-        $("#b-ht").value = eng.recommend.handtraps; $("#b-ht-out").value = eng.recommend.handtraps;
-        $("#b-bk").value = eng.recommend.breakers; $("#b-bk-out").value = eng.recommend.breakers;
-      }
-    };
+    bindRange("#b-extra", "#b-extra-out");
     $("#b-generate").onclick = generate;
+    $("#b-keyword").addEventListener("keydown", function (e) { if (e.key === "Enter") generate(); });
+    $("#b-all-themes").onclick = generateAllThemes;
+
+    // 我的卡池 / MD 點數
+    if (typeof Collection !== "undefined") {
+      const cpIds = { UR: "#cp-ur", SR: "#cp-sr", R: "#cp-r", N: "#cp-n" };
+      const saved = Collection.getCP();
+      Object.keys(cpIds).forEach(function (k) {
+        $(cpIds[k]).value = saved[k] || 0;
+        $(cpIds[k]).oninput = function () {
+          Collection.setCP({ UR: $("#cp-ur").value, SR: $("#cp-sr").value, R: $("#cp-r").value, N: $("#cp-n").value });
+        };
+      });
+      function refreshOwned() { $("#owned-count").textContent = Collection.ownedCount(); }
+      Collection.onChange(refreshOwned);
+      refreshOwned();
+    }
   }
   function bindRange(inSel, outSel) {
     const i = $(inSel), o = $(outSel);
     i.oninput = function () { o.value = i.value; };
   }
 
-  function generate() {
-    const opts = {
-      archetype: $("#b-archetype").value,
-      style: $("#b-style").value,
-      budget: $("#b-budget").value,
-      size: Number($("#b-size").value),
-      handtraps: Number($("#b-ht").value),
-      breakers: Number($("#b-bk").value),
-    };
-    const deck = Builder.build(opts);
-    renderBuilderOutput(deck, opts);
+  // 需求解析：從自由文字擷取風格／預算／張數／手坑偏好／策略流派／主題
+  function parseIntent(raw) {
+    const t = S2T.query(raw);   // 轉簡體便於比對
+    const o = { style: "auto", budget: "high", handtraps: 12, breakers: 3, size: null, presetKey: null };
+    if (/快攻|otk|爆发|先攻杀|一回合|速攻/i.test(t)) o.style = "aggro";
+    else if (/控制|控场|防守|后手|耐久|长期|铁壁/.test(t)) o.style = "control";
+    else if (/连招|展开|连锁|combo/i.test(t)) o.style = "combo";
+    if (/便宜|省钱|平价|低价|新手|入门|穷|预算低/.test(t)) o.budget = "low";
+    else if (/中价|中等预算/.test(t)) o.budget = "mid";
+    if (/多手坑|手坑多|很多手坑|防手坑|重手坑/.test(t)) o.handtraps = 15;
+    else if (/少手坑|无手坑|纯build|不放手坑/.test(t)) o.handtraps = 4;
+    if (/多破坏|拆场多|后手强/.test(t)) o.breakers = 6;
+    const sz = t.match(/(\d{2})\s*张/); if (sz) { const n = Number(sz[1]); if (n >= 40 && n <= 60) o.size = n; }
+    // 策略流派關鍵詞
+    if (/封锁|锁死|铁壁|站桩/.test(t)) o.presetKey = "封锁系";
+    else if (/烧血|烧伤|灼烧|燃烧|烧脸|burn/i.test(t)) o.presetKey = "烧血流";
+    else if (/手牌破坏|破坏手牌|弃牌|拆手|扒手/.test(t)) o.presetKey = "手牌破坏";
+    else if (/墓地妨害|除外封锁|阴间|陰間|反墓地/.test(t)) o.presetKey = "阴间阻抗";
+    else if (/报复社会|拆场恶心|反制流|恶心人/.test(t)) o.presetKey = "报复社会";
+    else if (typeof presetFor === "function" && presetFor(t)) o.presetKey = t;
+    // 主題：移除已辨識的需求詞，剩餘作為主題關鍵字
+    let theme = t.replace(/快攻|otk|爆发|先攻杀|一回合|速攻|控制|控场|防守|后手|耐久|长期|铁壁|连招|展开|连锁|combo|便宜|省钱|平价|低价|新手|入门|穷|预算低|中价|中等预算|多手坑|手坑多|很多手坑|防手坑|重手坑|少手坑|无手坑|纯build|不放手坑|多破坏|拆场多|后手强|\d{2}\s*张|的|我要|想要|一套|一副|卡组|牌组|帮我|生成|做|要/gi, "").trim();
+    o.theme = theme;
+    return o;
   }
 
-  function renderBuilderOutput(deck, opts) {
+  async function generate() {
+    const raw = $("#b-keyword").value.trim();
+    const out = $("#builder-output");
+    if (!raw) { toast("請輸入主題或你的需求（例：便宜的封鎖控制、青眼 後手OTK）"); return; }
+    const intent = parseIntent(raw);
+    const kw = intent.presetKey ? intent.presetKey : S2T.query(intent.theme || raw);
+    const kwShow = S2T.disp(intent.presetKey || intent.theme || raw);
+    const isPreset = (typeof presetFor === "function") && presetFor(kw);
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" +
+      (YGO.indexReady() || isPreset ? "" : "首次載入完整卡庫（約 1.5MB，含效果全文）· ") +
+      "解析需求「" + esc(S2T.disp(raw)) + "」、搜尋相關卡片、模擬對戰並挑選卡組中…</p></div>";
+    let cards = [];
+    if (!isPreset) {
+      try { const r = await YGO.searchLocal(kw); cards = r.cards; }
+      catch (e) {
+        try { cards = await YGO.search(kw); } catch (e2) {
+          out.innerHTML = "<div class='card-panel'><p class='status'>搜尋失敗：" + esc(e2.message) + "（請確認網路連線）</p></div>"; return;
+        }
+      }
+      if (!cards.length) { out.innerHTML = "<div class='card-panel'><p class='status'>找不到「" + esc(kwShow) + "」的相關卡片，換個主題或說法試試（例：青眼、劍鬥獸、便宜的封鎖控制）。</p></div>"; return; }
+    }
+    const opts = {
+      style: intent.style,
+      budget: intent.budget,
+      size: intent.size || Number($("#b-size").value),
+      extraMax: Number($("#b-extra").value),
+      handtraps: intent.handtraps,
+      breakers: intent.breakers,
+      owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {},
+      ownedOnly: $("#b-owned-only") && $("#b-owned-only").checked,
+    };
+    const threshold = Number($("#b-threshold").value) || 60;
+    const result = Builder.buildBest(kw, cards, opts, threshold);
+    result.intent = intent;
+    renderBuilderOutput(result.deck, opts, kwShow, result);
+  }
+
+  // 所有主題：掃描候選主題，依卡池挑勝率最高者
+  async function generateAllThemes() {
+    const out = $("#builder-output");
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" +
+      (YGO.indexReady() ? "" : "首次載入完整卡庫 · ") + "掃描所有主題、依你的卡池生成最佳卡組中…</p></div>";
+    try { await YGO.loadIndex(); } catch (e) {}
+    const ownedOnly = $("#b-owned-only") && $("#b-owned-only").checked;
+    const opts = {
+      style: "auto", budget: "high",
+      size: Number($("#b-size").value), extraMax: Number($("#b-extra").value),
+      handtraps: null, breakers: null,
+      owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {}, ownedOnly: ownedOnly,
+    };
+    const threshold = Number($("#b-threshold").value) || 60;
+    const kws = [];
+    QUICK_THEMES.forEach(function (g) { g.items.forEach(function (it) { if (kws.indexOf(it.kw) < 0) kws.push(it.kw); }); });
+    let best = null, bestKw = "";
+    for (const kw of kws) {
+      const isPreset = (typeof presetFor === "function") && presetFor(kw);
+      let cards = [];
+      if (!isPreset) { try { const r = await YGO.searchLocal(kw); cards = r.cards; } catch (e) { continue; } }
+      let deck, ev;
+      try { deck = Builder.buildFromKeyword(kw, cards, opts, Math.random); ev = Builder.evaluateDeck(deck); }
+      catch (e) { continue; }
+      const mainN = deck.main.reduce(function (a, x) { return a + x.q; }, 0);
+      if (mainN < 30) continue;   // 卡池不足以成型者略過
+      if (!best || ev.winRate > best.ev.winRate) { best = { deck: deck, ev: ev }; bestKw = kw; }
+    }
+    if (!best) {
+      out.innerHTML = "<div class='card-panel'><p class='status'>你的卡池目前無法組出成型卡組（勾選更多擁有卡，或取消「只用我擁有的卡」）。</p></div>";
+      return;
+    }
+    const isPreset = (typeof presetFor === "function") && presetFor(bestKw);
+    const cards = isPreset ? [] : (await YGO.searchLocal(bestKw)).cards;
+    const result = Builder.buildBest(bestKw, cards, opts, threshold);
+    renderBuilderOutput(result.deck, opts, S2T.disp(bestKw) + "（所有主題最佳）", result);
+  }
+
+  function renderBuilderOutput(deck, opts, keyword, result) {
     const out = $("#builder-output");
     out.innerHTML = "";
     const panel = elem("div", "card-panel");
-    const eng = ENGINES[opts.archetype];
     const mCount = deck.main.reduce(function (a, x) { return a + x.q; }, 0);
     const eCount = deck.extra.reduce(function (a, x) { return a + x.q; }, 0);
-    panel.appendChild(elem("h2", null, "生成結果：" + esc(eng.name)));
+    panel.appendChild(elem("h2", null, "生成結果：「" + esc(keyword) + "」"));
+
+    // 模擬對戰勝率面板
+    if (result && result.eval) {
+      const ev = result.eval;
+      const wr = Math.round(ev.winRate);
+      const pass = wr >= (result.threshold || 60);
+      const box = elem("div", "winrate " + (pass ? "pass" : "fail"));
+      box.innerHTML =
+        "<div class='wr-big'>估計勝率 <b>" + wr + "%</b> " + (pass ? "✅ 達標" : "⚠️ 未達標") + "</div>" +
+        "<div class='wr-sub'>對手：主流卡組基準（" + esc(S2T.disp(ev.opponent || "meta")) + "） · 模擬 " + ev.games + " 局 · 嘗試 " + result.attempts + " 版取最佳</div>" +
+        "<div class='wr-metrics'>先手可展開 " + Math.round(ev.openFirstRate != null ? ev.openFirstRate : ev.openRate) + "% · 後手可行動 " + Math.round(ev.openSecondRate != null ? ev.openSecondRate : ev.openRate) + "%" +
+        " · 後手破場率 " + Math.round(ev.breakRate || 0) + "% · 卡手率 " + Math.round(ev.brickRate) + "%</div>" +
+        "<div class='wr-metrics'>引擎怪 " + (ev.engineMons != null ? ev.engineMons : "-") + " 張 · 手坑 " + (ev.handtrapsN != null ? ev.handtrapsN : "-") + " · 破場卡 " + (ev.breakersN != null ? ev.breakersN : "-") + " · 引擎分 " + ev.engineScore + "</div>";
+      panel.appendChild(box);
+      panel.appendChild(elem("p", "note-line",
+        "＊估計勝率＝起手牌蒙地卡羅模擬（先手5/後手6各半）＋能否鋪場·展開·破場·不卡手的評分，非逐卡完整對局；用於相對比較。"));
+    }
+
+    // 合成缺卡（Master Duel 點數）
+    if (typeof Collection !== "undefined") {
+      const an = Collection.analyzeDeck(deck);
+      const c = an.cost, h = an.have;
+      function cell(r) {
+        const short = c[r] > h[r];
+        return "<span class='cp-cell r-" + r + (short ? " short" : "") + "'>" + r + " " + c[r] + " / " + h[r] + (short ? " ⚠️" : " ✅") + "</span>";
+      }
+      const box = elem("div", "craft " + (an.missingCount === 0 ? "done" : (an.affordable ? "ok" : "short")));
+      box.innerHTML =
+        "<div class='craft-title'>💎 合成缺卡（Master Duel 點數）</div>" +
+        "<div class='craft-sub'>已擁有 " + an.ownedInDeck + " 張 · 需合成 " + an.missingCount + " 張" +
+        (an.unknown ? " · " + an.unknown + " 張 MD 未收錄/無稀有度" : "") + "</div>" +
+        "<div class='craft-cost'>" + cell("UR") + cell("SR") + cell("R") + cell("N") + "</div>" +
+        "<div class='craft-verdict'>" + (an.missingCount === 0 ? "✅ 你已擁有整副卡組！" :
+          (an.affordable ? "✅ 你目前的點數足以合成所有缺卡" : "⚠️ 點數不足：需補足上面標 ⚠️ 的點數才能湊齊")) + "</div>";
+      panel.appendChild(box);
+    }
+
+    const t = deck.themed || {};
     panel.appendChild(elem("p", "status",
-      "主卡組 " + mCount + " 張 · 額外 " + eCount + " 張 · 手坑 " + opts.handtraps + " · 破壞卡 " + opts.breakers +
-      " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget])));
+      "主卡組 " + mCount + " · 額外 " + eCount +
+      " · 預算 " + ({ high: "不限", mid: "中等", low: "省錢" }[opts.budget]) +
+      (deck.domAttr ? " · 主屬性 " + esc(S2T.disp(deck.domAttr)) : "")));
+    const styleLabel = { combo: "連招", control: "控制", aggro: "快攻", midrange: "中速" }[deck.effStyle] || deck.effStyle;
+    panel.appendChild(elem("p", "status",
+      "偵測到主題卡：主怪 " + (t.mons || 0) + " · 魔法 " + (t.spells || 0) + " · 陷阱 " + (t.traps || 0) + " · 額外 " + (t.extras || 0) +
+      (deck.mode === "archetype" ? "（系列模式）" : "（相關卡 Goodstuff 模式）") +
+      (styleLabel ? " · " + (opts.style === "auto" ? "偵測風格：" : "風格：") + styleLabel : "")));
     if (deck.notes && deck.notes.length)
       deck.notes.forEach(function (n) { panel.appendChild(elem("p", "note-line", "· " + esc(n))); });
 
@@ -304,6 +506,115 @@ const UI = (function () {
     const g = elem("div", "grid small");
     list.forEach(function (c) { g.appendChild(tile(c, { q: c.q })); });
     parent.appendChild(g);
+  }
+
+  /* ---------- 對戰模擬 ---------- */
+  const ROLE_LABEL = { starter: "展開", extender: "延展", mid: "中階", payoff: "大怪", handtrap: "手坑", breaker: "破場", interrupt: "陷阱", spell: "魔法", brick: "素材/通常", neutral: "其他" };
+  function metaToDeck(d) {
+    const map = {}, order = [];
+    (d.core || []).concat(d.engine || [], d.staples || []).forEach(function (c) {
+      if (c.q <= 0) return;
+      if (!map[c.id]) { map[c.id] = { id: c.id, n: c.n, q: 0 }; order.push(c.id); }
+      map[c.id].q += c.q;
+    });
+    return { main: order.map(function (id) { return map[id]; }), extra: (d.extra || []).map(function (c) { return { id: c.id, n: c.n, q: c.q }; }) };
+  }
+  function initBattle() {
+    const sel = $("#bt-oppo");
+    META_DECKS.forEach(function (d) { const o = elem("option"); o.value = "meta:" + d.id; o.textContent = esc(d.name); sel.appendChild(o); });
+    const ok = elem("option"); ok.value = "kw"; ok.textContent = "自訂關鍵字生成對手…"; sel.appendChild(ok);
+    sel.onchange = function () { $("#bt-kw-wrap").style.display = sel.value === "kw" ? "" : "none"; };
+    $("#bt-run").onclick = runBattle;
+    $("#bt-hand").onclick = testHand;
+    Deck.onChange(updateMyDeckStatus);
+    updateMyDeckStatus();
+  }
+  function updateMyDeckStatus() {
+    const el = $("#battle-mydeck"); if (!el) return;
+    const n = Deck.count("main");
+    el.innerHTML = n >= 30 ? "我的卡組：主卡組 <b>" + n + "</b> 張（來自「我的卡組」）" + (n < 40 ? "（建議湊滿 40）" : "")
+      : "⚠️ 我的卡組還沒有卡。請到「卡組生成器」生成後「匯入到我的卡組」，或在「流行構築」匯入一副。";
+  }
+  async function getMyBag() {
+    await YGO.loadIndex().catch(function () {});
+    const my = Deck.get();
+    const roles = Builder.classifyRoles(my, YGO.cardSync);
+    return { deck: my, bag: Builder.bagFromDeck(my, roles), roles: roles };
+  }
+  async function getOppo() {
+    const v = $("#bt-oppo").value;
+    if (v.indexOf("meta:") === 0) {
+      const d = META_DECKS.find(function (x) { return x.id === v.slice(5); });
+      const dk = metaToDeck(d);
+      const roles = Builder.classifyRoles(dk, YGO.cardSync);
+      return { name: d.name, bag: Builder.bagFromDeck(dk, roles) };
+    }
+    const kw = S2T.query($("#bt-kw").value.trim() || "雷火沸动机");
+    const r = await YGO.searchLocal(kw);
+    const res = Builder.buildBest(kw, r.cards, { style: "auto", budget: "high", size: 40, extraMax: 15, owned: {}, ownedOnly: false }, 60);
+    return { name: S2T.disp(kw), bag: Builder.bagFromDeck(res.deck, res.deck.roles) };
+  }
+  async function runBattle() {
+    const out = $("#battle-output");
+    if (Deck.count("main") < 30) { out.innerHTML = "<div class='card-panel'><p class='status'>請先讓「我的卡組」有卡片（到生成器生成後「匯入到我的卡組」，或在流行構築匯入一副）。</p></div>"; return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" + (YGO.indexReady() ? "" : "首次載入卡庫 · ") + "模擬對戰中…</p></div>";
+    try {
+      const me = await getMyBag();
+      const op = await getOppo();
+      const r = Builder.simulateMatch(me.bag, op.bag, 1000);
+      renderBattle(r, op.name);
+    } catch (e) { out.innerHTML = "<div class='card-panel'><p class='status'>模擬失敗：" + esc(e.message) + "</p></div>"; }
+  }
+  function renderBattle(r, oppName) {
+    const out = $("#battle-output"); out.innerHTML = "";
+    const panel = elem("div", "card-panel");
+    const wr = Math.round(r.winRate);
+    const box = elem("div", "winrate " + (wr >= 50 ? "pass" : "fail"));
+    box.innerHTML = "<div class='wr-big'>對「" + esc(S2T.disp(oppName)) + "」勝率 <b>" + wr + "%</b></div>" +
+      "<div class='wr-sub'>模擬 " + r.games + " 局 · 先手勝率 " + Math.round(r.firstRate) + "% · 後手勝率 " + Math.round(r.secondRate) + "%</div>";
+    panel.appendChild(box);
+    panel.appendChild(elem("h4", null, "戰況樣本"));
+    r.logs.forEach(function (l, i) {
+      const youFirst = l.aFirst;
+      const youWon = (l.aFirst && l.winner === "first") || (!l.aFirst && l.winner === "second");
+      const line = elem("p", "battle-log " + (youWon ? "win" : "lose"));
+      line.textContent = "第 " + (i + 1) + " 局 · 你" + (youFirst ? "先攻" : "後攻") + "：" + l.reason + " → " + (youWon ? "✅ 你贏" : "❌ 對手贏");
+      panel.appendChild(line);
+    });
+    panel.appendChild(elem("p", "note-line", "＊抽象模擬（起手／手坑／破場模型），非逐卡結算；用於相對比較卡組強度。"));
+    out.appendChild(panel);
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function sampleN(N, n) { const used = {}, res = []; let k = 0; while (k < n && k < N) { const j = Math.floor(Math.random() * N); if (used[j]) continue; used[j] = 1; res.push(j); k++; } return res; }
+  async function testHand() {
+    const out = $("#battle-output");
+    if (Deck.count("main") < 30) { out.innerHTML = "<div class='card-panel'><p class='status'>請先讓「我的卡組」有卡片（生成後匯入）。</p></div>"; return; }
+    out.innerHTML = "<div class='card-panel'><p class='loading'>抽牌中…</p></div>";
+    const me = await getMyBag();
+    const pool = []; me.deck.main.forEach(function (x) { for (let i = 0; i < x.q; i++) pool.push(x.id); });
+    const hand = sampleN(pool.length, 5).map(function (i) { return pool[i]; });
+    renderHand(hand, me.roles);
+  }
+  function renderHand(handIds, roles) {
+    const out = $("#battle-output"); out.innerHTML = "";
+    const panel = elem("div", "card-panel");
+    const starters = handIds.filter(function (id) { return roles[id] === "starter" || roles[id] === "extender"; }).length;
+    const hts = handIds.filter(function (id) { return roles[id] === "handtrap"; }).length;
+    const bricks = handIds.filter(function (id) { return roles[id] === "brick" || roles[id] === "payoff"; }).length;
+    panel.appendChild(elem("h2", null, "測試手牌（先手 5 張）"));
+    panel.appendChild(elem("p", "status", (starters >= 1 ? "✅ 可展開" : "⚠️ 可能卡手") + " · 展開牌 " + starters + " · 手坑 " + hts + " · 素材/大怪 " + bricks));
+    const g = elem("div", "grid small");
+    handIds.forEach(function (id) {
+      const c = YGO.cardSync(id) || { id: id };
+      const t = tile({ id: id, n: c.name || String(id), typeLine: c.typeLine }, { add: false });
+      t.appendChild(elem("span", "hand-role", ROLE_LABEL[roles[id] || "neutral"] || ""));
+      g.appendChild(t);
+    });
+    panel.appendChild(g);
+    const acts = elem("div", "meta-acts");
+    const re = elem("button", "primary", "🔄 重抽"); re.onclick = testHand;
+    acts.appendChild(re); panel.appendChild(acts);
+    out.appendChild(panel);
   }
 
   /* ---------- 我的卡組抽屜 ---------- */
@@ -331,7 +642,7 @@ const UI = (function () {
         const im = imgEl(x.id, x.n); im.className = "card-img thumb";
         im.onclick = function () { openCardModal(x.id); };
         row.appendChild(im);
-        row.appendChild(elem("span", "deck-name", esc(x.n)));
+        row.appendChild(elem("span", "deck-name", esc(S2T.disp(x.n))));
         const ctrl = elem("div", "deck-ctrl");
         const minus = elem("button", null, "−"); minus.onclick = function () { Deck.sub(x.id, pair[1]); };
         const qty = elem("span", "deck-q", "×" + x.q);
@@ -388,6 +699,7 @@ const UI = (function () {
   function init() {
     initTabs();
     initBuilder();
+    initBattle();
     renderMetaList();
 
     $("#q-btn").onclick = function () { runSearch($("#q").value); };
@@ -399,6 +711,20 @@ const UI = (function () {
         c.classList.add("active"); kindFilter = c.dataset.kind; renderSearch();
       };
     });
+
+    populateFilters();
+    $("#adv-toggle").onclick = function () {
+      const box = $("#adv-filters");
+      box.hidden = !box.hidden;
+      $("#adv-toggle").classList.toggle("active", !box.hidden);
+    };
+    ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).onchange = renderSearch; });
+    ["#f-atk", "#f-def"].forEach(function (s) { $(s).oninput = renderSearch; });
+    $("#f-reset").onclick = function () {
+      ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).value = ""; });
+      $("#f-atk").value = ""; $("#f-def").value = "";
+      renderSearch();
+    };
 
     $("#deck-btn").onclick = openDrawer;
     $("#deck-close").onclick = closeDrawer;

@@ -2,8 +2,19 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>遊戲王中文卡表工具 · 環境構築 / 卡組生成器</title>
+
+  <!-- PWA / iOS 加入主畫面 -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1017" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="遊戲王卡表" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
@@ -22,6 +33,7 @@
     <button class="tab active" data-tab="search">🔍 卡片搜索</button>
     <button class="tab" data-tab="meta">🏆 流行構築</button>
     <button class="tab" data-tab="builder">🛠️ 卡組生成器</button>
+    <button class="tab" data-tab="battle">⚔️ 對戰模擬</button>
   </nav>
 
   <main>
@@ -46,6 +58,15 @@
           <button class="qbtn" data-q="三战之才">三戰之才</button>
           <button class="qbtn" data-q="尼比鲁">尼比魯</button>
         </div>
+        <button id="adv-toggle" class="adv-toggle">⚙️ 進階篩選</button>
+      </div>
+      <div id="adv-filters" class="adv-filters" hidden>
+        <label>屬性<select id="f-attr"><option value="">全部</option></select></label>
+        <label>種族<select id="f-race"><option value="">全部</option></select></label>
+        <label>等級/階級<select id="f-level"><option value="">全部</option></select></label>
+        <label>攻擊力 ≥<input id="f-atk" type="number" min="0" step="100" placeholder="不限" /></label>
+        <label>守備力 ≥<input id="f-def" type="number" min="0" step="100" placeholder="不限" /></label>
+        <button id="f-reset" class="f-reset">重設</button>
       </div>
       <p id="search-status" class="status">輸入關鍵字開始搜索。資料來自 ygocdb 中文卡庫，卡圖來自 ygoprodeck。</p>
       <div id="search-results" class="grid"></div>
@@ -63,39 +84,75 @@
     <!-- 卡組生成器 -->
     <section id="tab-builder" class="tab-panel">
       <div class="builder-form card-panel">
-        <h2>依你的條件生成卡組</h2>
+        <h2>輸入主題或你的需求，生成可對戰卡組</h2>
+        <p class="builder-intro">可輸入<strong>主題／卡名</strong>，也可直接<strong>描述需求</strong>——系統會解析風格／預算／流派，
+          並用<strong>效果全文</strong>搜出相關與可連動的卡，組出能對戰的卡組。
+          例：<code>青眼</code>、<code>便宜的封鎖控制</code>、<code>異色眼 後手OTK</code>、<code>多手坑的于貝爾</code>。</p>
+        <div class="keyword-row">
+          <input id="b-keyword" type="search" placeholder="輸入主題或需求（例：便宜的封鎖控制 / 青眼 後手OTK）" />
+          <button id="b-generate" class="primary">⚙️ 生成卡組</button>
+        </div>
+        <div id="quick-themes" class="quick-themes"></div>
+
+        <div class="pool-panel">
+          <div class="pool-row">
+            <span>🗃️ 我的卡池：<b id="owned-count">0</b> 張</span>
+            <label class="chk"><input type="checkbox" id="b-owned-only" /> 只用我擁有的卡</label>
+            <button id="b-all-themes" class="qbtn">🔀 所有主題選最佳（依我的卡池）</button>
+          </div>
+          <div class="cp-row">
+            <span>MD 點數：</span>
+            <label class="cp cp-ur">UR <input id="cp-ur" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-sr">SR <input id="cp-sr" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-r">R <input id="cp-r" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-n">N <input id="cp-n" type="number" min="0" step="10" value="0" /></label>
+          </div>
+          <p class="pool-hint">在「卡片搜索」或下方卡組點卡片右下角的 ◇ 可標記「我有此卡」。缺卡會顯示需花多少點數合成。</p>
+        </div>
+
         <div class="form-grid">
-          <label>主題引擎
-            <select id="b-archetype"></select>
-          </label>
-          <label>卡組風格
-            <select id="b-style">
-              <option value="auto">跟隨主題（建議）</option>
-              <option value="combo">連招 Combo</option>
-              <option value="control">控制 Control</option>
-              <option value="aggro">快攻 / OTK</option>
-            </select>
-          </label>
-          <label>預算
-            <select id="b-budget">
-              <option value="high">不限（含高價手坑）</option>
-              <option value="mid" selected>中等</option>
-              <option value="low">省錢（便宜卡優先）</option>
-            </select>
-          </label>
           <label>主卡組張數 <output id="b-size-out">40</output>
             <input id="b-size" type="range" min="40" max="60" value="40" />
           </label>
-          <label>手坑數量 <output id="b-ht-out">12</output>
-            <input id="b-ht" type="range" min="0" max="18" value="12" />
+          <label>額外卡組張數 <output id="b-extra-out">15</output>
+            <input id="b-extra" type="range" min="0" max="15" value="15" />
           </label>
-          <label>破壞 / 拆場卡 <output id="b-bk-out">4</output>
-            <input id="b-bk" type="range" min="0" max="9" value="4" />
+          <label>目標勝率門檻
+            <select id="b-threshold">
+              <option value="55">55%（較寬鬆）</option>
+              <option value="60" selected>60%（建議）</option>
+              <option value="65">65%（較嚴格）</option>
+              <option value="70">70%（很嚴格）</option>
+            </select>
           </label>
         </div>
-        <button id="b-generate" class="primary">⚙️ 生成卡組</button>
       </div>
       <div id="builder-output"></div>
+    </section>
+
+    <!-- 對戰模擬 -->
+    <section id="tab-battle" class="tab-panel">
+      <div class="notice">
+        ⚔️ 這是<strong>抽象對戰模擬</strong>：以「起手能否展開、手坑妨害、破場、先後手」的模型模擬雙方多局對局，
+        給出勝率與戰況摘要。<strong>並非逐卡結算的完整對局</strong>（那是 EDOPro 等級工程），用於相對比較卡組強度。
+      </div>
+      <div class="battle-form card-panel">
+        <h2>對戰模擬</h2>
+        <p id="battle-mydeck" class="status">我的卡組：載入中…</p>
+        <div class="form-grid">
+          <label>對手卡組
+            <select id="bt-oppo"></select>
+          </label>
+          <label id="bt-kw-wrap" style="display:none">對手關鍵字
+            <input id="bt-kw" type="search" placeholder="例：雷火沸动机 / 蛇眼" />
+          </label>
+        </div>
+        <div class="meta-acts">
+          <button id="bt-run" class="primary">⚔️ 開始對戰模擬（1000 局）</button>
+          <button id="bt-hand">🎴 測試手牌（我的卡組）</button>
+        </div>
+      </div>
+      <div id="battle-output"></div>
     </section>
   </main>
 
@@ -130,9 +187,12 @@
     本工具僅供學習與卡組規劃，卡片版權屬 KONAMI。
   </footer>
 
+  <script src="assets/js/s2t-data.js"></script>
+  <script src="assets/js/s2t.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/api.js"></script>
   <script src="assets/js/deck.js"></script>
+  <script src="assets/js/collection.js"></script>
   <script src="assets/js/builder.js"></script>
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/app.js"></script>

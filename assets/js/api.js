@@ -35,10 +35,16 @@ const YGO = (function () {
       typeLine: first,
       desc: (x.text && x.text.desc) || "",
       pdesc: (x.text && x.text.pdesc) || "",
-      atk: d.atk, def: d.def, level: d.level,
+      // 靈擺怪的 level 欄位打包了刻度（如 0x04040007＝等級7/刻度4），取低位得真實等級
+      atk: d.atk, def: d.def, level: (d.level != null ? (d.level & 0xff) : d.level),
       race: d.race, attribute: d.attribute, typeBits: d.type,
     };
     card.kind = classify(first);   // monster / spell / trap
+    // 由類型行解析中文「種族/屬性」（例：「不死/炎」）供進階篩選
+    const rm = first.match(/\]\s*([^\s\/\[\]]+)\/([^\s\/\[\]]+)\s*$/);
+    if (rm && card.kind === "monster") { card.raceCN = rm[1]; card.attrCN = rm[2]; }
+    card.isLink = /连接|連接|LINK/i.test(first);
+    card.isXyz = /超量|XYZ/i.test(first);
     mem[x.id] = card;
     persist();
     return card;
@@ -89,22 +95,96 @@ const YGO = (function () {
     return out;
   }
 
+  // ---------- 本地全文索引（含效果文本）----------
+  let indexPromise = null;
+  let INDEX = null;     // 卡片陣列（已轉為內部卡片物件）
+  function normMini(m) {
+    const first = m.t || "";
+    const card = {
+      id: m.id,
+      name: m.n || String(m.id),
+      jp: m.j || "", en: m.e || "",
+      typeLine: first,
+      desc: m.d || "", pdesc: m.p || "",
+      atk: m.a, def: m.f,
+      level: (m.l != null ? (m.l & 0xff) : m.l),
+      attribute: m.r,
+    };
+    card.kind = classify(first);
+    const rm = first.match(/\]\s*([^\s\/\[\]]+)\/([^\s\/\[\]]+)\s*$/);
+    if (rm && card.kind === "monster") { card.raceCN = rm[1]; card.attrCN = rm[2]; }
+    card.isLink = /连接|連接|LINK/i.test(first);
+    card.isXyz = /超量|XYZ/i.test(first);
+    return card;
+  }
+  function injectScript(src) {
+    return new Promise(function (resolve, reject) {
+      const s = document.createElement("script");
+      s.src = src; s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error("load failed: " + src)); };
+      document.head.appendChild(s);
+    });
+  }
+  function loadIndex() {
+    if (indexPromise) return indexPromise;
+    // 以 <script> 動態載入（file:// 與 https 皆可，避開 fetch 的 CORS 限制）
+    indexPromise = new Promise(function (resolve, reject) {
+      if (window.__YGO_INDEX) return resolve(window.__YGO_INDEX);
+      injectScript("assets/data/cards.min.js").then(function () {
+        if (window.__YGO_INDEX) resolve(window.__YGO_INDEX); else reject(new Error("index empty"));
+      }, reject);
+    }).then(function (arr) {
+      // 一併載入 Master Duel 稀有度/禁限（失敗不影響主功能）
+      return injectScript("assets/data/md.js").catch(function () {}).then(function () { return arr; });
+    }).then(function (arr) {
+      INDEX = arr.map(normMini);
+      INDEX.forEach(function (c) { mem[c.id] = c; });
+      window.__YGO_INDEX = null;   // 釋放原始陣列記憶體
+      return INDEX;
+    }).catch(function (e) { indexPromise = null; throw e; });
+    return indexPromise;
+  }
+  function indexReady() { return !!INDEX; }
+
+  // 本地全文搜索：卡名優先，其次效果文本／靈擺文本。回傳 { cards, nameCount }
+  async function searchLocal(query) {
+    const q = (query || "").trim();
+    if (!q) return { cards: [], nameCount: 0 };
+    await loadIndex();
+    const nameHits = [], textHits = [];
+    for (const c of INDEX) {
+      if (c.name.indexOf(q) >= 0 || (c.jp && c.jp.indexOf(q) >= 0) || (c.en && c.en.toLowerCase().indexOf(q.toLowerCase()) >= 0)) {
+        nameHits.push(c);
+      } else if ((c.desc && c.desc.indexOf(q) >= 0) || (c.pdesc && c.pdesc.indexOf(q) >= 0)) {
+        textHits.push(c);
+      }
+    }
+    return { cards: nameHits.concat(textHits), nameCount: nameHits.length };
+  }
+
   // 多關鍵字合併查系列（去重）
+  // ygocdb 對系列關鍵字會回傳整個系列（含名字不含該詞的成員，如查「百夫长」也回「重骑士 普莉梅拉」）。
+  // 因此預設信任 API 結果；只有當單一關鍵字回傳過多（>40，疑似模糊文字汙染）時，才退回名稱過濾。
+  const FUZZY_THRESHOLD = 40;
   async function searchSeries(keywords) {
     const seen = {};
     const merged = [];
     for (const kw of keywords) {
       let arr = [];
       try { arr = await search(kw); } catch (e) { arr = []; }
+      const polluted = arr.length > FUZZY_THRESHOLD;
       arr.forEach(function (c) {
-        // 僅保留卡名確實含關鍵字者，避免模糊配對汙染
-        if (keywords.some(function (k) { return c.name.indexOf(k) >= 0 || (c.jp && c.jp.indexOf(k) >= 0); })) {
-          if (!seen[c.id]) { seen[c.id] = 1; merged.push(c); }
+        if (polluted) {
+          const hit = keywords.some(function (k) { return c.name.indexOf(k) >= 0 || (c.jp && c.jp.indexOf(k) >= 0); });
+          if (!hit) return;
         }
+        if (!seen[c.id]) { seen[c.id] = 1; merged.push(c); }
       });
     }
     return merged;
   }
 
-  return { imgUrl, search, getById, getMany, searchSeries, classify, _cache: mem };
+  function cardSync(id) { return mem[id] || null; }
+  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, cardSync, _cache: mem };
 })();
