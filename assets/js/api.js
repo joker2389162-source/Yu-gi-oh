@@ -117,20 +117,26 @@ const YGO = (function () {
     card.isXyz = /超量|XYZ/i.test(first);
     return card;
   }
+  function injectScript(src) {
+    return new Promise(function (resolve, reject) {
+      const s = document.createElement("script");
+      s.src = src; s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error("load failed: " + src)); };
+      document.head.appendChild(s);
+    });
+  }
   function loadIndex() {
     if (indexPromise) return indexPromise;
     // 以 <script> 動態載入（file:// 與 https 皆可，避開 fetch 的 CORS 限制）
     indexPromise = new Promise(function (resolve, reject) {
       if (window.__YGO_INDEX) return resolve(window.__YGO_INDEX);
-      const s = document.createElement("script");
-      s.src = "assets/data/cards.min.js";
-      s.async = true;
-      s.onload = function () {
-        if (window.__YGO_INDEX) resolve(window.__YGO_INDEX);
-        else reject(new Error("index empty"));
-      };
-      s.onerror = function () { reject(new Error("index load failed")); };
-      document.head.appendChild(s);
+      injectScript("assets/data/cards.min.js").then(function () {
+        if (window.__YGO_INDEX) resolve(window.__YGO_INDEX); else reject(new Error("index empty"));
+      }, reject);
+    }).then(function (arr) {
+      // 一併載入 Master Duel 稀有度/禁限（失敗不影響主功能）
+      return injectScript("assets/data/md.js").catch(function () {}).then(function () { return arr; });
     }).then(function (arr) {
       INDEX = arr.map(normMini);
       INDEX.forEach(function (c) { mem[c.id] = c; });

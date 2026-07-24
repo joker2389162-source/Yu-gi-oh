@@ -1,5 +1,5 @@
 /* Service Worker：App 殼層離線快取 + 卡圖執行時快取 */
-const VERSION = "ygo-v5";
+const VERSION = "ygo-v6";
 const SHELL = VERSION + "-shell";
 const RUNTIME = VERSION + "-runtime";
 
@@ -14,6 +14,7 @@ const SHELL_FILES = [
   "./assets/js/data.js",
   "./assets/js/api.js",
   "./assets/js/deck.js",
+  "./assets/js/collection.js",
   "./assets/js/builder.js",
   "./assets/js/ui.js",
   "./assets/js/app.js",

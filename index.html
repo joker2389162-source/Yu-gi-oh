@@ -92,6 +92,23 @@
           <button id="b-generate" class="primary">⚙️ 生成卡組</button>
         </div>
         <div id="quick-themes" class="quick-themes"></div>
+
+        <div class="pool-panel">
+          <div class="pool-row">
+            <span>🗃️ 我的卡池：<b id="owned-count">0</b> 張</span>
+            <label class="chk"><input type="checkbox" id="b-owned-only" /> 只用我擁有的卡</label>
+            <button id="b-all-themes" class="qbtn">🔀 所有主題選最佳（依我的卡池）</button>
+          </div>
+          <div class="cp-row">
+            <span>MD 點數：</span>
+            <label class="cp cp-ur">UR <input id="cp-ur" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-sr">SR <input id="cp-sr" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-r">R <input id="cp-r" type="number" min="0" step="10" value="0" /></label>
+            <label class="cp cp-n">N <input id="cp-n" type="number" min="0" step="10" value="0" /></label>
+          </div>
+          <p class="pool-hint">在「卡片搜索」或下方卡組點卡片右下角的 ◇ 可標記「我有此卡」。缺卡會顯示需花多少點數合成。</p>
+        </div>
+
         <div class="form-grid">
           <label>主卡組張數 <output id="b-size-out">40</output>
             <input id="b-size" type="range" min="40" max="60" value="40" />
@@ -149,6 +166,7 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/api.js"></script>
   <script src="assets/js/deck.js"></script>
+  <script src="assets/js/collection.js"></script>
   <script src="assets/js/builder.js"></script>
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/app.js"></script>

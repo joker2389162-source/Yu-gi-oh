@@ -204,6 +204,42 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px 14px 60px; }
 .wr-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 .wr-metrics { font-size: 12.5px; color: #cdd8ec; margin-top: 6px; }
 
+/* ---------- 稀有度徽章 / 擁有切換 ---------- */
+.rarity {
+  position: absolute; bottom: 34px; left: 6px; z-index: 2; font-size: 10px; font-weight: 800;
+  padding: 1px 5px; border-radius: 5px; letter-spacing: .5px; color: #10151f;
+}
+.r-N { background: #b9c4d6; } .r-R { background: #7fc7e8; }
+.r-SR { background: linear-gradient(135deg,#d9a3ff,#9b6cff); color: #fff; }
+.r-UR { background: linear-gradient(135deg,#ffd873,#ff9e3d); }
+.tile-own {
+  position: absolute; bottom: 6px; right: 6px; z-index: 3; width: 24px; height: 24px; border-radius: 7px;
+  border: 1px solid var(--line); background: rgba(13,16,23,.85); color: var(--muted); font-size: 14px; cursor: pointer; line-height: 1;
+}
+.tile-own.owned { color: #46c98b; border-color: #46c98b; }
+
+/* ---------- 我的卡池 / MD 點數 ---------- */
+.pool-panel { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 12px 0; }
+.pool-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; font-size: 13px; }
+.pool-row b { color: var(--accent); }
+.chk { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); cursor: pointer; }
+.cp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.cp { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; }
+.cp input { width: 68px; padding: 5px 7px; border-radius: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13px; }
+.cp-ur { color: #ffb43d; } .cp-sr { color: #b78bff; } .cp-r { color: #7fc7e8; } .cp-n { color: #b9c4d6; }
+.pool-hint { font-size: 11.5px; color: var(--muted); margin: 8px 0 0; }
+
+/* ---------- 合成缺卡面板 ---------- */
+.craft { border-radius: 10px; padding: 12px 14px; margin: 10px 0; border: 1px solid var(--line); background: var(--panel2); }
+.craft.ok, .craft.done { border-color: rgba(70,201,139,.5); background: rgba(70,201,139,.08); }
+.craft.short { border-color: rgba(229,85,95,.5); background: rgba(229,85,95,.08); }
+.craft-title { font-size: 14px; font-weight: 700; }
+.craft-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.craft-cost { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.cp-cell { font-size: 12.5px; font-weight: 700; padding: 3px 9px; border-radius: 7px; background: var(--panel); border: 1px solid var(--line); }
+.cp-cell.short { border-color: var(--danger); color: #f4a0a5; }
+.craft-verdict { margin-top: 8px; font-size: 13px; }
+
 /* ---------- drawer ---------- */
 .drawer { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
 .drawer[aria-hidden="false"] { pointer-events: auto; }

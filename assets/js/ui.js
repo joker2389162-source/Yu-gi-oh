@@ -37,6 +37,16 @@ const UI = (function () {
     if (opts.q) { const b = elem("span", "qty", "×" + opts.q); t.appendChild(b); }
     else if (item.q) { const b = elem("span", "qty", "×" + item.q); t.appendChild(b); }
     t.appendChild(imgEl(id, name));
+    // MD 稀有度徽章
+    const rar = (typeof Collection !== "undefined") ? Collection.rarityOf(id) : null;
+    if (rar) t.appendChild(elem("span", "rarity r-" + rar, rar));
+    // 我有此卡（◇/◆）
+    if (typeof Collection !== "undefined") {
+      const ownBtn = elem("button", "tile-own" + (Collection.has(id) ? " owned" : ""), Collection.has(id) ? "◆" : "◇");
+      ownBtn.title = "標記我有此卡";
+      ownBtn.onclick = function (ev) { ev.stopPropagation(); const now = Collection.toggle(id); ownBtn.classList.toggle("owned", now); ownBtn.textContent = now ? "◆" : "◇"; };
+      t.appendChild(ownBtn);
+    }
     const cap = elem("div", "tile-cap");
     cap.appendChild(elem("span", "tile-name", esc(S2T.disp(name))));
     if (item.typeLine) cap.appendChild(elem("span", "tile-type", esc(S2T.disp(item.typeLine))));
@@ -297,6 +307,22 @@ const UI = (function () {
     bindRange("#b-extra", "#b-extra-out");
     $("#b-generate").onclick = generate;
     $("#b-keyword").addEventListener("keydown", function (e) { if (e.key === "Enter") generate(); });
+    $("#b-all-themes").onclick = generateAllThemes;
+
+    // 我的卡池 / MD 點數
+    if (typeof Collection !== "undefined") {
+      const cpIds = { UR: "#cp-ur", SR: "#cp-sr", R: "#cp-r", N: "#cp-n" };
+      const saved = Collection.getCP();
+      Object.keys(cpIds).forEach(function (k) {
+        $(cpIds[k]).value = saved[k] || 0;
+        $(cpIds[k]).oninput = function () {
+          Collection.setCP({ UR: $("#cp-ur").value, SR: $("#cp-sr").value, R: $("#cp-r").value, N: $("#cp-n").value });
+        };
+      });
+      function refreshOwned() { $("#owned-count").textContent = Collection.ownedCount(); }
+      Collection.onChange(refreshOwned);
+      refreshOwned();
+    }
   }
   function bindRange(inSel, outSel) {
     const i = $(inSel), o = $(outSel);
@@ -357,11 +383,51 @@ const UI = (function () {
       extraMax: Number($("#b-extra").value),
       handtraps: intent.handtraps,
       breakers: intent.breakers,
+      owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {},
+      ownedOnly: $("#b-owned-only") && $("#b-owned-only").checked,
     };
     const threshold = Number($("#b-threshold").value) || 60;
     const result = Builder.buildBest(kw, cards, opts, threshold);
     result.intent = intent;
     renderBuilderOutput(result.deck, opts, kwShow, result);
+  }
+
+  // 所有主題：掃描候選主題，依卡池挑勝率最高者
+  async function generateAllThemes() {
+    const out = $("#builder-output");
+    out.innerHTML = "<div class='card-panel'><p class='loading'>" +
+      (YGO.indexReady() ? "" : "首次載入完整卡庫 · ") + "掃描所有主題、依你的卡池生成最佳卡組中…</p></div>";
+    try { await YGO.loadIndex(); } catch (e) {}
+    const ownedOnly = $("#b-owned-only") && $("#b-owned-only").checked;
+    const opts = {
+      style: "auto", budget: "high",
+      size: Number($("#b-size").value), extraMax: Number($("#b-extra").value),
+      handtraps: null, breakers: null,
+      owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {}, ownedOnly: ownedOnly,
+    };
+    const threshold = Number($("#b-threshold").value) || 60;
+    const kws = [];
+    QUICK_THEMES.forEach(function (g) { g.items.forEach(function (it) { if (kws.indexOf(it.kw) < 0) kws.push(it.kw); }); });
+    let best = null, bestKw = "";
+    for (const kw of kws) {
+      const isPreset = (typeof presetFor === "function") && presetFor(kw);
+      let cards = [];
+      if (!isPreset) { try { const r = await YGO.searchLocal(kw); cards = r.cards; } catch (e) { continue; } }
+      let deck, ev;
+      try { deck = Builder.buildFromKeyword(kw, cards, opts, Math.random); ev = Builder.evaluateDeck(deck); }
+      catch (e) { continue; }
+      const mainN = deck.main.reduce(function (a, x) { return a + x.q; }, 0);
+      if (mainN < 30) continue;   // 卡池不足以成型者略過
+      if (!best || ev.winRate > best.ev.winRate) { best = { deck: deck, ev: ev }; bestKw = kw; }
+    }
+    if (!best) {
+      out.innerHTML = "<div class='card-panel'><p class='status'>你的卡池目前無法組出成型卡組（勾選更多擁有卡，或取消「只用我擁有的卡」）。</p></div>";
+      return;
+    }
+    const isPreset = (typeof presetFor === "function") && presetFor(bestKw);
+    const cards = isPreset ? [] : (await YGO.searchLocal(bestKw)).cards;
+    const result = Builder.buildBest(bestKw, cards, opts, threshold);
+    renderBuilderOutput(result.deck, opts, S2T.disp(bestKw) + "（所有主題最佳）", result);
   }
 
   function renderBuilderOutput(deck, opts, keyword, result) {
@@ -387,6 +453,25 @@ const UI = (function () {
       panel.appendChild(box);
       panel.appendChild(elem("p", "note-line",
         "＊估計勝率＝起手牌蒙地卡羅模擬（先手5/後手6各半）＋能否鋪場·展開·破場·不卡手的評分，非逐卡完整對局；用於相對比較。"));
+    }
+
+    // 合成缺卡（Master Duel 點數）
+    if (typeof Collection !== "undefined") {
+      const an = Collection.analyzeDeck(deck);
+      const c = an.cost, h = an.have;
+      function cell(r) {
+        const short = c[r] > h[r];
+        return "<span class='cp-cell r-" + r + (short ? " short" : "") + "'>" + r + " " + c[r] + " / " + h[r] + (short ? " ⚠️" : " ✅") + "</span>";
+      }
+      const box = elem("div", "craft " + (an.missingCount === 0 ? "done" : (an.affordable ? "ok" : "short")));
+      box.innerHTML =
+        "<div class='craft-title'>💎 合成缺卡（Master Duel 點數）</div>" +
+        "<div class='craft-sub'>已擁有 " + an.ownedInDeck + " 張 · 需合成 " + an.missingCount + " 張" +
+        (an.unknown ? " · " + an.unknown + " 張 MD 未收錄/無稀有度" : "") + "</div>" +
+        "<div class='craft-cost'>" + cell("UR") + cell("SR") + cell("R") + cell("N") + "</div>" +
+        "<div class='craft-verdict'>" + (an.missingCount === 0 ? "✅ 你已擁有整副卡組！" :
+          (an.affordable ? "✅ 你目前的點數足以合成所有缺卡" : "⚠️ 點數不足：需補足上面標 ⚠️ 的點數才能湊齊")) + "</div>";
+      panel.appendChild(box);
     }
 
     const t = deck.themed || {};
