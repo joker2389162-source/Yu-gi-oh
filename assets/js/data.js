@@ -22,6 +22,10 @@ const HANDTRAPS = [
   { id: 94145021, n: "小丑与锁鸟",         tier: "A", budget: "low",  desc: "封鎖檢索，剋一張起手的展開系" },
   { id: 59438930, n: "幽鬼兔",             tier: "B", budget: "low",  desc: "破壞特召／檢索的怪獸效果" },
   { id: 56099748, n: "维萨斯-斯塔弗罗斯特", tier: "B", budget: "mid",  desc: "可自我特召的調整手坑，兼展開素材" },
+  { id: 62015408, n: "浮幽樱",             tier: "B", budget: "mid",  desc: "檢索/送墓時特召自己並無效同名，剋展開" },
+  { id: 52038441, n: "朔夜时雨",           tier: "B", budget: "mid",  desc: "無效對方特召怪的效果並降攻，泛用手坑" },
+  { id: 46502744, n: "应战的G",           tier: "C", budget: "low",  desc: "對方特召時自我特召，反制展開" },
+  { id: 24508238, n: "D.D.乌鸦",          tier: "C", budget: "low",  desc: "除外對方墓地 1 張，剋墓地循環" },
   { id: 94016752, n: "深渊的宣告者",       tier: "C", budget: "low",  desc: "宣言封鎖檢索卡名，特定對局用" },
 ];
 
@@ -29,6 +33,9 @@ const HANDTRAPS = [
 const BREAKERS = [
   { id: 25311006, n: "三战之才",           tier: "A", budget: "high", desc: "後手抽卡／奪控／無效，環境萬用單卡" },
   { id: 24299458, n: "禁忌的一滴",         tier: "A", budget: "mid",  desc: "無效對方怪獸並降攻，突破封鎖／成形盤" },
+  { id: 54693926, n: "冥王结界波",         tier: "A", budget: "mid",  desc: "無效場上所有對方怪獸效果，穿透成形盤主力" },
+  { id: 35269904, n: "三战之号",           tier: "B", budget: "mid",  desc: "看破對方手牌並奪墓地資源，先後手皆可用" },
+  { id: 48130397, n: "超融合",             tier: "B", budget: "mid",  desc: "融合對方怪獸清盤，無法連鎖的強力拆場" },
   { id: 14532163, n: "闪电风暴",           tier: "B", budget: "low",  desc: "後手清光對方攻表怪或魔陷，破場地" },
   { id: 15693423, n: "颉颃胜负",           tier: "B", budget: "mid",  desc: "後手僅留 1 隻，強力清場陷阱" },
   { id: 12580477, n: "雷击",               tier: "B", budget: "low",  desc: "破壞對方全部怪獸，經典清場" },
@@ -39,6 +46,7 @@ const BREAKERS = [
 const GENERIC_SPELLS = [
   { id: 84211599, n: "金满而谦虚之壶",     tier: "A", budget: "mid",  desc: "除外額外6張後看6抽1，強力穩定抽卡" },
   { id: 49238328, n: "强欲而金满之壶",     tier: "A", budget: "mid",  desc: "除外額外卡抽2，補牌穩定" },
+  { id: 24224830, n: "墓穴的指名者",       tier: "A", budget: "mid",  desc: "除外對方墓地卡並封同名，反制增G／灰流的必備泛用" },
   { id: 98645731, n: "强欲而谦虚之壶",     tier: "B", budget: "low",  desc: "看3抽1（該回合不特召），純抽卡向可用" },
   { id: 70368879, n: "成金哥布林",         tier: "C", budget: "low",  desc: "抽1（對方回5000），壓縮卡組穩定度" },
 ];
@@ -62,6 +70,7 @@ const GENERIC_EXTRA = [
   { id: 86066372, n: "访问码语者",         desc: "Link-4 打點終結者，連續破壞收尾" },
   { id: 98127546, n: "闭锁世界的冥神",     desc: "Link-5 大王，奪取對方怪獸壓場" },
   { id: 48815792, n: "灼热之火灵使 希塔",  desc: "炎屬性泛用連接，回收除外資源" },
+  { id: 90448279, n: "天霆号 阿宙斯",      desc: "超量泛用終結者，破壞全場並持續妨害" },
 ];
 
 // 經典主題「引擎補全」：有些主題的核心展開/搜尋卡與主題不同名（keyword 搜不到），

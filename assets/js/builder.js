@@ -312,7 +312,7 @@ const Builder = (function () {
     // 6) 補足剩餘：順牌泛用魔法（減卡手）→ 更多主題卡 → 最後才補手坑
     let deficit = size - count();
     if (deficit > 0) {
-      for (const g of GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget) && ownOk(s.id); })) {
+      for (const g of shuffle(GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget) && ownOk(s.id); }), rng)) {
         if (deficit <= 0) break; const e = main.find(function (x) { return x.id === g.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue;
         const add = Math.min(room, deficit); push(st(g), add, "spell"); deficit -= add;
       }
@@ -348,7 +348,7 @@ const Builder = (function () {
     extras.forEach(addExtra);
     const attrEx = (domAttr && ATTR_EXTRA[domAttr]) ? ATTR_EXTRA[domAttr] : [];
     attrEx.forEach(addExtra);
-    for (const g of GENERIC_EXTRA) { if (esum() >= extraMax) break; addExtra(g); }
+    for (const g of shuffle(GENERIC_EXTRA.slice(), rng)) { if (esum() >= extraMax) break; addExtra(g); }
 
     // 副卡組：泛用破壞卡示意
     const side = [];

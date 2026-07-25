@@ -185,6 +185,12 @@ const YGO = (function () {
     return merged;
   }
 
+  // 回傳完整卡片索引（供「顯示全部卡片」使用）。需先 loadIndex()。
+  async function allCards() {
+    await loadIndex();
+    return INDEX;
+  }
+
   function cardSync(id) { return mem[id] || null; }
-  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, cardSync, _cache: mem };
+  return { imgUrl, search, getById, getMany, searchSeries, classify, loadIndex, indexReady, searchLocal, allCards, cardSync, _cache: mem };
 })();

@@ -111,11 +111,31 @@ const UI = (function () {
   /* ---------- 搜索 ---------- */
   let lastResults = [];
   let kindFilter = "all";
+  let showingAll = false;
 
   let lastNameCount = 0;
+
+  // 顯示全部卡片（預設狀態）。載入完整索引後套用目前的篩選條件。
+  async function showAllCards() {
+    const status = $("#search-status");
+    const grid = $("#search-results");
+    if (!YGO.indexReady()) {
+      status.textContent = "載入完整卡庫（約 1.5MB，含效果全文）…";
+      grid.innerHTML = "";
+    }
+    let all;
+    try { all = await YGO.allCards(); }
+    catch (e) { status.textContent = "卡庫載入失敗：" + e.message + "（請檢查網路連線）"; return; }
+    showingAll = true;
+    lastResults = all;
+    lastNameCount = all.length;
+    renderSearch();
+  }
+
   async function runSearch(term) {
     term = (term || "").trim();
-    if (!term) return;
+    if (!term) { return showAllCards(); }
+    showingAll = false;
     const status = $("#search-status");
     const grid = $("#search-results");
     status.textContent = YGO.indexReady() ? "搜索「" + term + "」中…" : "首次載入完整卡庫（約 1.5MB，含效果全文）…";
@@ -135,6 +155,7 @@ const UI = (function () {
 
   function readFilters() {
     return {
+      cat: $("#f-cat") ? $("#f-cat").value : "",
       attr: $("#f-attr").value,
       race: $("#f-race").value,
       level: $("#f-level").value,
@@ -143,8 +164,17 @@ const UI = (function () {
     };
   }
 
+  // 種類篩選：以卡片類型行（typeLine）子字串比對。複合值以 "|" 分隔，需全部命中，
+  // 例如「魔法|速攻」需同時含「魔法」與「速攻」；「效果」則含「效果」即可。
+  function matchCat(c, cat) {
+    if (!cat) return true;
+    const line = c.typeLine || "";
+    return cat.split("|").every(function (tok) { return line.indexOf(tok) >= 0; });
+  }
+
   function passFilters(c, f) {
     if (kindFilter !== "all" && c.kind !== kindFilter) return false;
+    if (f.cat && !matchCat(c, f.cat)) return false;
     if (f.attr && c.attrCN !== f.attr) return false;
     if (f.race && c.raceCN !== f.race) return false;
     if (f.level && Number(c.level) !== Number(f.level)) return false;
@@ -160,13 +190,18 @@ const UI = (function () {
     grid.innerHTML = "";
     const f = readFilters();
     const list = lastResults.filter(function (c) { return passFilters(c, f); });
-    // 計算卡名/效果文本各多少（name hits 為 lastResults 前段）
-    const nameSet = {};
-    for (let i = 0; i < lastNameCount && i < lastResults.length; i++) nameSet[lastResults[i].id] = 1;
-    const nameCnt = list.filter(function (c) { return nameSet[c.id]; }).length;
-    const textCnt = list.length - nameCnt;
-    status.textContent = "共 " + list.length + " 筆（卡名 " + nameCnt + " · 效果文本 " + textCnt + "）" +
-      (list.length > RESULT_CAP ? " · 顯示前 " + RESULT_CAP : "");
+    if (showingAll) {
+      status.textContent = "全部卡片：符合 " + list.length + " 張" +
+        (list.length > RESULT_CAP ? "（顯示前 " + RESULT_CAP + "，可用搜索或篩選縮小範圍）" : "");
+    } else {
+      // 計算卡名/效果文本各多少（name hits 為 lastResults 前段）
+      const nameSet = {};
+      for (let i = 0; i < lastNameCount && i < lastResults.length; i++) nameSet[lastResults[i].id] = 1;
+      const nameCnt = list.filter(function (c) { return nameSet[c.id]; }).length;
+      const textCnt = list.length - nameCnt;
+      status.textContent = "共 " + list.length + " 筆（卡名 " + nameCnt + " · 效果文本 " + textCnt + "）" +
+        (list.length > RESULT_CAP ? " · 顯示前 " + RESULT_CAP : "");
+    }
     if (!list.length) { grid.innerHTML = "<p class='status'>沒有符合條件的卡片。可放寬篩選或按「重設」。</p>"; return; }
     list.slice(0, RESULT_CAP).forEach(function (c) { grid.appendChild(tile(c)); });
   }
@@ -718,13 +753,16 @@ const UI = (function () {
       box.hidden = !box.hidden;
       $("#adv-toggle").classList.toggle("active", !box.hidden);
     };
-    ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).onchange = renderSearch; });
+    ["#f-cat", "#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).onchange = renderSearch; });
     ["#f-atk", "#f-def"].forEach(function (s) { $(s).oninput = renderSearch; });
     $("#f-reset").onclick = function () {
-      ["#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).value = ""; });
+      ["#f-cat", "#f-attr", "#f-race", "#f-level"].forEach(function (s) { $(s).value = ""; });
       $("#f-atk").value = ""; $("#f-def").value = "";
       renderSearch();
     };
+
+    // 預設顯示全部卡片（背景載入完整卡庫）
+    showAllCards();
 
     $("#deck-btn").onclick = openDrawer;
     $("#deck-close").onclick = closeDrawer;
