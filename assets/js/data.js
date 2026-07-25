@@ -112,10 +112,38 @@ const ENGINE_SUPPLEMENT = {
     { id: 17086528, name: "相生之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
     { id: 71692913, name: "相克之魔术师", kind: "monster", typeLine: "[怪兽|效果|灵摆] 魔法师/暗",     level: 7, attrCN: "暗", supQ: 1, role: "starter" },
   ],
+  // 烙印（Branded／Despia）—— 引擎與終端王牌多與主題不同名（阿不思、死獄鄉、冰劍龍…），keyword「烙印」搜不到。
+  // 融合怪（isExtraMon）會被生成器自動歸入額外卡組。
+  "烙印": [
+    // 主卡組引擎（不同名的核心啟動／延伸）
+    { id: 62962630, name: "死狱乡的导化 阿鲁伯", kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 4, attrCN: "暗", supQ: 3, role: "starter" },
+    { id: 68468459, name: "阿不思的落胤",     kind: "monster", typeLine: "[怪兽|效果] 龙/暗",   level: 4, attrCN: "暗", supQ: 1, role: "extender" },
+    { id: 36577931, name: "悲剧之死狱乡演员",   kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 1, attrCN: "暗", supQ: 2, role: "starter" },
+    { id: 90179822, name: "喜剧之死狱乡演员",   kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 1, attrCN: "暗", supQ: 1, role: "extender" },
+    { id: 30271097, name: "落胤与圣女",       kind: "spell",   typeLine: "[魔法|速攻]",       level: 0, supQ: 1, role: "starter" },
+    // 額外卡組終端王牌（融合）——冰劍龍／白界龍等為卡組終端核心，這裡確保額外卡組放得出來
+    { id: 44146295, name: "冰剑龙 幻冰龙",     kind: "monster", typeLine: "[怪兽|效果|融合] 幻龙/暗", level: 8,  attrCN: "暗", role: "payoff" },
+    { id: 87746184, name: "烙印龙 白界龙",     kind: "monster", typeLine: "[怪兽|效果|融合] 龙/暗",   level: 8,  attrCN: "暗", role: "payoff" },
+    { id: 70534340, name: "神炎龙 赫界龙",     kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光",   level: 8,  attrCN: "光", role: "payoff" },
+    { id: 41373230, name: "灰烬龙 落胤龙",     kind: "monster", typeLine: "[怪兽|效果|融合] 龙/暗",   level: 8,  attrCN: "暗", role: "payoff" },
+    { id: 72272462, name: "死狱乡演员·奎里蒂斯", kind: "monster", typeLine: "[怪兽|效果|融合] 恶魔/光", level: 8,  attrCN: "光", role: "payoff" },
+    { id: 18666161, name: "死狱乡演员·镜框舞台龙", kind: "monster", typeLine: "[怪兽|效果|融合] 恶魔/光", level: 11, attrCN: "光", role: "payoff" },
+  ],
 };
 function supplementFor(keyword) {
   for (const k in ENGINE_SUPPLEMENT) {
     if (keyword.indexOf(k) >= 0 || k.indexOf(keyword) >= 0) return ENGINE_SUPPLEMENT[k];
+  }
+  return [];
+}
+
+// 依關鍵字取得該主題「經策展的額外卡組終端王牌」（來自 ENGINES 資料）。
+// 讓 keyword 生成器也能放進主題自己的融合／同調／超量／連接大怪，而非只塞泛用額外。
+function curatedExtraFor(keyword) {
+  for (const k in ENGINES) {
+    const e = ENGINES[k];
+    if ((e.keywords || []).some(function (w) { return keyword.indexOf(w) >= 0 || w.indexOf(keyword) >= 0; }))
+      return (e.extra || []).filter(function (x) { return x.q !== 0; });
   }
   return [];
 }
@@ -278,18 +306,28 @@ const ENGINES = {
   },
   branded: {
     name: "烙印（Branded Despia）", style: "midrange",
-    keywords: ["烙印"],
+    keywords: ["烙印", "阿不思", "落胤", "死狱乡", "阿鲁伯"],
     core: [
       { id: 44362883, n: "烙印融合", q: 3 },
       { id: 36637374, n: "烙印开幕", q: 3 },
+      { id: 62962630, n: "死狱乡的导化 阿鲁伯", q: 3 },
+      { id: 68468459, n: "阿不思的落胤", q: 1 },
+      { id: 36577931, n: "悲剧之死狱乡演员", q: 2 },
+      { id: 90179822, n: "喜剧之死狱乡演员", q: 1 },
       { id: 34995106, n: "白之烙印", q: 1 },
+      { id: 99543666, n: "烙印剧城 绝望死狱乡", q: 1 },
       { id: 67100549, n: "烙印凶鸣", q: 1 },
       { id: 93595154, n: "烙印的裁决", q: 1 },
     ],
     extra: [
+      { id: 44146295, n: "冰剑龙 幻冰龙", q: 1 },
       { id: 87746184, n: "烙印龙 白界龙", q: 1 },
+      { id: 70534340, n: "神炎龙 赫界龙", q: 1 },
+      { id: 41373230, n: "灰烬龙 落胤龙", q: 1 },
+      { id: 72272462, n: "死狱乡演员·奎里蒂斯", q: 1 },
+      { id: 18666161, n: "死狱乡演员·镜框舞台龙", q: 1 },
     ],
-    recommend: { handtraps: 10, breakers: 3 },
+    recommend: { handtraps: 8, breakers: 3 },
   },
 };
 

@@ -151,11 +151,13 @@ const Builder = (function () {
 
     // 引擎補全 / 策略卡包：注入核心卡（與主題不同名，或流派固定卡包）
     const supRole = {}, supIds = {};
+    const supExtras = [];   // 補全包中的額外卡組怪（融合／同調／超量／連接），歸入額外卡組
     const sup = preset ? preset : ((typeof supplementFor === "function") ? supplementFor(keyword) : []);
     sup.forEach(function (c) {
       if (!ownOk(c.id)) return;
       supIds[c.id] = 1; if (c.role) supRole[c.id] = c.role;
-      if (c.kind === "monster" && !isExtraMon(c)) { if (!isNormalMon(c) || c.role) mons.push(c); }
+      if (c.kind === "monster" && isExtraMon(c)) { supExtras.push(c); }
+      else if (c.kind === "monster") { if (!isNormalMon(c) || c.role) mons.push(c); }
       else if (c.kind === "spell") spells.push(c);
       else if (c.kind === "trap") traps.push(c);
     });
@@ -250,11 +252,16 @@ const Builder = (function () {
 
     // ---- 配比：引擎優先，手坑只補剩餘，並保留後手破場卡 ----
     const size = opts.size;
-    let htTarget = effStyle === "combo" ? 10 : effStyle === "control" ? 6 : 9;   // 比舊版低
+    // 手坑基準（比舊版更低）：連招／展開卡組以引擎為主，手坑只是輔助，不再灌滿。
+    // aggro（如天盃）幾乎全泛用打點；combo/展開優先塞主題引擎；control 用陷阱而非手坑。
+    let htTarget = effStyle === "combo" ? 5 : effStyle === "control" ? 5 : effStyle === "aggro" ? 8 : 6;
+    // 引擎足夠豐富時（主題可用卡多）再自動下修手坑，讓主題核心真正鋪滿、維持協調性。
+    const themedPool = mons.length + spells.length;
+    if (opts.style === "auto" && themedPool >= 16 && effStyle !== "control") htTarget = Math.max(3, htTarget - 2);
     if (opts.handtraps != null && opts.style !== "auto") htTarget = opts.handtraps;
     else if (opts.handtraps != null) htTarget = Math.min(opts.handtraps, htTarget + 2);
     let bkTarget = Math.max(2, (opts.breakers != null) ? opts.breakers : (effStyle === "aggro" ? 5 : 3));
-    // 引擎上限＝總張數 − 破場卡 − 目標手坑：確保手坑約 htTarget、引擎聚焦不臃腫
+    // 引擎上限＝總張數 − 破場卡 − 目標手坑：留給手坑約 htTarget，其餘全交給主題引擎
     const engineCap = Math.max(10, size - bkTarget - htTarget);
     const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 2 : 5;
 
@@ -309,18 +316,18 @@ const Builder = (function () {
     let htLeft = Math.min(htTarget, size - count());
     for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c, "handtrap"); htLeft -= c; }
 
-    // 6) 補足剩餘：順牌泛用魔法（減卡手）→ 更多主題卡 → 最後才補手坑
+    // 6) 補足剩餘：主題卡優先（維持協調性、避免泛用卡稀釋引擎）→ 順牌泛用魔法 → 最後才補手坑
     let deficit = size - count();
+    if (deficit > 0) {
+      const more = monInfo.map(function (x) { return x.c; }).concat(spInfo.map(function (x) { return x.c; }));
+      for (const c of more) { if (deficit <= 0) break; const e = main.find(function (x) { return x.id === c.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue; const add = Math.min(room, deficit); push(c, add); deficit -= add; }
+    }
+    deficit = size - count();
     if (deficit > 0) {
       for (const g of shuffle(GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget) && ownOk(s.id); }), rng)) {
         if (deficit <= 0) break; const e = main.find(function (x) { return x.id === g.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue;
         const add = Math.min(room, deficit); push(st(g), add, "spell"); deficit -= add;
       }
-    }
-    deficit = size - count();
-    if (deficit > 0) {
-      const more = monInfo.map(function (x) { return x.c; }).concat(spInfo.map(function (x) { return x.c; }));
-      for (const c of more) { if (deficit <= 0) break; const e = main.find(function (x) { return x.id === c.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue; const add = Math.min(room, deficit); push(c, add); deficit -= add; }
     }
     deficit = size - count();
     if (deficit > 0) {
@@ -345,6 +352,10 @@ const Builder = (function () {
     const extra = [];
     function esum() { return extra.reduce(function (a, x) { return a + x.q; }, 0); }
     function addExtra(o) { if (esum() >= extraMax || !ownOk(o.id) || maxCopies(o.id) <= 0) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
+    // 優先放主題自己的終端王牌（補全包融合怪 → 策展王牌 → 同名系列額外怪），再補屬性配對與泛用
+    supExtras.forEach(addExtra);
+    const packExtra = (typeof curatedExtraFor === "function") ? curatedExtraFor(keyword) : [];
+    packExtra.forEach(addExtra);
     extras.forEach(addExtra);
     const attrEx = (domAttr && ATTR_EXTRA[domAttr]) ? ATTR_EXTRA[domAttr] : [];
     attrEx.forEach(addExtra);
