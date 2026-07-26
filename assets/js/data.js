@@ -71,19 +71,47 @@ const GENERIC_EXTRA = [
   { id: 98127546, n: "闭锁世界的冥神",     desc: "Link-5 大王，奪取對方怪獸壓場" },
   { id: 48815792, n: "灼热之火灵使 希塔",  desc: "炎屬性泛用連接，回收除外資源" },
   { id: 90448279, n: "天霆号 阿宙斯",      desc: "超量泛用終結者，破壞全場並持續妨害" },
+  { id: 65741786, n: "I：P百变莱娜",       desc: "Link-2，對方回合可連接召喚，最泛用的妨害起點" },
+  { id: 38342335, n: "梦幻崩影·独角兽",    desc: "Link-3，場上任意卡返回卡組，泛用解場" },
+  { id: 2857636,  n: "梦幻崩影·凤凰",      desc: "Link-2，破壞對方魔陷，泛用拆場" },
 ];
 
 // 經典主題「引擎補全」：有些主題的核心展開/搜尋卡與主題不同名（keyword 搜不到），
 // 在此補上驗證過的引擎卡，讓生成的卡組能真正運作。可自行擴充更多主題。
 const ENGINE_SUPPLEMENT = {
   "青眼": [
+    // 主卡組引擎：「青色眼睛（青き眼）」系列與白石群，卡名不含「青眼」，keyword 搜不到
     { id: 8240199,  name: "青色眼睛的贤士", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 3, role: "starter" },
+    { id: 88241506, name: "青色眼睛的少女", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 2, role: "starter" },
     { id: 36734924, name: "青色眼睛的巫女", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 72855441, name: "青色眼睛的护人", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 1, role: "extender" },
+    { id: 45644898, name: "青色眼睛的祭司", kind: "monster", typeLine: "[怪兽|效果|调整] 魔法师/光", level: 1, attrCN: "光", supQ: 1, role: "extender" },
     { id: 71039903, name: "太古的白石",     kind: "monster", typeLine: "[怪兽|效果|调整] 龙/光",     level: 1, attrCN: "光", supQ: 2, role: "starter" },
     { id: 79814787, name: "传说的白石",     kind: "monster", typeLine: "[怪兽|效果|调整] 龙/光",     level: 1, attrCN: "光", supQ: 1, role: "starter" },
-    { id: 41620959, name: "龙之灵庙",       kind: "spell",   typeLine: "[魔法]",                     level: 0, supQ: 3, role: "starter" },
-    { id: 73398797, name: "白龙之圣骑士",   kind: "monster", typeLine: "[怪兽|效果|仪式] 龙/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
+    { id: 64202399, name: "深渊青眼龙",     kind: "monster", typeLine: "[怪兽|效果] 龙/光",         level: 8, attrCN: "光", supQ: 2, role: "starter" },
+    { id: 38517737, name: "青眼亚白龙",     kind: "monster", typeLine: "[怪兽|效果|特殊召唤] 龙/光", level: 8, attrCN: "光", supQ: 3, role: "payoff" },
     { id: 89631139, name: "青眼白龙",       kind: "monster", typeLine: "[怪兽|通常] 龙/光",          level: 8, attrCN: "光", supQ: 3, role: "payoff" },
+    { id: 73398797, name: "白龙之圣骑士",   kind: "monster", typeLine: "[怪兽|效果|仪式] 龙/光",     level: 4, attrCN: "光", supQ: 1, role: "starter" },
+    // 引擎魔法：檢索／送墓／特召核心
+    { id: 80326401, name: "青色眼睛的祈祷", kind: "spell",   typeLine: "[魔法]",       level: 0, supQ: 3, role: "starter" },
+    { id: 24382602, name: "光之灵堂",       kind: "spell",   typeLine: "[魔法|场地]",   level: 0, supQ: 3, role: "starter" },
+    { id: 41620959, name: "龙之灵庙",       kind: "spell",   typeLine: "[魔法]",       level: 0, supQ: 2, role: "starter" },
+    { id: 87025064, name: "银龙的轰咆",     kind: "spell",   typeLine: "[魔法|速攻]",   level: 0, supQ: 1, role: "extender" },
+    { id: 35659410, name: "青色眼睛的幻出", kind: "spell",   typeLine: "[魔法|永续]",   level: 0, supQ: 1, role: "extender" },
+    { id: 29432790, name: "青色眼睛的激临", kind: "spell",   typeLine: "[魔法|速攻]",   level: 0, supQ: 1, role: "extender" },
+    { id: 24094653, name: "融合",           kind: "spell",   typeLine: "[魔法]",       level: 0, supQ: 1, role: "spell" },
+    // 額外卡組終端王牌（含不同名的蒼眼銀龍、青色眼睛的精靈、究極龍騎士）
+    { id: 40908371, name: "苍眼银龙",       kind: "monster", typeLine: "[怪兽|效果|同调] 龙/光", level: 9,  attrCN: "光", role: "payoff" },
+    { id: 59822133, name: "青眼精灵龙",     kind: "monster", typeLine: "[怪兽|效果|同调] 龙/光", level: 9,  attrCN: "光", role: "payoff" },
+    { id: 89604813, name: "青眼究极灵龙",   kind: "monster", typeLine: "[怪兽|效果|同调] 龙/光", level: 12, attrCN: "光", role: "payoff" },
+    { id: 42097666, name: "青色眼睛的精灵", kind: "monster", typeLine: "[怪兽|效果|连接] 龙/光", level: 1,  attrCN: "光", role: "payoff" },
+    { id: 2129638,  name: "青眼双爆裂龙",   kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光", level: 10, attrCN: "光", role: "payoff" },
+    { id: 43228023, name: "青眼究极亚龙",   kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光", level: 12, attrCN: "光", role: "payoff" },
+    { id: 23995346, name: "青眼究极龙",     kind: "monster", typeLine: "[怪兽|融合] 龙/光",     level: 12, attrCN: "光", role: "payoff" },
+    { id: 56532353, name: "真青眼究极龙",   kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光", level: 12, attrCN: "光", role: "payoff" },
+    { id: 11443677, name: "青眼暴君龙",     kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光", level: 8,  attrCN: "光", role: "payoff" },
+    { id: 16699558, name: "蓝眼银龙",       kind: "monster", typeLine: "[怪兽|效果|超量] 龙/光", level: 8,  attrCN: "光", role: "payoff" },
+    { id: 62873545, name: "究极龙骑士",     kind: "monster", typeLine: "[怪兽|效果|融合] 龙/光", level: 12, attrCN: "光", role: "payoff" },
   ],
   // 黑魔術／黑魔導（Dark Magician）—— 怪獸名為「黑魔術師」、魔法名為「黑魔導X」，兩者不同名
   "黑魔": [
@@ -118,6 +146,10 @@ const ENGINE_SUPPLEMENT = {
     // 主卡組引擎（不同名的核心啟動／延伸）
     { id: 62962630, name: "死狱乡的导化 阿鲁伯", kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 4, attrCN: "暗", supQ: 3, role: "starter" },
     { id: 68468459, name: "阿不思的落胤",     kind: "monster", typeLine: "[怪兽|效果] 龙/暗",   level: 4, attrCN: "暗", supQ: 1, role: "extender" },
+    { id: 73819701, name: "白龙之落胤",       kind: "monster", typeLine: "[怪兽|效果] 龙/暗",   level: 4, attrCN: "暗", supQ: 1, role: "starter" },
+    { id: 25451383, name: "黑衣龙 白界龙",     kind: "monster", typeLine: "[怪兽|效果] 龙/暗",   level: 8, attrCN: "暗", supQ: 1, role: "extender" },
+    { id: 99456344, name: "死狱乡的大导剧神",   kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 8, attrCN: "暗", supQ: 1, role: "mid" },
+    { id: 81555617, name: "死狱乡的凶剧",     kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 8, attrCN: "暗", supQ: 1, role: "mid" },
     { id: 36577931, name: "悲剧之死狱乡演员",   kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 1, attrCN: "暗", supQ: 2, role: "starter" },
     { id: 90179822, name: "喜剧之死狱乡演员",   kind: "monster", typeLine: "[怪兽|效果] 天使/暗", level: 1, attrCN: "暗", supQ: 1, role: "extender" },
     { id: 30271097, name: "落胤与圣女",       kind: "spell",   typeLine: "[魔法|速攻]",       level: 0, supQ: 1, role: "starter" },

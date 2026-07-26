@@ -148,6 +148,13 @@ const Builder = (function () {
       if (normals.length > 0) notes.push("已略過 " + normals.length + " 張無效果（通常）怪獸，只保留有效果的核心卡。");
       mons = effMons;
     }
+    // 濾掉需要專屬支援才叫得出來的卡（Sin／卡通）——除非使用者就是要玩那類
+    const NEEDS_SUPPORT = /卡通|^罪 |Sin/;
+    if (!NEEDS_SUPPORT.test(keyword)) {
+      const before = mons.length;
+      mons = mons.filter(function (c) { return !NEEDS_SUPPORT.test(c.name || ""); });
+      if (before > mons.length) notes.push("已略過 " + (before - mons.length) + " 張需要專屬支援（Sin／卡通）才能特召的怪獸。");
+    }
 
     // 引擎補全 / 策略卡包：注入核心卡（與主題不同名，或流派固定卡包）
     const supRole = {}, supIds = {};
@@ -176,7 +183,9 @@ const Builder = (function () {
         return c.kind === "spell";
       });
       rel.sort(function (a, b) { return (a.kind === "spell" ? 1 : 0) - (b.kind === "spell" ? 1 : 0) || (Number(a.level) || 0) - (Number(b.level) || 0); });
-      rel.slice(0, 10).forEach(function (c) {
+      // 已有策展引擎包時，只補少量關聯卡，避免雜訊稀釋主題核心
+      const relCap = sup.length ? 4 : 10;
+      rel.slice(0, relCap).forEach(function (c) {
         const rc = { id: c.id, name: c.name, kind: c.kind, typeLine: c.typeLine, level: c.level, attrCN: c.attrCN, supQ: 1, role: "starter" };
         if (rc.kind === "monster") mons.push(rc); else spells.push(rc);
         supIds[rc.id] = 1; supRole[rc.id] = "starter";
@@ -250,20 +259,18 @@ const Builder = (function () {
       else effStyle = "midrange";
     }
 
-    // ---- 配比：引擎優先，手坑只補剩餘，並保留後手破場卡 ----
+    // ---- 配比：主題卡優先填滿主卡組，不足的部分才用泛用卡（手坑／破場）補 ----
     const size = opts.size;
-    // 手坑基準（比舊版更低）：連招／展開卡組以引擎為主，手坑只是輔助，不再灌滿。
-    // aggro（如天盃）幾乎全泛用打點；combo/展開優先塞主題引擎；control 用陷阱而非手坑。
-    let htTarget = effStyle === "combo" ? 5 : effStyle === "control" ? 5 : effStyle === "aggro" ? 8 : 6;
-    // 引擎足夠豐富時（主題可用卡多）再自動下修手坑，讓主題核心真正鋪滿、維持協調性。
-    const themedPool = mons.length + spells.length;
-    if (opts.style === "auto" && themedPool >= 16 && effStyle !== "control") htTarget = Math.max(3, htTarget - 2);
-    if (opts.handtraps != null && opts.style !== "auto") htTarget = opts.handtraps;
-    else if (opts.handtraps != null) htTarget = Math.min(opts.handtraps, htTarget + 2);
-    let bkTarget = Math.max(2, (opts.breakers != null) ? opts.breakers : (effStyle === "aggro" ? 5 : 3));
-    // 引擎上限＝總張數 − 破場卡 − 目標手坑：留給手坑約 htTarget，其餘全交給主題引擎
-    const engineCap = Math.max(10, size - bkTarget - htTarget);
-    const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 2 : 5;
+    // 手坑／破場大幅下修，且預設只是「填空」用：主題卡填得滿就不放泛用卡。
+    // 只有使用者明確指定張數（例：輸入「10 張手坑」）時，才為泛用卡預留固定額度。
+    const htExplicit = (opts.handtraps != null);
+    const bkExplicit = (opts.breakers != null);
+    const htTarget = htExplicit ? opts.handtraps : (effStyle === "aggro" ? 6 : 3);
+    const bkTarget = bkExplicit ? opts.breakers : (effStyle === "aggro" ? 4 : 2);
+    const reserve = (htExplicit ? htTarget : 0) + (bkExplicit ? bkTarget : 0);
+    // 引擎上限＝總張數 − 預留額度：沒有明確指定時 reserve=0，主題卡可一路填到 size
+    const engineCap = Math.max(10, size - reserve);
+    const wantTraps = effStyle === "control" ? 12 : effStyle === "aggro" ? 0 : effStyle === "combo" ? 3 : 6;
 
     const main = [];
     function push(card, q, role) {
@@ -281,16 +288,27 @@ const Builder = (function () {
     function st(o) { return { id: o.id, name: o.n }; }
 
     // 1) 主題怪：starter→extender→mid→payoff（payoff 設上限，避免大怪太多卡手）
+    //    怪獸另設張數上限，避免吃光整個卡組、讓引擎魔法（檢索／送墓／特召）沒有位置放。
     let trapsAdded = 0;
+    const monCap = spInfo.length
+      ? Math.round(engineCap * (effStyle === "control" ? 0.45 : effStyle === "aggro" ? 0.62 : 0.55))
+      : engineCap;
     let payoffN = 0; const PAYOFF_CAP = Math.max(3, Math.round(engineCap * 0.18));
-    for (const it of monInfo) {
-      if (count() >= engineCap) break;
+    // 策展引擎卡（有明確建議張數）一律優先進場，確保主題旗艦大怪（如青眼白龍）不會被上限擠掉，
+    // 否則整套檢索／特召引擎會指向一張不在卡組裡的卡。sort 為穩定排序，組內仍保留角色順序。
+    function curated(it) { return supIds[it.c.id] && it.c.supQ != null; }
+    const monOrder = monInfo.slice().sort(function (a, b) { return (curated(a) ? 0 : 1) - (curated(b) ? 0 : 1); });
+    for (const it of monOrder) {
+      const isCur = curated(it);
+      if (count() >= (isCur ? engineCap : monCap)) continue;
       let q = copiesFor(it.c, it.role);
-      if (it.role === "payoff") { q = Math.min(q, Math.max(0, PAYOFF_CAP - payoffN)); if (q <= 0) continue; payoffN += q; }
+      if (it.role === "payoff" && !isCur) { q = Math.min(q, Math.max(0, PAYOFF_CAP - payoffN)); if (q <= 0) continue; }
+      if (it.role === "payoff") payoffN += q;
       push(it.c, q, it.role);
     }
-    // 2) 主題魔法：searcher→breaker→其他
-    for (const it of spInfo) { if (count() >= engineCap) break; push(it.c, copiesFor(it.c, it.role), it.role); }
+    // 2) 主題魔法：策展引擎魔法優先，其餘 searcher→breaker→其他（怪獸讓出的空間全留給引擎魔法）
+    const spOrder = spInfo.slice().sort(function (a, b) { return (curated(a) ? 0 : 1) - (curated(b) ? 0 : 1); });
+    for (const it of spOrder) { if (count() >= engineCap) break; push(it.c, copiesFor(it.c, it.role), it.role); }
     // 3) 主題陷阱（控制風格較多）＋控制風格補泛用陷阱
     for (const c of traps) { if (count() >= engineCap || trapsAdded >= wantTraps) break; push(c, 2, "interrupt"); trapsAdded += 2; }
     if (effStyle === "control") {
@@ -347,6 +365,13 @@ const Builder = (function () {
       }
     }
 
+    // 主卡組組成統計：讓使用者看得出主題卡佔多少、泛用卡只補了多少
+    const themeIdSet = {};
+    mons.concat(spells, traps).forEach(function (c) { themeIdSet[c.id] = 1; });
+    const themeQ = main.filter(function (x) { return themeIdSet[x.id]; }).reduce(function (a, x) { return a + x.q; }, 0);
+    const genericQ = count() - themeQ;
+    notes.push("主卡組組成：主題卡 " + themeQ + " 張 · 泛用卡 " + genericQ + " 張（主題卡優先填滿，泛用卡只補缺口）。");
+
     // 額外卡組：主題額外怪 → 主屬性配對額外（靈使）→ 泛用額外，補到指定張數
     const extraMax = (opts.extraMax != null) ? Math.max(0, Math.min(15, opts.extraMax)) : 15;
     const extra = [];
@@ -356,7 +381,9 @@ const Builder = (function () {
     supExtras.forEach(addExtra);
     const packExtra = (typeof curatedExtraFor === "function") ? curatedExtraFor(keyword) : [];
     packExtra.forEach(addExtra);
-    extras.forEach(addExtra);
+    // 同名系列額外怪：卡通／Sin 需要專屬支援才叫得出來，除非使用者就是要玩那類，否則不放
+    const wantsSupport = NEEDS_SUPPORT.test(keyword);
+    extras.filter(function (c) { return wantsSupport || !NEEDS_SUPPORT.test(c.name || ""); }).forEach(addExtra);
     const attrEx = (domAttr && ATTR_EXTRA[domAttr]) ? ATTR_EXTRA[domAttr] : [];
     attrEx.forEach(addExtra);
     for (const g of shuffle(GENERIC_EXTRA.slice(), rng)) { if (esum() >= extraMax) break; addExtra(g); }

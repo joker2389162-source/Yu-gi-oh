@@ -367,7 +367,9 @@ const UI = (function () {
   // 需求解析：從自由文字擷取風格／預算／張數／手坑偏好／策略流派／主題
   function parseIntent(raw) {
     const t = S2T.query(raw);   // 轉簡體便於比對
-    const o = { style: "auto", budget: "high", handtraps: 12, breakers: 3, size: null, presetKey: null };
+    // handtraps／breakers 預設 null＝交給生成器自動判斷（主題卡優先填滿，泛用卡只補缺口）；
+    // 只有使用者在需求文字裡明講（例「多手坑」「少手坑」「後手強」）才指定固定張數。
+    const o = { style: "auto", budget: "high", handtraps: null, breakers: null, size: null, presetKey: null };
     if (/快攻|otk|爆发|先攻杀|一回合|速攻/i.test(t)) o.style = "aggro";
     else if (/控制|控场|防守|后手|耐久|长期|铁壁/.test(t)) o.style = "control";
     else if (/连招|展开|连锁|combo/i.test(t)) o.style = "combo";
