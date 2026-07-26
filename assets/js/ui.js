@@ -37,9 +37,13 @@ const UI = (function () {
     if (opts.q) { const b = elem("span", "qty", "×" + opts.q); t.appendChild(b); }
     else if (item.q) { const b = elem("span", "qty", "×" + item.q); t.appendChild(b); }
     t.appendChild(imgEl(id, name));
-    // MD 稀有度徽章
+    // MD 稀有度徽章；MD 尚未實裝則標示（避免組出無法在 MD 使用的卡組）
     const rar = (typeof Collection !== "undefined") ? Collection.rarityOf(id) : null;
-    if (rar) t.appendChild(elem("span", "rarity r-" + rar, rar));
+    if (typeof Collection !== "undefined" && !Collection.inMD(id)) {
+      const nb = elem("span", "rarity r-NA", "MD無");
+      nb.title = "Master Duel 尚未實裝此卡";
+      t.appendChild(nb);
+    } else if (rar) t.appendChild(elem("span", "rarity r-" + rar, rar));
     // 我有此卡（◇/◆）
     if (typeof Collection !== "undefined") {
       const ownBtn = elem("button", "tile-own" + (Collection.has(id) ? " owned" : ""), Collection.has(id) ? "◆" : "◇");
@@ -422,6 +426,7 @@ const UI = (function () {
       breakers: intent.breakers,
       owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {},
       ownedOnly: $("#b-owned-only") && $("#b-owned-only").checked,
+      mdOnly: $("#b-md-only") ? $("#b-md-only").checked : false,
     };
     const threshold = Number($("#b-threshold").value) || 60;
     const result = Builder.buildBest(kw, cards, opts, threshold);
@@ -441,6 +446,7 @@ const UI = (function () {
       size: Number($("#b-size").value), extraMax: Number($("#b-extra").value),
       handtraps: null, breakers: null,
       owned: (typeof Collection !== "undefined") ? Collection.ownedSet() : {}, ownedOnly: ownedOnly,
+      mdOnly: $("#b-md-only") ? $("#b-md-only").checked : false,
     };
     const threshold = Number($("#b-threshold").value) || 60;
     const kws = [];
@@ -588,7 +594,7 @@ const UI = (function () {
     }
     const kw = S2T.query($("#bt-kw").value.trim() || "雷火沸动机");
     const r = await YGO.searchLocal(kw);
-    const res = Builder.buildBest(kw, r.cards, { style: "auto", budget: "high", size: 40, extraMax: 15, owned: {}, ownedOnly: false }, 60);
+    const res = Builder.buildBest(kw, r.cards, { style: "auto", budget: "high", size: 40, extraMax: 15, owned: {}, ownedOnly: false, mdOnly: $("#b-md-only") ? $("#b-md-only").checked : false }, 60);
     return { name: S2T.disp(kw), bag: Builder.bagFromDeck(res.deck, res.deck.roles) };
   }
   async function runBattle() {

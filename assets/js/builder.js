@@ -125,6 +125,15 @@ const Builder = (function () {
     const owned = opts.owned || {};
     function ownOk(id) { return !opts.ownedOnly || !!owned[id]; }
     if (opts.ownedOnly) cards = cards.filter(function (c) { return owned[c.id]; });
+    // Master Duel 模式：排除 MD 尚未實裝的卡（__MD_ABSENT 為未實裝清單；資料未載入時不過濾）
+    const mdAbsent = (opts.mdOnly && typeof window !== "undefined" && window.__MD_ABSENT) ? window.__MD_ABSENT : null;
+    function mdOk(id) { return !mdAbsent || !mdAbsent[id]; }
+    function poolOk(id) { return ownOk(id) && mdOk(id); }
+    if (mdAbsent) {
+      const before = cards.length;
+      cards = cards.filter(function (c) { return mdOk(c.id); });
+      if (before > cards.length) notes.push("🎮 MD 模式：已排除 " + (before - cards.length) + " 張 Master Duel 尚未實裝的主題卡。");
+    }
     // 策略流派：命中預設卡包則以其為核心（非關鍵字系列）
     const preset = (typeof presetFor === "function") ? presetFor(keyword) : null;
     // 主題卡池：卡名含關鍵字者優先（乾淨的系列）；太少時退回較廣的相關結果
@@ -161,7 +170,7 @@ const Builder = (function () {
     const supExtras = [];   // 補全包中的額外卡組怪（融合／同調／超量／連接），歸入額外卡組
     const sup = preset ? preset : ((typeof supplementFor === "function") ? supplementFor(keyword) : []);
     sup.forEach(function (c) {
-      if (!ownOk(c.id)) return;
+      if (!poolOk(c.id)) return;
       supIds[c.id] = 1; if (c.role) supRole[c.id] = c.role;
       if (c.kind === "monster" && isExtraMon(c)) { supExtras.push(c); }
       else if (c.kind === "monster") { if (!isNormalMon(c) || c.role) mons.push(c); }
@@ -312,7 +321,7 @@ const Builder = (function () {
     // 3) 主題陷阱（控制風格較多）＋控制風格補泛用陷阱
     for (const c of traps) { if (count() >= engineCap || trapsAdded >= wantTraps) break; push(c, 2, "interrupt"); trapsAdded += 2; }
     if (effStyle === "control") {
-      for (const gt of GENERIC_TRAPS.filter(function (t) { return budgetOk(t, opts.budget) && ownOk(t.id); })) {
+      for (const gt of GENERIC_TRAPS.filter(function (t) { return budgetOk(t, opts.budget) && poolOk(t.id); })) {
         if (count() >= engineCap || trapsAdded >= wantTraps) break;
         const c = Math.min(gt.copies, wantTraps - trapsAdded); push(st(gt), c, "interrupt"); trapsAdded += c;
       }
@@ -325,12 +334,12 @@ const Builder = (function () {
       notes.push("「" + keyword + "」未對應到明確系列，已改用相關卡片＋泛用卡組成 Goodstuff 骨架；換用更精確的主題名可得到更聚焦的卡組。");
 
     // 4) 後手破封鎖：破場卡（禁忌的一滴／閃電風暴／雷擊等）
-    const bkPool = shuffle(BREAKERS.filter(function (b) { return budgetOk(b, opts.budget) && ownOk(b.id); }), rng);
+    const bkPool = shuffle(BREAKERS.filter(function (b) { return budgetOk(b, opts.budget) && poolOk(b.id); }), rng);
     let bkLeft = bkTarget;
     for (const b of bkPool) { if (bkLeft <= 0 || count() >= size) break; const c = Math.min(2, bkLeft, size - count()); push(st(b), c, "breaker"); bkLeft -= c; }
 
     // 5) 手坑：填到 htTarget 或剩餘空間（引擎已優先，手坑只補位）
-    const htPool = shuffle(HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget) && ownOk(h.id); }), rng);
+    const htPool = shuffle(HANDTRAPS.filter(function (h) { return budgetOk(h, opts.budget) && poolOk(h.id); }), rng);
     let htLeft = Math.min(htTarget, size - count());
     for (const h of htPool) { if (htLeft <= 0) break; const c = Math.min(3, htLeft); push(st(h), c, "handtrap"); htLeft -= c; }
 
@@ -342,7 +351,7 @@ const Builder = (function () {
     }
     deficit = size - count();
     if (deficit > 0) {
-      for (const g of shuffle(GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget) && ownOk(s.id); }), rng)) {
+      for (const g of shuffle(GENERIC_SPELLS.filter(function (s) { return budgetOk(s, opts.budget) && poolOk(s.id); }), rng)) {
         if (deficit <= 0) break; const e = main.find(function (x) { return x.id === g.id; }); const room = 3 - (e ? e.q : 0); if (room <= 0) continue;
         const add = Math.min(room, deficit); push(st(g), add, "spell"); deficit -= add;
       }
@@ -376,7 +385,7 @@ const Builder = (function () {
     const extraMax = (opts.extraMax != null) ? Math.max(0, Math.min(15, opts.extraMax)) : 15;
     const extra = [];
     function esum() { return extra.reduce(function (a, x) { return a + x.q; }, 0); }
-    function addExtra(o) { if (esum() >= extraMax || !ownOk(o.id) || maxCopies(o.id) <= 0) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
+    function addExtra(o) { if (esum() >= extraMax || !poolOk(o.id) || maxCopies(o.id) <= 0) return; if (extra.some(function (x) { return x.id === o.id; })) return; extra.push({ id: o.id, n: o.n || o.name, q: 1 }); }
     // 優先放主題自己的終端王牌（補全包融合怪 → 策展王牌 → 同名系列額外怪），再補屬性配對與泛用
     supExtras.forEach(addExtra);
     const packExtra = (typeof curatedExtraFor === "function") ? curatedExtraFor(keyword) : [];

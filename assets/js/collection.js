@@ -32,6 +32,11 @@ const Collection = (function () {
     if (b === "F") return 0; if (b === "1") return 1; if (b === "2") return 2; return 3;
   }
   function craftCost(id) { const r = rarityOf(id); return r ? (CRAFT[r] || 0) : 0; }
+  // 這張卡在 Master Duel 是否已實裝（__MD_ABSENT 為未實裝清單；資料未載入時一律視為已實裝）
+  function inMD(id) {
+    const a = (typeof window !== "undefined" && window.__MD_ABSENT) ? window.__MD_ABSENT : null;
+    return !a || !a[id];
+  }
 
   /* ---- 我的卡池（擁有卡片）---- */
   function has(id) { return !!owned[id]; }
@@ -71,7 +76,7 @@ const Collection = (function () {
   }
 
   return {
-    CRAFT: CRAFT, rarityOf: rarityOf, banOf: banOf, maxCopies: maxCopies, craftCost: craftCost,
+    CRAFT: CRAFT, rarityOf: rarityOf, banOf: banOf, maxCopies: maxCopies, craftCost: craftCost, inMD: inMD,
     has: has, toggle: toggle, setOwned: setOwned, addMany: addMany, ownedCount: ownedCount, ownedSet: ownedSet, clearOwned: clearOwned,
     getCP: getCP, setCP: setCP, analyzeDeck: analyzeDeck, onChange: onChange,
   };
