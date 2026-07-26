@@ -65,25 +65,36 @@ function parseDetail(html, cardNo) {
   const norm = (s) => (s || '').trim();
   const isEmpty = (s) => !s || s === '-' || s === '－' || s === '−';
 
-  // 把所有 dt/dd 配對都記錄下來，方便之後對照調整
+  // 把所有 dt/dd 配對都記錄下來。頁面同時放了「カード表示／テキスト表示」兩種切換視圖的
+  // 內容在同一份 DOM 裡（只是用 CSS/JS 切換顯示），會出現同樣標籤重複兩次、內容格式不同的
+  // 情況；只取「第一次出現」的那份（對應預設勾選、真正顯示的「カード表示」），
+  // 避免被後面格式不同、內容錯誤的重複區塊蓋掉。
   $('dt').each((_, dt) => {
     const label = norm($(dt).text());
     const dd = $(dt).next('dd');
-    if (label && dd.length) {
+    if (label && dd.length && !(label in result.raw_dt_dd)) {
       result.raw_dt_dd[label] = norm(dd.text());
     }
   });
 
   for (const [key, val] of Object.entries(result.raw_dt_dd)) {
     if (/BP/i.test(key)) {
-      // 逐一抓出 "LV1 2000 1"、"LV2 3000 2" 這種每階段的 [等級, BP, 核心數] 三元組
-      const matches = [...val.matchAll(/LV\s*(\d+)\D+(\d+)\D+(\d+)/g)];
-      for (const m of matches) {
-        result.levels.push({ lv: Number(m[1]), bp: Number(m[2]), cores: Number(m[3]) });
+      // 精靈格式："LV1 2000 1"（等級/BP/核心數）；
+      // 據點格式："LV1 - 0"（等級/BP用「-」表示沒有這格資料/核心數）。
+      const re = /LV\s*(\d+)\s*(?:(\d+)\s+(\d+)|[-－−]\s*(\d+))/g;
+      let m;
+      while ((m = re.exec(val))) {
+        const lv = Number(m[1]);
+        if (m[2] !== undefined) {
+          result.levels.push({ lv, bp: Number(m[2]), cores: Number(m[3]) });
+        } else {
+          result.levels.push({ lv, bp: null, cores: Number(m[4]) });
+        }
       }
-      if (result.levels.length) {
-        result.bp = result.levels[0].bp; // 預設用 LV1（基礎、未貼核心）的 BP
-      } else {
+      const withBp = result.levels.find((l) => l.bp !== null);
+      if (withBp) {
+        result.bp = withBp.bp;
+      } else if (!result.levels.length) {
         const m2 = val.match(/\d+/);
         if (m2) result.bp = Number(m2[0]);
       }
@@ -99,8 +110,9 @@ function parseDetail(html, cardNo) {
     }
   }
 
-  const img = $('img.cardImg, .thumbnail img, img[alt="' + cardNo + '"]').first();
-  if (img.length) result.image = img.attr('data-src') || img.attr('src') || null;
+  // 卡圖：官方卡圖網址規則已經從列表頁確認過是固定格式，直接用卡號組出來，
+  // 不用再從 HTML 猜 class 名稱，這樣也比較不會抓錯。
+  result.image = `https://www.battlespirits.com/images/cardlist/${cardNo}.webp`;
 
   return result;
 }
