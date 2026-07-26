@@ -534,11 +534,15 @@ export function initPlayTab({ db, deckStore, startersData }) {
           <div class="field">${renderField(me, 'me')}</div>
           <div class="player-stats">你 ・ 生命核心 ${me.life} ・ 儲備 ${me.reserve} ・ 棄核 ${me.coreTrash} ・ 牌庫 ${me.deckCount} 張 ・ 爆發區 ${me.burstZoneCount} 張</div>
 
-          ${ctx.isMyCoreStep ? '<p class="hint-small">核心步驟：點選場上一張自己的卡片，從儲備核心貼1個上去強化 BP+1000。</p>' : ''}
+          ${ctx.isMyCoreStep ? '<p class="hint-small">核心步驟：點選場上一張自己的卡片，從儲備區貼1點能量上去（有官方BP門檻資料的卡會依門檻表變化BP，其餘卡維持每貼1點+1000BP的簡化規則）。</p>' : ''}
 
           ${sel ? `
             <div class="selection-box">
-              ${sel.type === 'kourin' ? `煌臨：請點選自己場上要疊放的目標卡片（${db.getCard(me.hand[sel.handIndex]).kourin.targetFamily?.length ? '限 ' + db.getCard(me.hand[sel.handIndex]).kourin.targetFamily.join('/') + ' 系' : '不限系統'}）` : ''}
+              ${sel.type === 'kourin' ? (() => {
+                const k = db.getCard(me.hand[sel.handIndex]).kourin;
+                const condText = k.condition?.text || (k.targetFamily?.length ? `限 ${k.targetFamily.join('/')} 系` : '不限條件');
+                return `煌臨：請點選自己場上要疊放的目標卡片（${condText}，會消耗1點預備區能量作為靈魂能量）`;
+              })() : ''}
               ${sel.type === 'ultimate' ? `究極召喚條件：請點選 ${db.getCard(me.hand[sel.handIndex]).summonCondition.value} 張自己場上的卡片作為犧牲（已選 ${sel.chosen.length} 張）` : ''}
               ${sel.type === 'ultimate' ? `<button id="confirm-ultimate-btn" ${sel.chosen.length >= db.getCard(me.hand[sel.handIndex]).summonCondition.value ? '' : 'disabled'}>確認召喚</button>` : ''}
               <button id="cancel-selection-btn">取消</button>

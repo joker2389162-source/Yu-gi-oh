@@ -239,3 +239,78 @@ console.log('\n== 手動測試：真實卡片的BP/コア貼核心升級（26RBS
   console.log('示範卡 DEMO-001 貼2核心 BP=', demoBp, '（應為 1000+2000=3000）');
   if (demoBp !== 3000) { console.error('示範卡的簡化規則不應該被真實卡的bpLevels邏輯影響！'); process.exitCode = 1; }
 }
+
+console.log('\n== 手動測試：召喚真實卡片時自動放置最低Lv所需能量＋軽減コスト費用減免 ====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g9 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g9.start();
+  const p = g9._p(0);
+  p.reserve = 10;
+  p.hand.unshift('26RBS02-001'); // cost 2、costAlleviationColor=red、bpLevels[0].cores=1
+
+  const reserveBefore = p.reserve;
+  const inst = g9.playCard(0, 0);
+  console.log(`召喚 26RBS02-001：召喚前預備區=${reserveBefore} -> 召喚後預備區=${p.reserve}，身上能量=${inst.cores.length}`);
+  if (inst.cores.length !== 1) { console.error('召喚時應該自動放置1點能量以達到Lv1門檻！'); process.exitCode = 1; }
+  if (reserveBefore - p.reserve !== 3) { console.error(`沒有紅色標誌時，應該花掉 費用2+最低能量1=3 點預備區，實際花了 ${reserveBefore - p.reserve} 點`); process.exitCode = 1; }
+
+  // 場上已經有一張紅色卡了，這次召喚應該要被軽減コスト強制折抵1點費用
+  p.hand.unshift('26RBS02-002'); // cost 2、costAlleviationColor=red、bpLevels[0].cores=1
+  const reserveBefore2 = p.reserve;
+  const inst2 = g9.playCard(0, 0);
+  console.log(`召喚 26RBS02-002（場上已有紅色卡）：召喚前預備區=${reserveBefore2} -> 召喚後預備區=${p.reserve}`);
+  if (reserveBefore2 - p.reserve !== 2) { console.error(`場上已有紅色標誌，費用應折抵1點，只需花 (2-1)+1(最低能量)=2 點，實際花了 ${reserveBefore2 - p.reserve} 點`); process.exitCode = 1; }
+  if (inst2.cores.length !== 1) { console.error('第二張卡召喚時也應該自動放置1點能量！'); process.exitCode = 1; }
+}
+
+console.log('\n== 手動測試：能量搬動只能在自己的主要階段，且低於最低Lv門檻會消滅 ====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g10 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g10.start();
+  const p = g10._p(0);
+  p.reserve = 10;
+  const inst = { uid: 'move-test', cardId: '26RBS02-001', cores: [1, 1, 1], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['26RBS02-001'] };
+  p.field.push(inst);
+
+  // 不是自己的主要階段時（此時應該還在 draw 之前的 core 步驟其實也算合法，改到對手回合測試）
+  while (g10.currentStep !== 'draw') g10.nextStep(); // draw 不在允許清單裡
+  let threwOutsideMain = false;
+  try {
+    g10.detachCore(0, 'move-test', 1);
+  } catch (e) {
+    threwOutsideMain = true;
+    console.log('（預期行為）非主要階段搬動能量失敗：', e.message);
+  }
+  if (!threwOutsideMain) { console.error('非core/main/main2步驟不應該能搬動能量！'); process.exitCode = 1; }
+
+  while (g10.currentStep !== 'main') g10.nextStep();
+  g10.detachCore(0, 'move-test', 2); // 3 -> 1，還在Lv1門檻(1)以上，不會消滅
+  console.log('移回2點能量後，場上是否還在:', p.field.some((c) => c.uid === 'move-test'));
+  if (!p.field.some((c) => c.uid === 'move-test')) { console.error('移回2點後應該還在場上（剩1點，達到Lv1門檻）！'); process.exitCode = 1; }
+
+  g10.detachCore(0, 'move-test', 1); // 1 -> 0，低於Lv1門檻(1)，應該消滅
+  console.log('再移回1點能量（歸零）後，場上是否還在:', p.field.some((c) => c.uid === 'move-test'), '，棄卻區:', p._p ? undefined : p.cardTrash);
+  if (p.field.some((c) => c.uid === 'move-test')) { console.error('能量歸零應該低於Lv1門檻而消滅！'); process.exitCode = 1; }
+  if (!p.cardTrash.includes('26RBS02-001')) { console.error('消滅的卡應該進卡片棄卻區！'); process.exitCode = 1; }
+}
+
+console.log('\n== 手動測試：契約卡因對手效果離場時變成「魂狀態」，不進棄卻區 ====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g11 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g11.start();
+  const p0 = g11._p(0);
+  const p1 = g11._p(1);
+  // p0 場上放1張契約卡（BP低），p1 場上放1張BP更高、有Blocker能力的卡當攔截者
+  p0.field.push({ uid: 'contract-test', cardId: 'DEMO-014', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-014'] });
+  p1.field.push({ uid: 'blocker-test', cardId: 'DEMO-005', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-005'] });
+  while (g11.activePlayerIndex !== 0 || g11.currentStep !== 'attack') g11.nextStep();
+  g11.declareAttack(0, 'contract-test');
+  g11.declareBlock(1, 'blocker-test'); // DEMO-005 (BP5000, doubleBlocker) > DEMO-014 (BP3000)，契約卡會被破壞
+  console.log('契約卡場上:', p0.field.some((c) => c.uid === 'contract-test'), '棄卻區:', p0.cardTrash, '魂狀態區:', p0.soulStateZone);
+  if (p0.field.some((c) => c.uid === 'contract-test')) { console.error('契約卡應該已經離場！'); process.exitCode = 1; }
+  if (p0.cardTrash.includes('DEMO-014')) { console.error('契約卡因對手效果離場，不應該進棄卻區，應該變成魂狀態！'); process.exitCode = 1; }
+  if (!p0.soulStateZone.some((s) => s.cardId === 'DEMO-014')) { console.error('契約卡應該出現在魂狀態區！'); process.exitCode = 1; }
+}

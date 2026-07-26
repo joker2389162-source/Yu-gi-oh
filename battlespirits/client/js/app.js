@@ -13,10 +13,16 @@ function switchTab(name) {
 }
 
 let playUIRef = null;
+let cardsUIRef = null;
 tabButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     switchTab(btn.dataset.tab);
     if (btn.dataset.tab === 'play' && playUIRef && !playUIRef.hasMatch()) playUIRef.renderSetup();
+    // 切到「卡片資料庫」分頁時要重新 render：editingDeckId 可能在「卡組編輯」
+    // 分頁被改過（新增/匯入/切換卡組），卡片頁的按鈕（加入卡組／設為開局公開
+    // 的契約卡）需要用最新的 editingDeckId 才能正確運作，不然按鈕還是綁著
+    // 上一次 render 當下（可能是「尚未選擇卡組」）的舊狀態。
+    if (btn.dataset.tab === 'cards' && cardsUIRef) cardsUIRef.render();
   });
 });
 
@@ -27,7 +33,7 @@ async function main() {
     statusEl.remove();
 
     let editingDeckId = null;
-    const cardsUIRef = initCardsTab({
+    cardsUIRef = initCardsTab({
       db,
       deckStore,
       getEditingDeckId: () => editingDeckId,

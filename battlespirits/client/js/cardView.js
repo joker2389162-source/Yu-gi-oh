@@ -67,6 +67,14 @@ function summonConditionTag(card) {
   return ` ・ <span class="tag tag--ultimate">${label}</span>`;
 }
 
+// 煌臨疊放對象的條件說明：優先用新格式的 condition.text，沒有的話退回舊格式
+// 的 targetFamily 陣列（相容既有示範資料）。
+function kourinConditionLabel(kourin) {
+  if (kourin.condition?.text) return `／${kourin.condition.text}`;
+  if (kourin.targetFamily?.length) return `／${kourin.targetFamily.join('・')}系`;
+  return '';
+}
+
 export function cardTitleLine(card) {
   const colors = (card.colors || []).map((c) => COLOR_LABELS[c] || c).join('/') || '無色';
   const bp = card.bp != null ? ` BP${card.bp}` : '';
@@ -91,7 +99,7 @@ export function renderCardCard(card, { onAdd, showQty, onAddContract, isContract
       ${card.collab ? ` ・ <span class="tag tag--collab">合作卡：${card.collabSeries || ''}</span>` : ''}
       ${card.awakening ? ' ・ <span class="tag tag--awaken">轉醒</span>' : ''}
       ${card.awokenForm ? ' ・ <span class="tag tag--awaken">轉醒後（不可直接入卡組）</span>' : ''}
-      ${card.kourin ? ` ・ <span class="tag tag--kourin">煌臨：核心${card.kourin.cost}${card.kourin.targetFamily?.length ? '／' + card.kourin.targetFamily.join('・') + '系' : ''}</span>` : ''}
+      ${card.kourin ? ` ・ <span class="tag tag--kourin">煌臨（消耗1點靈魂能量）${kourinConditionLabel(card.kourin)}</span>` : ''}
       ${summonConditionTag(card)}
       ${card.uTrigger ? ' ・ <span class="tag tag--ultimate">U觸發</span>' : ''}
     </div>

@@ -78,10 +78,16 @@ function send(ws, msg) {
 
 function assertCanAct(game, idx, name) {
   const active = game.activePlayerIndex;
-  if (['play', 'set-burst', 'attach-core', 'kourin'].includes(name)) {
+  const coreActions = ['attach-core', 'detach-core', 'move-core'];
+  if (['play', 'set-burst', ...coreActions, 'kourin'].includes(name)) {
     if (game.pendingAttack) throw new Error('攻擊結算中，請先處理完攻擊');
     if (idx !== active) throw new Error('現在不是你的回合');
-    if (name === 'attach-core' && game.currentStep !== 'core') throw new Error('現在不是核心步驟');
+    // 官方規則校正：能量搬動（貼上/移回/互相搬動）是「自己的主要階段，次數
+    // 不限」，不是限定核心步驟一次性動作；這裡沿用引擎內建的核心步驟，另外
+    // 放寬到 main/main2 也能用，兩者都可以（實際限制邏輯在 Game._assertOwnMainPhase）。
+    if (coreActions.includes(name) && !['core', 'main', 'main2'].includes(game.currentStep)) {
+      throw new Error('現在不是可以搬動能量的步驟');
+    }
     if (['play', 'set-burst', 'kourin'].includes(name) && !['main', 'main2'].includes(game.currentStep)) {
       throw new Error('現在不是主要步驟');
     }
@@ -107,7 +113,9 @@ const ACTION_HANDLERS = {
   // （究極卡跟精靈一樣走一般召喚程序，只是 playCard 內部多一道召喚條件檢查）。
   play: (game, idx, payload) => game.playCard(idx, payload.handIndex, { sacrificeUids: payload.sacrificeUids || [] }),
   'set-burst': (game, idx, payload) => game.setBurst(idx, payload.handIndex),
-  'attach-core': (game, idx, payload) => game.attachCore(idx, payload.targetUid),
+  'attach-core': (game, idx, payload) => game.attachCore(idx, payload.targetUid, payload.amount || 1),
+  'detach-core': (game, idx, payload) => game.detachCore(idx, payload.sourceUid, payload.amount || 1),
+  'move-core': (game, idx, payload) => game.moveCoreBetweenField(idx, payload.sourceUid, payload.targetUid, payload.amount || 1),
   'declare-attack': (game, idx, payload) => game.declareAttack(idx, payload.attackerUid),
   'declare-block': (game, idx, payload) => game.declareBlock(idx, payload.blockerUid || null),
   'activate-burst': (game, idx, payload) => game.activateBurst(idx, payload.uid),
