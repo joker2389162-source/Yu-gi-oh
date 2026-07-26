@@ -31,7 +31,7 @@ import * as cheerio from 'cheerio';
 // 之前就發生過 Invoke-WebRequest 存到 Desktop、但終端機在 tools 資料夾底下的狀況）。
 // 執行前可以先用 (Get-Item .\scrape-card-detail.mjs).FullName 確認目前資料夾裡
 // 這支檔案的完整路徑，跟你下載/覆蓋的路徑是不是同一個。
-const SCRAPER_VERSION = '2026-07-26-v3-debug';
+const SCRAPER_VERSION = '2026-07-26-v4-fix-faq-contamination';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(`[scrape-card-detail.mjs 版本標記: ${SCRAPER_VERSION}]`);
@@ -66,22 +66,23 @@ function sleep(ms) {
 // 根據使用者實際回報的官方彈窗畫面校正過的解析邏輯：
 // カテゴリー/属性/コスト/軽減コスト/系統/BP・コア/能力・効果/ブロックアイコン/作品アイコン
 // 這些都是 <dt>標籤</dt><dd>內容</dd> 的配對。
-// BP 欄位比較特殊，實際標籤是「BP/コア」，內容是多階段的「LV1 2000 1」「LV2 3000 2」
-// （代表：等級1時BP2000、貼到第1個核心；等級2時BP3000、貼到第2個核心——這是原始
-// Battle Spirits 的「貼核心升級」機制，示範資料庫目前的引擎還沒實作這個，只先如實記錄）。
+//
+// 實測結果推翻了先前的假設：dd 的純文字內容裡「沒有」LV1/LV2 這種文字──
+// 等級數字在頁面上是用圖示(CSS/圖片)顯示的，cheerio 的 .text() 抓不到，
+// 只留下純數字/破折號依序排列，例如：
+//   精靈格式："3000 1 5000 3"　→　Lv1: BP3000 貼核心1個／Lv2: BP5000 貼核心3個
+//   據點格式："- 0 - 2"　→　Lv1: 無BP值 貼核心0個／Lv2: 無BP值 貼核心2個
+// （這是原始 Battle Spirits 的「貼核心升級」機制，示範資料庫目前的引擎還沒
+// 實作這個，只先如實記錄）。
 function parseLevels(val) {
-  // 精靈格式："LV1 2000 1"（等級/BP/核心數）；
-  // 據點格式："LV1 - 0"（等級/BP用「-」表示沒有這格資料/核心數）。
+  // 每兩個「原子」(數字或破折號)算一組(BP, 核心數)，依序就是 Lv1、Lv2...
+  const atoms = val.match(/\d+|[-－−]/g) || [];
   const levels = [];
-  const re = /LV\s*(\d+)\s*(?:(\d+)\s+(\d+)|[-－−]\s*(\d+))/g;
-  let m;
-  while ((m = re.exec(val))) {
-    const lv = Number(m[1]);
-    if (m[2] !== undefined) {
-      levels.push({ lv, bp: Number(m[2]), cores: Number(m[3]) });
-    } else {
-      levels.push({ lv, bp: null, cores: Number(m[4]) });
-    }
+  for (let i = 0; i + 1 < atoms.length; i += 2) {
+    const bpTok = atoms[i];
+    const coresTok = atoms[i + 1];
+    const isDash = /^[-－−]$/.test(bpTok);
+    levels.push({ lv: levels.length + 1, bp: isDash ? null : Number(bpTok), cores: Number(coresTok) });
   }
   return levels;
 }
@@ -93,10 +94,17 @@ function parseDetail(html, cardNo, { debug = false } = {}) {
   const norm = (s) => (s || '').trim();
   const isEmpty = (s) => !s || s === '-' || s === '－' || s === '−';
 
-  // 把每個 dt 標籤「所有」出現過的 dd 內容都記錄下來（不是只留第一筆），
-  // 因為目前還不確定頁面裡「カード表示／テキスト表示」兩種切換視圖，
-  // 哪一份在 DOM 裡真的排在前面——與其用猜的順序規則，不如針對每個
-  // 標籤蒐集全部候選內容，再依「哪一份能被正確解析」來挑，比較不會出錯。
+  // 實測發現：卡片詳細頁面下半段還有「規則問答(FAQ)」區塊，每一則問答本身
+  // 也是用同樣的 <dt>問題</dt><dd>答案</dd> 結構呈現，而且問題句子常常會
+  // 提到「BP」「効果」這些字（例如「...のLv2効果でそのスピリットをBP+したら
+  // 、Lv2効果は発揮できるの？」）。先前的比對規則只檢查標籤「字串裡有沒有
+  // 出現」這些關鍵字，沒有檢查出現的位置，導致這些問答內容被誤判成欄位資料，
+  // 而且因為它們在 DOM 裡排在真正欄位之後，還會蓋掉真正欄位的正確值
+  // （這才是先前「BP解析錯誤」的真正原因，跟 dt/dd 是否重複出現無關——
+  // 每個真正欄位的標籤在頁面上其實都只出現一次）。
+  // 修正方式：比對規則一律改成「以指定字串開頭」，因為欄位標籤都是這種短
+  // 字串，FAQ 問題句都是完整敘述開頭（例如「自分の…」「元々の…」），
+  // 不會誤觸這個更嚴格的開頭比對。
   const occurrences = {}; // label -> array of raw dd text
   $('dt').each((_, dt) => {
     const label = norm($(dt).text());
@@ -115,32 +123,16 @@ function parseDetail(html, cardNo, { debug = false } = {}) {
   }
 
   for (const [key, vals] of Object.entries(occurrences)) {
-    if (/BP/i.test(key)) {
-      // 對每一個重複出現的候選內容都嘗試解析，挑「能解析出等級資料」的那一份；
-      // 如果好幾份都能解析，用第一份；都解析不出來才落回抓數字的保底邏輯。
-      let chosen = null;
-      for (const val of vals) {
-        const levels = parseLevels(val);
-        if (levels.length > 0) { chosen = { val, levels }; break; }
-      }
-      if (chosen) {
-        result.levels = chosen.levels;
-        const withBp = chosen.levels.find((l) => l.bp !== null);
-        result.bp = withBp ? withBp.bp : null;
-      } else {
-        const val = vals[0];
-        const m2 = val.match(/\d+/);
-        if (m2) result.bp = Number(m2[0]);
-      }
-    }
     const val = vals[0];
-    if (/効果|テキスト|カードテキスト/.test(key) && !isEmpty(val)) {
+    if (/^BP/.test(key)) {
+      result.levels = parseLevels(val);
+      const withBp = result.levels.find((l) => l.bp !== null);
+      result.bp = withBp ? withBp.bp : null;
+    } else if (/^(能力|効果|テキスト|カードテキスト)/.test(key) && !isEmpty(val)) {
       result.text = val;
-    }
-    if (/ブロックアイコン/.test(key) && !isEmpty(val)) {
+    } else if (/^ブロックアイコン/.test(key) && !isEmpty(val)) {
       result.blockIcon = val;
-    }
-    if (/作品アイコン/.test(key) && !isEmpty(val)) {
+    } else if (/^作品アイコン/.test(key) && !isEmpty(val)) {
       result.workIcon = val;
     }
   }
