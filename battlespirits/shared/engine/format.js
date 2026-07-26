@@ -12,8 +12,12 @@ export const DECK_RULES = {
 // deck: { name, format, main: [{id, qty}], contractCardId?: string }
 // db: createCardDatabase() 的回傳物件
 //
-// 契約卡（Contract）不算入主卡組張數，是獨立欄位：開局時直接進手牌，
-// 不與主卡組同一疊抽取，所以主卡組（main）裡不能放契約卡本身。
+// 契約卡（Contract）規則（依官方規則手冊校正）：契約卡本身就是主卡組40張的
+// 一部分（不是額外的第41張），只是遊戲開始洗牌前可以先抽出1張背面展示，
+// 抽手牌時改成「抽3張＋公開加入這1張＝一樣是4張起始手牌」，而不是「抽4張
+// 後再多塞1張」。這件事完全是可選的：deck.contractCardId 有值就代表「這副
+// 卡組要使用這個特性」，null 就代表「契約卡直接洗進卡組，正常抽牌」。
+// 一副卡組只能收錄同一種契約卡（最多3張同名，跟一般卡片同一套張數限制）。
 export function validateDeck(deck, db) {
   const errors = [];
   const warnings = [];
@@ -25,6 +29,7 @@ export function validateDeck(deck, db) {
 
   let total = 0;
   const seen = new Map();
+  const contractCardNamesInMain = new Set();
 
   for (const entry of deck.main) {
     let card;
@@ -42,7 +47,7 @@ export function validateDeck(deck, db) {
     seen.set(entry.id, (seen.get(entry.id) || 0) + entry.qty);
 
     if (card.contractCard) {
-      errors.push(`${card.name} 是契約卡，不能放進主卡組，請用「契約卡」欄位指定`);
+      contractCardNamesInMain.add(entry.id);
     }
 
     if (!db.isCardLegal(entry.id, deck.format)) {
@@ -55,14 +60,21 @@ export function validateDeck(deck, db) {
     }
   }
 
+  if (contractCardNamesInMain.size > 1) {
+    const names = [...contractCardNamesInMain].map((id) => db.getCard(id).name).join('、');
+    errors.push(`卡組只能收錄同一種契約卡，目前混入了多種：${names}`);
+  }
+
   let contractCard = null;
   if (deck.contractCardId) {
     try {
       contractCard = db.getCard(deck.contractCardId);
       if (!contractCard.contractCard) {
-        errors.push(`${contractCard.name} 不是契約卡，不能放在「契約卡」欄位`);
+        errors.push(`${contractCard.name} 不是契約卡，不能指定為開局公開的契約卡`);
       } else if (!db.isCardLegal(deck.contractCardId, deck.format)) {
         errors.push(`${contractCard.name}（${deck.contractCardId}）在「${FORMATS[deck.format].label}」中不合法`);
+      } else if (!contractCardNamesInMain.has(deck.contractCardId)) {
+        errors.push(`${contractCard.name} 要先放進主卡組（main）裡至少1張，才能指定為開局公開的契約卡`);
       }
     } catch {
       errors.push(`未知的契約卡編號: ${deck.contractCardId}`);

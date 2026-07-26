@@ -73,7 +73,7 @@ export function cardTitleLine(card) {
   return `${card.name}（${TYPE_LABELS[card.type] || card.type}／${colors}／費${card.cost}${bp}）`;
 }
 
-export function renderCardCard(card, { onAdd, showQty, onAddContract } = {}) {
+export function renderCardCard(card, { onAdd, showQty, onAddContract, isContractSelected } = {}) {
   const el = document.createElement('div');
   el.className = 'bs-card';
   if (card.collab) el.classList.add('bs-card--collab');
@@ -87,7 +87,7 @@ export function renderCardCard(card, { onAdd, showQty, onAddContract } = {}) {
     <div class="bs-card-meta">
       ${TYPE_LABELS[card.type] || card.type} ・ ${(card.colors || []).map((c) => COLOR_LABELS[c] || c).join('/') || '無色'}
       ${card.bp != null ? ` ・ BP ${card.bp}` : ''}
-      ${card.contractCard ? ' ・ <span class="tag tag--contract">契約卡（獨立欄位，不佔主卡組張數）</span>' : ''}
+      ${card.contractCard ? ' ・ <span class="tag tag--contract">契約卡（算入主卡組40張，一副卡組只能收錄同一種）</span>' : ''}
       ${card.collab ? ` ・ <span class="tag tag--collab">合作卡：${card.collabSeries || ''}</span>` : ''}
       ${card.awakening ? ' ・ <span class="tag tag--awaken">轉醒</span>' : ''}
       ${card.awokenForm ? ' ・ <span class="tag tag--awaken">轉醒後（不可直接入卡組）</span>' : ''}
@@ -104,18 +104,22 @@ export function renderCardCard(card, { onAdd, showQty, onAddContract } = {}) {
     note.className = 'hint-small';
     note.textContent = '此為轉醒後的背面卡，只能透過轉醒抵達，不能直接加入卡組。';
     el.appendChild(note);
-  } else if (card.contractCard && onAddContract) {
-    const btn = document.createElement('button');
-    btn.className = 'bs-add-btn bs-add-btn--contract';
-    btn.textContent = '設為契約卡';
-    btn.onclick = () => onAddContract(card);
-    el.appendChild(btn);
-  } else if (onAdd) {
-    const btn = document.createElement('button');
-    btn.className = 'bs-add-btn';
-    btn.textContent = showQty ? `＋ 加入（目前 ${showQty}）` : '＋ 加入卡組';
-    btn.onclick = () => onAdd(card);
-    el.appendChild(btn);
+  } else {
+    if (onAdd) {
+      const btn = document.createElement('button');
+      btn.className = 'bs-add-btn';
+      btn.textContent = showQty ? `＋ 加入（目前 ${showQty}）` : '＋ 加入卡組';
+      btn.onclick = () => onAdd(card);
+      el.appendChild(btn);
+    }
+    if (card.contractCard && onAddContract) {
+      const btn = document.createElement('button');
+      btn.className = 'bs-add-btn bs-add-btn--contract';
+      btn.textContent = isContractSelected ? '✓ 已設為開局公開的契約卡' : '設為開局公開的契約卡';
+      btn.disabled = !!isContractSelected;
+      btn.onclick = () => onAddContract(card);
+      el.appendChild(btn);
+    }
   }
   return el;
 }

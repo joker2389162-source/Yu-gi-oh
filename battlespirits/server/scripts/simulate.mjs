@@ -109,14 +109,17 @@ console.log('\n== 手動測試：轉醒（Awakening）====');
   }
 }
 
-console.log('\n== 手動測試：契約卡開局是否直接進手牌 ==');
+console.log('\n== 手動測試：契約卡開局是否直接進手牌（契約卡是40張的一部分，抽3張+公開1張=一樣4張）====');
 {
   const g2 = new Game([startersData.starters.find((s) => s.id === 'STARTER-A'), startersData.starters.find((s) => s.id === 'STARTER-B')], db);
   g2.start();
   const p0 = g2.getState(0).players[0];
   console.log('玩家1 開局手牌(應含契約卡 DEMO-014):', p0.hand);
   if (!p0.hand.includes('DEMO-014')) { console.error('契約卡沒有進手牌！'); process.exitCode = 1; }
-  if (p0.hand.length !== 5) { console.error(`手牌應為 4(起始)+1(契約)=5 張，實際 ${p0.hand.length} 張`); process.exitCode = 1; }
+  if (p0.hand.length !== 4) { console.error(`手牌應為抽3張+公開1張契約卡=4張，實際 ${p0.hand.length} 張`); process.exitCode = 1; }
+  const deckCount = p0 ? g2._p(0).deck.length : null;
+  console.log('玩家1 牌庫剩餘張數（40 - 1張已設為契約公開卡 - 3張已抽）:', g2._p(0).deck.length);
+  if (g2._p(0).deck.length !== 40 - 1 - 3) { console.error('牌庫剩餘張數不對，契約卡的洗牌/抽牌邏輯有誤！'); process.exitCode = 1; }
 }
 
 console.log('\n== 手動測試：煌臨（Kourin）====');

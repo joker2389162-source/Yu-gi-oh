@@ -58,6 +58,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
       const entry = deck ? deck.main.find((e) => e.id === card.id) : null;
       const el = renderCardCard(card, {
         showQty: entry ? entry.qty : editingId ? 0 : null,
+        isContractSelected: deck ? deck.contractCardId === card.id : false,
         onAdd: editingId
           ? () => {
               deckStore.addCard(editingId, card.id, 1);
@@ -67,6 +68,12 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
           : () => alert('請先到「卡組編輯」分頁建立或選擇一副要編輯的卡組。'),
         onAddContract: editingId
           ? () => {
+              // 契約卡本身就是主卡組40張的一部分：如果還沒加進卡組，先加1張，
+              // 再把它指定為「開局公開加入手牌」的那一張。
+              const deck = deckStore.get(editingId);
+              if (!deck.main.some((e) => e.id === card.id)) {
+                deckStore.addCard(editingId, card.id, 1);
+              }
               deckStore.update(editingId, { contractCardId: card.id });
               render();
               refreshDeckUI();

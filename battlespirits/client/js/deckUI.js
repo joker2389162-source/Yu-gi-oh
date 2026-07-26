@@ -90,17 +90,17 @@ export function initDeckTab({ db, deckStore, startersData, setEditingDeckId, get
         ${result.warnings.map((w) => `<div class="warn">・${w}</div>`).join('')}
       </div>
       <div class="contract-slot">
-        <strong>契約卡（不算入主卡組張數，開局直接進手牌）：</strong>
+        <strong>開局公開的契約卡（本身算在主卡組40張裡，只是洗牌前先抽出、開局改成「抽3張+公開這1張」）：</strong>
         ${deck.contractCardId
           ? (() => {
               try {
                 const cc = db.getCard(deck.contractCardId);
-                return `${cc.name}（${cc.id}） <button id="deck-clear-contract" class="danger-small">移除</button>`;
+                return `${cc.name}（${cc.id}） <button id="deck-clear-contract" class="danger-small">取消（改成正常洗進卡組）</button>`;
               } catch {
-                return `未知卡片：${deck.contractCardId} <button id="deck-clear-contract" class="danger-small">移除</button>`;
+                return `未知卡片：${deck.contractCardId} <button id="deck-clear-contract" class="danger-small">取消</button>`;
               }
             })()
-          : '（尚未指定，到「卡片資料庫」分頁找契約卡點「設為契約卡」）'}
+          : '（尚未指定，可選，到「卡片資料庫」分頁找契約卡點「設為開局公開的契約卡」；不指定的話契約卡就正常洗進卡組抽牌）'}
       </div>
       <div class="deck-actions">
         <button id="deck-export-btn">複製卡表文字</button>

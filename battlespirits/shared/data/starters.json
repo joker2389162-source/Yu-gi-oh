@@ -1,5 +1,5 @@
 {
-  "_readme": "現行可用預組（示範版）。使用 shared/data/cards.json 內的示範卡池組成，欄位格式與真正官方預組相同（name/format/main/contractCardId），日後要替換成官方現行預組，直接比照格式改寫 main 陣列即可。契約卡（contractCardId）不算入 main 的40張，開局會直接進手牌。",
+  "_readme": "現行可用預組（示範版）。使用 shared/data/cards.json 內的示範卡池組成，欄位格式與真正官方預組相同（name/format/main/contractCardId），日後要替換成官方現行預組，直接比照格式改寫 main 陣列即可。契約卡（contractCardId 指定的那張）就是 main 裡本來就有的一張卡（本身算在40張裡面，不是額外多的），只是開局洗牌前會先抽出、改成「抽3張+公開加入這1張＝一樣是4張起始手牌」；contractCardId=null 就代表這副卡組選擇不使用這個特性，契約卡直接洗進卡組正常抽。",
   "starters": [
     {
       "id": "STARTER-A",
@@ -9,7 +9,7 @@
       "main": [
         {"id": "DEMO-001", "qty": 3}, {"id": "DEMO-002", "qty": 3}, {"id": "DEMO-003", "qty": 3},
         {"id": "DEMO-004", "qty": 3}, {"id": "DEMO-005", "qty": 3}, {"id": "DEMO-011", "qty": 3},
-        {"id": "DEMO-012", "qty": 3}, {"id": "DEMO-013", "qty": 3}, {"id": "DEMO-031", "qty": 3},
+        {"id": "DEMO-012", "qty": 3}, {"id": "DEMO-013", "qty": 3}, {"id": "DEMO-014", "qty": 3},
         {"id": "DEMO-032", "qty": 3}, {"id": "DEMO-034", "qty": 3}, {"id": "DEMO-017", "qty": 3},
         {"id": "DEMO-021", "qty": 3}, {"id": "DEMO-039", "qty": 1}
       ]
@@ -23,7 +23,7 @@
         {"id": "DEMO-006", "qty": 3}, {"id": "DEMO-007", "qty": 3}, {"id": "DEMO-008", "qty": 3},
         {"id": "DEMO-009", "qty": 3}, {"id": "DEMO-010", "qty": 3}, {"id": "DEMO-019", "qty": 3},
         {"id": "DEMO-020", "qty": 3}, {"id": "DEMO-021", "qty": 3}, {"id": "DEMO-022", "qty": 3},
-        {"id": "DEMO-031", "qty": 3}, {"id": "DEMO-032", "qty": 3}, {"id": "DEMO-033", "qty": 3},
+        {"id": "DEMO-027", "qty": 3}, {"id": "DEMO-032", "qty": 3}, {"id": "DEMO-033", "qty": 3},
         {"id": "DEMO-024", "qty": 3}, {"id": "DEMO-039", "qty": 1}
       ]
     },
@@ -35,7 +35,7 @@
       "main": [
         {"id": "DEMO-015", "qty": 3}, {"id": "DEMO-016", "qty": 3}, {"id": "DEMO-017", "qty": 3},
         {"id": "DEMO-018", "qty": 3}, {"id": "DEMO-023", "qty": 3}, {"id": "DEMO-024", "qty": 3},
-        {"id": "DEMO-025", "qty": 3}, {"id": "DEMO-026", "qty": 3}, {"id": "DEMO-031", "qty": 3},
+        {"id": "DEMO-025", "qty": 3}, {"id": "DEMO-026", "qty": 3}, {"id": "DEMO-027", "qty": 3},
         {"id": "DEMO-032", "qty": 3}, {"id": "DEMO-033", "qty": 3}, {"id": "DEMO-009", "qty": 3},
         {"id": "DEMO-003", "qty": 3}, {"id": "DEMO-039", "qty": 1}
       ]
@@ -50,7 +50,7 @@
         {"id": "DEMO-015", "qty": 3}, {"id": "DEMO-019", "qty": 3}, {"id": "DEMO-023", "qty": 3},
         {"id": "DEMO-002", "qty": 3}, {"id": "DEMO-007", "qty": 3}, {"id": "DEMO-012", "qty": 3},
         {"id": "DEMO-016", "qty": 3}, {"id": "DEMO-020", "qty": 3}, {"id": "DEMO-024", "qty": 3},
-        {"id": "DEMO-031", "qty": 3}, {"id": "DEMO-039", "qty": 1}
+        {"id": "DEMO-027", "qty": 3}, {"id": "DEMO-039", "qty": 1}
       ]
     },
     {
@@ -62,7 +62,7 @@
         {"id": "DEMO-028", "qty": 3}, {"id": "DEMO-029", "qty": 3}, {"id": "DEMO-030", "qty": 3},
         {"id": "DEMO-015", "qty": 3}, {"id": "DEMO-016", "qty": 3}, {"id": "DEMO-017", "qty": 3},
         {"id": "DEMO-018", "qty": 3}, {"id": "DEMO-001", "qty": 3}, {"id": "DEMO-002", "qty": 3},
-        {"id": "DEMO-003", "qty": 3}, {"id": "DEMO-004", "qty": 3}, {"id": "DEMO-031", "qty": 3},
+        {"id": "DEMO-003", "qty": 3}, {"id": "DEMO-004", "qty": 3}, {"id": "DEMO-027", "qty": 3},
         {"id": "DEMO-032", "qty": 3}, {"id": "DEMO-039", "qty": 1}
       ]
     },
@@ -75,7 +75,7 @@
         {"id": "DEMO-035", "qty": 3}, {"id": "DEMO-037", "qty": 3}, {"id": "DEMO-038", "qty": 2},
         {"id": "DEMO-040", "qty": 2}, {"id": "DEMO-001", "qty": 3}, {"id": "DEMO-006", "qty": 3},
         {"id": "DEMO-011", "qty": 3}, {"id": "DEMO-015", "qty": 3}, {"id": "DEMO-019", "qty": 3},
-        {"id": "DEMO-023", "qty": 3}, {"id": "DEMO-031", "qty": 3}, {"id": "DEMO-032", "qty": 3},
+        {"id": "DEMO-023", "qty": 3}, {"id": "DEMO-027", "qty": 3}, {"id": "DEMO-032", "qty": 3},
         {"id": "DEMO-039", "qty": 3}, {"id": "DEMO-034", "qty": 3}
       ]
     }

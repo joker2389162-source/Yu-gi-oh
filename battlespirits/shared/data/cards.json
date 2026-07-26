@@ -19,7 +19,7 @@
     "summonCondition": "究極卡的召喚條件（跟精靈一樣走一般召喚程序，只是多這道條件檢查），{type, value, text} 或 null（無此欄位=無條件，等同always）。type: 'always'（無條件）/ 'sacrifice'（需犧牲自己場上value張卡片）/ 'ownFieldBpAtLeast'（自己場上需有BP達value的卡片）/ 'lifeAtMost'（自己生命核心需在value以下）",
     "uTrigger": "U觸發設定，{effectText} 或 null；有此欄位的究極卡攻擊時會把對手牌庫最上面一張送進棄卻區，那張牌費用比自己低才算命中並發動效果（同費用不算命中）",
     "text": "效果文字（示範用簡化敘述）",
-    "contractCard": "是否為契約卡（不算入主卡組張數，卡組另有 contractCardId 欄位指定）",
+    "contractCard": "是否為契約卡。契約卡本身算在主卡組40張裡（不是額外多的），一副卡組只能收錄同一種契約卡；卡組可另用 contractCardId 指定其中一張，開局洗牌前先抽出，改成「抽3張+公開加入這1張」（一樣是4張起始手牌），這是可選特性，contractCardId 留空就正常洗進卡組抽牌",
     "collab": "是否為合作卡",
     "collabSeries": "合作系列名稱（虛構示範）",
     "rarity": "稀有度代碼",

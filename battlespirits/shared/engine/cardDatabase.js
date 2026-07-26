@@ -48,6 +48,22 @@ export function createCardDatabase({ cardsData, setsData, banlistData }) {
     if (format === 'standard') {
       if (!set) return false;
       if (set.standardLegal === false) return false;
+
+      if (card.blockIcon) {
+        // 官方真正的標準賽判定依據：卡片印刷面的「區塊圖示」是英文字母才能用，
+        // 且要落在該字母對應的官方公告輪替期間內（《官方規則手冊[STANDARD]》
+        // 第7頁）。區塊圖示是數字或沒有區塊圖示＝僅永恆賽可用，不是標準賽。
+        const letter = String(card.blockIcon).replace(/[<>\s]/g, '');
+        if (!/^[A-Za-z]+$/.test(letter)) return false;
+        const window = setsData.standardRotation.blockWindows?.[letter];
+        if (!window) return false;
+        const now = new Date();
+        if (now < new Date(window.from) || now > new Date(window.to)) return false;
+        return true;
+      }
+
+      // 沒有 blockIcon 資料的卡（目前僅示範卡池）：退回舊有的「依系列發售
+      // 日期」簡化判斷，等示範卡池補上 blockIcon 後這個分支可以整個移除。
       const releaseDate = new Date(set.releaseDate);
       if (releaseDate < standardCutoff) return false;
       return true;
@@ -57,8 +73,9 @@ export function createCardDatabase({ cardsData, setsData, banlistData }) {
   }
 
   function maxCopiesFor(cardId, format) {
-    const card = getCard(cardId);
-    if (card.contractCard) return 1;
+    // 契約卡跟一般卡片同一套張數限制（最多3張），不是只能1張——這是先前的
+    // 錯誤假設：官方規則書FAQ明講「契約卡合計最多只能放入3張」，見
+    // shared/data/cards.json schema 裡 contractCard 欄位的說明。
     const ban = banEntry(cardId, format);
     if (ban && ban.status === 'limited1') return 1;
     return 3;

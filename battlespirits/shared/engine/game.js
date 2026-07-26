@@ -70,11 +70,21 @@ export class Game {
     for (const entry of deckDef.main) {
       for (let i = 0; i < entry.qty; i++) deckCardIds.push(entry.id);
     }
+    // 契約卡是主卡組40張的一部分（不是額外多的一張）：洗牌前先抽出1張背面展示，
+    // 開局時改成「抽3張＋公開加入這1張＝一樣是4張起始手牌」，見 start()。
+    let setAsideContractCardId = null;
+    if (deckDef.contractCardId) {
+      const pos = deckCardIds.indexOf(deckDef.contractCardId);
+      if (pos !== -1) {
+        deckCardIds.splice(pos, 1);
+        setAsideContractCardId = deckDef.contractCardId;
+      }
+    }
     return {
       index: idx,
       name: deckDef.playerName || `玩家${idx + 1}`,
       deck: shuffle(deckCardIds),
-      contractCardId: deckDef.contractCardId || null,
+      setAsideContractCardId,
       hand: [],
       field: [], // { uid, cardId, cores:[], summonedTurn, blockedThisTurn, awakened, kourinStack }
       burstZone: [], // { uid, cardId }
@@ -113,12 +123,14 @@ export class Game {
       p.life = RULES.startingLifeCores;
       p.reserve = RULES.startingReserveCores + RULES.startingSoulCores;
     }
-    this._drawCard(0, RULES.startingHandSize);
-    this._drawCard(1, RULES.startingHandSize);
     for (const p of this.players) {
-      if (p.contractCardId) {
-        p.hand.push(p.contractCardId);
-        this.log.push({ type: 'contract-to-hand', player: p.index, cardId: p.contractCardId });
+      const drawCount = p.setAsideContractCardId ? RULES.startingHandSize - 1 : RULES.startingHandSize;
+      this._drawCard(p.index, drawCount);
+    }
+    for (const p of this.players) {
+      if (p.setAsideContractCardId) {
+        p.hand.push(p.setAsideContractCardId);
+        this.log.push({ type: 'contract-to-hand', player: p.index, cardId: p.setAsideContractCardId });
       }
     }
     this.log.push({ type: 'game-start' });
