@@ -25,7 +25,18 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
 
+// 版本標記：每次改這支腳本都會換一個新字串。執行時第一行印出來的版本字串
+// 如果跟你以為下載到的版本對不上，代表你現在執行的其實是「另一份舊檔案」
+// （最常見原因：終端機目前所在的資料夾，跟你剛剛下載/覆蓋的檔案不是同一個路徑，
+// 之前就發生過 Invoke-WebRequest 存到 Desktop、但終端機在 tools 資料夾底下的狀況）。
+// 執行前可以先用 (Get-Item .\scrape-card-detail.mjs).FullName 確認目前資料夾裡
+// 這支檔案的完整路徑，跟你下載/覆蓋的路徑是不是同一個。
+const SCRAPER_VERSION = '2026-07-26-v3-debug';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
+console.log(`[scrape-card-detail.mjs 版本標記: ${SCRAPER_VERSION}]`);
+console.log(`[實際執行的檔案路徑: ${fileURLToPath(import.meta.url)}]`);
+
 const setCode = process.argv[2];
 if (!setCode) {
   console.error('用法: node scrape-card-detail.mjs <系列代碼，例如 26RBS02>');
@@ -58,47 +69,71 @@ function sleep(ms) {
 // BP 欄位比較特殊，實際標籤是「BP/コア」，內容是多階段的「LV1 2000 1」「LV2 3000 2」
 // （代表：等級1時BP2000、貼到第1個核心；等級2時BP3000、貼到第2個核心——這是原始
 // Battle Spirits 的「貼核心升級」機制，示範資料庫目前的引擎還沒實作這個，只先如實記錄）。
-function parseDetail(html, cardNo) {
+function parseLevels(val) {
+  // 精靈格式："LV1 2000 1"（等級/BP/核心數）；
+  // 據點格式："LV1 - 0"（等級/BP用「-」表示沒有這格資料/核心數）。
+  const levels = [];
+  const re = /LV\s*(\d+)\s*(?:(\d+)\s+(\d+)|[-－−]\s*(\d+))/g;
+  let m;
+  while ((m = re.exec(val))) {
+    const lv = Number(m[1]);
+    if (m[2] !== undefined) {
+      levels.push({ lv, bp: Number(m[2]), cores: Number(m[3]) });
+    } else {
+      levels.push({ lv, bp: null, cores: Number(m[4]) });
+    }
+  }
+  return levels;
+}
+
+function parseDetail(html, cardNo, { debug = false } = {}) {
   const $ = cheerio.load(html);
   const result = { bp: null, levels: [], text: null, image: null, blockIcon: null, workIcon: null, raw_dt_dd: {} };
 
   const norm = (s) => (s || '').trim();
   const isEmpty = (s) => !s || s === '-' || s === '－' || s === '−';
 
-  // 把所有 dt/dd 配對都記錄下來。頁面同時放了「カード表示／テキスト表示」兩種切換視圖的
-  // 內容在同一份 DOM 裡（只是用 CSS/JS 切換顯示），會出現同樣標籤重複兩次、內容格式不同的
-  // 情況；只取「第一次出現」的那份（對應預設勾選、真正顯示的「カード表示」），
-  // 避免被後面格式不同、內容錯誤的重複區塊蓋掉。
+  // 把每個 dt 標籤「所有」出現過的 dd 內容都記錄下來（不是只留第一筆），
+  // 因為目前還不確定頁面裡「カード表示／テキスト表示」兩種切換視圖，
+  // 哪一份在 DOM 裡真的排在前面——與其用猜的順序規則，不如針對每個
+  // 標籤蒐集全部候選內容，再依「哪一份能被正確解析」來挑，比較不會出錯。
+  const occurrences = {}; // label -> array of raw dd text
   $('dt').each((_, dt) => {
     const label = norm($(dt).text());
     const dd = $(dt).next('dd');
-    if (label && dd.length && !(label in result.raw_dt_dd)) {
-      result.raw_dt_dd[label] = norm(dd.text());
-    }
+    if (!label || !dd.length) return;
+    const val = norm(dd.text());
+    (occurrences[label] = occurrences[label] || []).push(val);
+    if (!(label in result.raw_dt_dd)) result.raw_dt_dd[label] = val;
   });
 
-  for (const [key, val] of Object.entries(result.raw_dt_dd)) {
+  if (debug) {
+    console.log(`  [除錯 ${cardNo}] 所有 dt/dd 標籤與出現次數:`);
+    for (const [label, vals] of Object.entries(occurrences)) {
+      console.log(`    "${label}" x${vals.length}: ${JSON.stringify(vals)}`);
+    }
+  }
+
+  for (const [key, vals] of Object.entries(occurrences)) {
     if (/BP/i.test(key)) {
-      // 精靈格式："LV1 2000 1"（等級/BP/核心數）；
-      // 據點格式："LV1 - 0"（等級/BP用「-」表示沒有這格資料/核心數）。
-      const re = /LV\s*(\d+)\s*(?:(\d+)\s+(\d+)|[-－−]\s*(\d+))/g;
-      let m;
-      while ((m = re.exec(val))) {
-        const lv = Number(m[1]);
-        if (m[2] !== undefined) {
-          result.levels.push({ lv, bp: Number(m[2]), cores: Number(m[3]) });
-        } else {
-          result.levels.push({ lv, bp: null, cores: Number(m[4]) });
-        }
+      // 對每一個重複出現的候選內容都嘗試解析，挑「能解析出等級資料」的那一份；
+      // 如果好幾份都能解析，用第一份；都解析不出來才落回抓數字的保底邏輯。
+      let chosen = null;
+      for (const val of vals) {
+        const levels = parseLevels(val);
+        if (levels.length > 0) { chosen = { val, levels }; break; }
       }
-      const withBp = result.levels.find((l) => l.bp !== null);
-      if (withBp) {
-        result.bp = withBp.bp;
-      } else if (!result.levels.length) {
+      if (chosen) {
+        result.levels = chosen.levels;
+        const withBp = chosen.levels.find((l) => l.bp !== null);
+        result.bp = withBp ? withBp.bp : null;
+      } else {
+        const val = vals[0];
         const m2 = val.match(/\d+/);
         if (m2) result.bp = Number(m2[0]);
       }
     }
+    const val = vals[0];
     if (/効果|テキスト|カードテキスト/.test(key) && !isEmpty(val)) {
       result.text = val;
     }
@@ -117,6 +152,12 @@ function parseDetail(html, cardNo) {
   return result;
 }
 
+// 這幾張卡片是使用者之前傳過官方畫面截圖給我核對過的樣本，抓取時會多印出
+// 完整的 dt/dd 除錯資訊，方便對照畫面截圖確認解析邏輯到底對不對。
+// 也可以用環境變數 BS_DEBUG_ALL=1 讓「每一張卡」都印出除錯資訊。
+const DEBUG_CARD_IDS = new Set(['26RBS02-007', '26RBS02-074']);
+const DEBUG_ALL = process.env.BS_DEBUG_ALL === '1';
+
 async function main() {
   console.log(`開始抓取 ${data.cards.length} 張卡片的詳細資料（系列：${setCode}）...`);
   let ok = 0;
@@ -131,7 +172,7 @@ async function main() {
       const html = await res.text();
       writeFileSync(join(rawDir, `${card.id}.html`), html, 'utf-8');
 
-      const detail = parseDetail(html, card.id);
+      const detail = parseDetail(html, card.id, { debug: DEBUG_ALL || DEBUG_CARD_IDS.has(card.id) });
       card.bp = detail.bp;
       card.bpLevels = detail.levels; // 完整的多階段BP/核心數資料（原始「貼核心升級」機制）
       card.text = detail.text;
