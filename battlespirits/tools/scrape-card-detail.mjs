@@ -52,46 +52,51 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// 嘗試好幾種常見的 dt/dd 或 class 命名方式來抓 BP／效果文字／卡圖，
-// 因為我沒看過詳細彈窗的實際 HTML，只能先猜幾種常見寫法，抓不到時會保留 raw HTML 供你回報。
+// 根據使用者實際回報的官方彈窗畫面校正過的解析邏輯：
+// カテゴリー/属性/コスト/軽減コスト/系統/BP・コア/能力・効果/ブロックアイコン/作品アイコン
+// 這些都是 <dt>標籤</dt><dd>內容</dd> 的配對。
+// BP 欄位比較特殊，實際標籤是「BP/コア」，內容是多階段的「LV1 2000 1」「LV2 3000 2」
+// （代表：等級1時BP2000、貼到第1個核心；等級2時BP3000、貼到第2個核心——這是原始
+// Battle Spirits 的「貼核心升級」機制，示範資料庫目前的引擎還沒實作這個，只先如實記錄）。
 function parseDetail(html, cardNo) {
   const $ = cheerio.load(html);
-  const result = { bp: null, text: null, image: null, symbolCost: null, raw_dt_dd: {} };
+  const result = { bp: null, levels: [], text: null, image: null, blockIcon: null, workIcon: null, raw_dt_dd: {} };
+
+  const norm = (s) => (s || '').trim();
+  const isEmpty = (s) => !s || s === '-' || s === '－' || s === '−';
 
   // 把所有 dt/dd 配對都記錄下來，方便之後對照調整
   $('dt').each((_, dt) => {
-    const label = $(dt).text().trim();
+    const label = norm($(dt).text());
     const dd = $(dt).next('dd');
     if (label && dd.length) {
-      result.raw_dt_dd[label] = dd.text().trim();
+      result.raw_dt_dd[label] = norm(dd.text());
     }
   });
 
-  // 常見 BP 標籤猜測
-  for (const key of Object.keys(result.raw_dt_dd)) {
-    if (/^BP$|戦闘力|パワー/.test(key)) {
-      const m = result.raw_dt_dd[key].match(/\d+/);
-      if (m) result.bp = Number(m[0]);
+  for (const [key, val] of Object.entries(result.raw_dt_dd)) {
+    if (/BP/i.test(key)) {
+      // 逐一抓出 "LV1 2000 1"、"LV2 3000 2" 這種每階段的 [等級, BP, 核心數] 三元組
+      const matches = [...val.matchAll(/LV\s*(\d+)\D+(\d+)\D+(\d+)/g)];
+      for (const m of matches) {
+        result.levels.push({ lv: Number(m[1]), bp: Number(m[2]), cores: Number(m[3]) });
+      }
+      if (result.levels.length) {
+        result.bp = result.levels[0].bp; // 預設用 LV1（基礎、未貼核心）的 BP
+      } else {
+        const m2 = val.match(/\d+/);
+        if (m2) result.bp = Number(m2[0]);
+      }
     }
-    if (/効果|テキスト|カードテキスト/.test(key)) {
-      result.text = result.raw_dt_dd[key];
+    if (/効果|テキスト|カードテキスト/.test(key) && !isEmpty(val)) {
+      result.text = val;
     }
-    if (/コアシンボル|シンボル/.test(key)) {
-      result.symbolCost = result.raw_dt_dd[key];
+    if (/ブロックアイコン/.test(key) && !isEmpty(val)) {
+      result.blockIcon = val;
     }
-  }
-
-  // class 名稱猜測（bpVal / textVal / effectText 之類）
-  if (!result.bp) {
-    const bpEl = $('.bpVal, .bp, .power').first();
-    if (bpEl.length) {
-      const m = bpEl.text().match(/\d+/);
-      if (m) result.bp = Number(m[0]);
+    if (/作品アイコン/.test(key) && !isEmpty(val)) {
+      result.workIcon = val;
     }
-  }
-  if (!result.text) {
-    const textEl = $('.textVal, .effectText, .cardText, .effect').first();
-    if (textEl.length) result.text = textEl.text().trim();
   }
 
   const img = $('img.cardImg, .thumbnail img, img[alt="' + cardNo + '"]').first();
@@ -116,16 +121,19 @@ async function main() {
 
       const detail = parseDetail(html, card.id);
       card.bp = detail.bp;
+      card.bpLevels = detail.levels; // 完整的多階段BP/核心數資料（原始「貼核心升級」機制）
       card.text = detail.text;
       card.image = detail.image;
+      card.blockIcon = detail.blockIcon;
+      card.workIcon = detail.workIcon;
       card._rawDtDd = detail.raw_dt_dd; // 除錯用，之後可以刪掉
-      card.dataComplete = detail.bp !== null && detail.text !== null;
+      card.dataComplete = detail.bp !== null;
       if (card.dataComplete) {
-        card.missingFields = card.missingFields.filter((f) => !['bp', 'text'].includes(f));
+        card.missingFields = card.missingFields.filter((f) => !['bp', 'text', 'image'].includes(f));
       }
 
       ok++;
-      console.log(`[${i + 1}/${data.cards.length}] ${card.id} ${card.name} -> BP=${detail.bp} text=${detail.text ? '(有)' : '(無)'}`);
+      console.log(`[${i + 1}/${data.cards.length}] ${card.id} ${card.name} -> BP=${detail.bp}${detail.levels.length > 1 ? `(共${detail.levels.length}階)` : ''} text=${detail.text ? '(有)' : '(無)'}`);
     } catch (err) {
       failed++;
       console.error(`[${i + 1}/${data.cards.length}] ${card.id} 失敗:`, err.message);
