@@ -1,5 +1,5 @@
 {
-  "_readme": "真實卡片資料（部分完整）。這批117張卡是從使用者實際存檔的官方卡片列表頁（已選定系列 [26RBS02]幻惑の翔風 展開後的頁面）解析出來的：card_no／稀有度／卡名／費用／屬性色／種類／系統(家族) 都是真的官方資料。但 bp（戰鬥力）與 text（效果文字）目前是 null——官方列表頁的縮圖格線視圖(gridView)沒有顯示這兩項，要點開每張卡片的詳細彈窗(detail_iframe.php)才有，靜態存檔沒有連帶存到。costAlleviationColor 是官方頁面上「軽減コスト」欄位顯示的顏色圖示（代表某種費用減免條件），不等於本引擎 costSymbols 的顏色符號需求，是另一個目前還沒實作的真實機制，先如實記錄原始資料，不要跟 costSymbols 混用。",
+  "_readme": "真實卡片資料（完整）。這批117張卡先從官方卡片列表頁解析出 card_no／稀有度／卡名／費用／屬性色／種類／系統(家族)，再用 tools/scrape-card-detail.mjs 逐張抓取官方卡片詳細彈窗(detail_iframe.php)補上 bp／bpLevels／text／image／blockIcon／workIcon，2026-07-26 已完整收錄。bp 是目前等級(Lv1)的戰鬥力；bpLevels 是完整的多階段「貼核心升級」資料(每個元素是 {lv, bp, cores}，代表達到該核心數時的BP)——據點(nexus)類型的卡沒有BP數值(bp/bpLevels裡的bp都是null)，本來就是如此，不是缺資料。costAlleviationColor 是官方頁面上「軽減コスト」欄位顯示的顏色圖示（代表某種費用減免條件），不等於本引擎 costSymbols 的顏色符號需求，是另一個目前還沒實作的真實機制，先如實記錄原始資料，不要跟 costSymbols 混用。_rawDtDd 是除錯用的原始欄位快照，之後可以整批清掉。「貼核心升級」(bpLevels多階段BP)這個機制本身，遊戲引擎(shared/engine/game.js)目前還沒有實作，戰鬥力計算目前只有『每貼1個核心+1000BP』的簡化版，這是還沒補上的落差。",
   "source": "使用者於 2026-07-23 提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 [26RBS02]幻惑の翔風）",
   "setCode": "26RBS02",
   "setName": "幻惑の翔風",
@@ -15,20 +15,45 @@
       ],
       "cost": 2,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "紅雲",
         "降風"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『お互いのアタックステップ』このスピリットがBP3000以下なら、このスピリットはアタック/ブロックできない。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットが相手のライフを減らした時、このスピリットがBP10000以上なら、BP7000以下の相手のスピリット1体を指定する。それを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-001.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "2",
+        "軽減コスト": "",
+        "系統": "紅雲・降風",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『お互いのアタックステップ』このスピリットがBP3000以下なら、このスピリットはアタック/ブロックできない。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットが相手のライフを減らした時、このスピリットがBP10000以上なら、BP7000以下の相手のスピリット1体を指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "アタックしているこのスピリットがBP3000以下になった場合、そのアタックは続くの？": "はい、アタックは続きます。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-002",
@@ -40,20 +65,44 @@
       ],
       "cost": 2,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "紅雲",
         "風炎"
       ],
       "rarity": "C",
       "text": null,
-      "dataComplete": false,
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-002.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "2",
+        "軽減コスト": "",
+        "系統": "紅雲・風炎",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "-",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-003",
@@ -65,19 +114,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "風牙"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』継召を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-003.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "風牙",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』継召を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-004",
@@ -89,19 +162,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "風牙"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』疲労状態の自分の赤のスピリットがいるなら、自分のトラッシュのコスト6以上で系統：「風牙」を持つスピリットカード1枚を指定する。それを手札に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-004.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "風牙",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『召喚時』疲労状態の自分の赤のスピリットがいるなら、自分のトラッシュのコスト6以上で系統：「風牙」を持つスピリットカード1枚を指定する。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-005",
@@ -113,19 +210,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "降風"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』自分の赤のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕【激突】を持つ自分のスピリットが、BP比べで相手のスピリットだけを破壊した時、このスピリットを回復できる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-005.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "降風",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『召喚時』自分の赤のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕【激突】を持つ自分のスピリットが、BP比べで相手のスピリットだけを破壊した時、このスピリットを回復できる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-006",
@@ -137,19 +258,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "光焔"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。このスピリットがブロックされているなら、かわりに指定する体数を2体にする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-006.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "光焔",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『破壊時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。このスピリットがブロックされているなら、かわりに指定する体数を2体にする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-007",
@@ -161,20 +306,47 @@
       ],
       "cost": 4,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "紅雲",
         "風炎"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック中』このスピリットをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』「BPを+する」効果を受けている自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-007.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲・風炎",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『アタック中』このスピリットをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』「BPを+する」効果を受けている自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "自分のスピリットがBP比べで相手のスピリットだけを破壊した時、「26RBS02-075 浮岩城塞」のLv2効果でそのスピリットをBP+したら、Lv2効果は発揮できるの？": "はい、「浮岩城塞」のLv2効果の誘発効果として発揮できます。\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t関連カード",
+        "関連カード": "",
+        "元々のBP10000の自分のスピリットが「このターン中、BP-2000する」効果と「このターン中、BP+2000する」効果を受けて、BP10000になっていて、そのスピリットがBP比べで相手のスピリットだけを破壊した時、このスピリットのLv2効果を発揮できるの？": "はい、発揮できます。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-008",
@@ -186,20 +358,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "紅雲",
         "翔龍"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック中』このスピリットをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+3000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-008.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲・翔龍",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『アタック中』このスピリットをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+3000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-009",
@@ -211,20 +407,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "紅雲",
         "東雲"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』【激突】を持つ自分のスピリット1体を指定する。それを回復させ、このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-009.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "紅雲・東雲",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『召喚時』【激突】を持つ自分のスピリット1体を指定する。それを回復させ、このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-010",
@@ -236,20 +456,45 @@
       ],
       "cost": 6,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "紅雲",
         "天翔"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ開始時』〔重複不可〕【激突】を持つ自分のスピリット1体を指定する。このターン中、それがBP比べで相手のスピリットだけを破壊した時、1枚ドローする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-010.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "紅雲・天翔",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ開始時』〔重複不可〕【激突】を持つ自分のスピリット1体を指定する。このターン中、それがBP比べで相手のスピリットだけを破壊した時、1枚ドローする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このスピリットのLv1・2効果で指定された【激突】を持つスピリットが、Lvが下がったりして【激突】を持たなくなっても効果は発揮されたままなの？": "はい、効果は発揮されたままになります。指定された対象がBP比べで相手のスピリットだけを破壊した時、1枚ドローします。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-011",
@@ -261,20 +506,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "紅雲",
         "翔龍"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。BP10000以上の自分のスピリットがいるなら、かわりに指定するBPを5000以下にする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-011.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "紅雲・翔龍",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。BP10000以上の自分のスピリットがいるなら、かわりに指定するBPを5000以下にする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-012",
@@ -286,20 +555,45 @@
       ],
       "cost": 8,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "紅雲",
         "光焔"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定する。このターン中、それをBP+3000する。この継召で除外したEXシンボル1つにつき、指定する体数を+1体する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』〔ターン1回〕バトル終了時、このスピリットのBP10000につき、コスト6以下の自分のスピリット1体を指定できる。それらを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-012.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "紅雲・光焔",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定する。このターン中、それをBP+3000する。この継召で除外したEXシンボル1つにつき、指定する体数を+1体する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』〔ターン1回〕バトル終了時、このスピリットのBP10000につき、コスト6以下の自分のスピリット1体を指定できる。それらを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このスピリットを《継召》を発揮させて召喚していた時、召喚時効果で1体のスピリットを2回指定することはできるの？": "いいえ、できません。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-013",
@@ -311,19 +605,43 @@
       ],
       "cost": 2,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 1000,
       "family": [
         "獣憑"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック/ブロック中』このスピリットをBP+3000する。バトル終了時、このスピリットを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-013.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "2",
+        "軽減コスト": "",
+        "系統": "獣憑",
+        "BP/コア": "1000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "[Lv1-2]『アタック/ブロック中』このスピリットをBP+3000する。バトル終了時、このスピリットを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 1000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-014",
@@ -335,19 +653,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "血醒"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv2]《真界放》『アタック時』このターンに自分のスピリットが破壊されていたなら、相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-014.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "血醒",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv2]《真界放》『アタック時』このターンに自分のスピリットが破壊されていたなら、相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-015",
@@ -359,19 +701,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 1000,
       "family": [
         "屍骸"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-015.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "屍骸",
+        "BP/コア": "1000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『破壊時』疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 1000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 2000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-016",
@@ -383,19 +749,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "業魔"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から2枚を破棄する。その後、破棄した系統：「獣憑」を持つカード1枚を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【起動：フラッシュ】このスピリットを破壊する▶疲労状態のコスト4以下の相手のスピリット1体を指定する。それを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-016.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "業魔",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』自分のデッキの上から2枚を破棄する。その後、破棄した系統：「獣憑」を持つカード1枚を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【起動：フラッシュ】このスピリットを破壊する▶疲労状態のコスト4以下の相手のスピリット1体を指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-017",
@@ -407,19 +797,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "獣憑"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』疲労状態のコスト1/2の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態のコスト3/4の相手のスピリット1体を指定する。それを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-017.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "獣憑",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』疲労状態のコスト1/2の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態のコスト3/4の相手のスピリット1体を指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-018",
@@ -431,20 +845,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "暗紫",
         "変異"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のデッキの上から1枚をオープンできる。その中のカード1枚を破棄する。残りは好きな順でデッキの下に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-018.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "暗紫・変異",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のデッキの上から1枚をオープンできる。その中のカード1枚を破棄する。残りは好きな順でデッキの下に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-019",
@@ -456,20 +894,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "暗紫",
         "業魔"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック/ブロック中』【起動：フラッシュ】このスピリットを破壊する▶アタック/ブロックしている相手のスピリット1体を指定する。それの以外のコア2個をリザーブに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-019.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "暗紫・業魔",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『アタック/ブロック中』【起動：フラッシュ】このスピリットを破壊する▶アタック/ブロックしている相手のスピリット1体を指定する。それの以外のコア2個をリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-020",
@@ -481,20 +943,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "暗紫",
         "屍骸"
       ],
       "rarity": "C",
       "text": null,
-      "dataComplete": false,
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-020.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "暗紫・屍骸",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "-",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-021",
@@ -506,20 +992,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "暗紫",
         "屍骸"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "このカードは、【操霊】で召喚する時、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態の相手のスピリット2体を指定する。それらの以外のコア1個ずつをリザーブに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-021.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "暗紫・屍骸",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "このカードは、【操霊】で召喚する時、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態の相手のスピリット2体を指定する。それらの以外のコア1個ずつをリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-022",
@@ -531,20 +1041,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "暗紫",
         "幻妖"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』このスピリット以外の自分のスピリット1体を指定できる。それを破壊する。そうしたなら、1枚ドローする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-022.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "暗紫・幻妖",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』このスピリット以外の自分のスピリット1体を指定できる。それを破壊する。そうしたなら、1枚ドローする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-023",
@@ -556,20 +1090,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "暗紫",
         "血醒"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]【操霊：暗紫＆コスト4以下】『召喚時』自分のトラッシュのコスト4以下で系統：「暗紫」を持つスピリットカード1枚を指定できる。それを召喚する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『破壊時』このスピリットの【操霊】を発揮できる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-023.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "暗紫・血醒",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]【操霊：暗紫＆コスト4以下】『召喚時』自分のトラッシュのコスト4以下で系統：「暗紫」を持つスピリットカード1枚を指定できる。それを召喚する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『破壊時』このスピリットの【操霊】を発揮できる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-024",
@@ -581,19 +1139,43 @@
       ],
       "cost": 8,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "変異"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、疲労状態の相手のスピリット1体を指定する。それを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-024.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "変異",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、疲労状態の相手のスピリット1体を指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-025",
@@ -605,19 +1187,43 @@
       ],
       "cost": 2,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "無形"
       ],
       "rarity": "C",
       "text": null,
-      "dataComplete": false,
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-025.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "2",
+        "軽減コスト": "",
+        "系統": "無形",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "-",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-026",
@@ -629,19 +1235,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "渦人"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-026.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "渦人",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-027",
@@ -653,19 +1283,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "氷雪"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』疲労状態のコスト3以下の相手のスピリット1体を指定する。それをデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+2000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-027.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "氷雪",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『召喚時』疲労状態のコスト3以下の相手のスピリット1体を指定する。それをデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-028",
@@ -677,20 +1331,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "海緑",
         "甲魚"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]【水流：海緑＆コスト8以上】『自分のアタックステップ』【起動：フラッシュ】このスピリットを疲労させる▶コスト8以上で系統：「海緑」を持つ自分のスピリット1体を指定する。このバトル中、それに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-028.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "海緑・甲魚",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]【水流：海緑＆コスト8以上】『自分のアタックステップ』【起動：フラッシュ】このスピリットを疲労させる▶コスト8以上で系統：「海緑」を持つ自分のスピリット1体を指定する。このバトル中、それに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-029",
@@ -702,19 +1380,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "古蛟"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[フラッシュ]『相手のアタックステップ』手札のこのカードは、召喚コストの支払いと上に置くコアをリザーブから使用して召喚できる。[Lv1-2]『召喚時』疲労状態のコスト4以下の相手のスピリット1体を指定する。それを重疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-029.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "古蛟",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[フラッシュ]『相手のアタックステップ』手札のこのカードは、召喚コストの支払いと上に置くコアをリザーブから使用して召喚できる。[Lv1-2]『召喚時』疲労状態のコスト4以下の相手のスピリット1体を指定する。それを重疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-030",
@@ -726,19 +1428,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "氷雪"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『相手のアタックステップ』相手のスピリットがアタックした時、回復状態のコスト3以下の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-030.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "氷雪",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "[Lv1-2]『相手のアタックステップ』相手のスピリットがアタックした時、回復状態のコスト3以下の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-031",
@@ -750,20 +1476,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "海緑",
         "淡光"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-031.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "海緑・淡光",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-032",
@@ -775,19 +1525,43 @@
       ],
       "cost": 5,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "古蛟"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "『自分のターン』〔重複不可〕トラッシュのこのカードは、自分の効果で相手のスピリットが重疲労した時、系統：「古蛟」を持つ自分のスピリット/ネクサスがあるなら、手札に戻せる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-032.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "古蛟",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "『自分のターン』〔重複不可〕トラッシュのこのカードは、自分の効果で相手のスピリットが重疲労した時、系統：「古蛟」を持つ自分のスピリット/ネクサスがあるなら、手札に戻せる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-033",
@@ -799,20 +1573,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "海緑",
         "渦人"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』相手のスピリット1体を指定する。それが、回復状態なら疲労させ、疲労状態なら重疲労させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』回復状態の相手のスピリットが1体以下なら、重疲労状態ではない疲労状態の相手のスピリット1体を、相手が指定する。それを重疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-033.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "海緑・渦人",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "[Lv1-2]『召喚時』相手のスピリット1体を指定する。それが、回復状態なら疲労させ、疲労状態なら重疲労させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』回復状態の相手のスピリットが1体以下なら、重疲労状態ではない疲労状態の相手のスピリット1体を、相手が指定する。それを重疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-034",
@@ -824,19 +1622,43 @@
       ],
       "cost": 6,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "甲魚"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』ボイドからコア1個をこのスピリットに置く。\t\t\t\t\t\t\t\t[Lv2]『破壊時』相手のスピリット1体を指定できる。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-034.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "甲魚",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』ボイドからコア1個をこのスピリットに置く。\t\t\t\t\t\t\t\t[Lv2]『破壊時』相手のスピリット1体を指定できる。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-035",
@@ -848,19 +1670,43 @@
       ],
       "cost": 7,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "水精"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック中』相手のライフが減った時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』バトル終了時、疲労状態の相手のスピリット1体を指定できる。それを手札に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-035.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "水精",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『アタック中』相手のライフが減った時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』バトル終了時、疲労状態の相手のスピリット1体を指定できる。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-036",
@@ -872,19 +1718,43 @@
       ],
       "cost": 8,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "淡光"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』継召して召喚していたなら、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』相手のライフが減った時、自分の手札すべてを破棄できる。1枚以上破棄したなら、3枚ドローする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-036.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "淡光",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    12000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』継召して召喚していたなら、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』相手のライフが減った時、自分の手札すべてを破棄できる。1枚以上破棄したなら、3枚ドローする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 12000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-037",
@@ -896,20 +1766,44 @@
       ],
       "cost": 8,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "海緑",
         "激浪"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分の効果で自分か相手のスピリットが疲労した時、自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-037.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "海緑・激浪",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分の効果で自分か相手のスピリットが疲労した時、自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-038",
@@ -921,20 +1815,44 @@
       ],
       "cost": 3,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "白妙",
         "生硝"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『ブロック時』アタックしていないBP2000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-038.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "白妙・生硝",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『ブロック時』アタックしていないBP2000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-039",
@@ -946,20 +1864,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "白妙",
         "怪石"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『ブロック時』自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-039.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "白妙・怪石",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『ブロック時』自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-040",
@@ -971,20 +1913,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "白妙",
         "水銀"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-040.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "白妙・水銀",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-041",
@@ -996,20 +1962,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "白妙",
         "水銀"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』BP3000以下の相手のスピリット1体を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕自分のスピリットが【増幅】を発揮した時、ボイドからコア1個を自分のリザーブに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-041.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "白妙・水銀",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『召喚時』BP3000以下の相手のスピリット1体を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕自分のスピリットが【増幅】を発揮した時、ボイドからコア1個を自分のリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-042",
@@ -1021,20 +2011,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "白妙",
         "怪石"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンする。その中のブロック時効果を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』ブロック時効果を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-042.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "白妙・怪石",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンする。その中のブロック時効果を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』ブロック時効果を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-043",
@@ -1046,20 +2060,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "白妙",
         "怪石"
       ],
       "rarity": "C",
       "text": null,
-      "dataComplete": false,
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-043.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "白妙・怪石",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "-",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-044",
@@ -1071,20 +2109,45 @@
       ],
       "cost": 5,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "白妙",
         "地皮"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック時』ブロック時効果を持つ自分のスピリットがいるなら、ボイドからコア1個を自分のトラッシュに置く。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』コスト3以下の相手のスピリット1体を指定できる。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-044.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "白妙・地皮",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『アタック時』ブロック時効果を持つ自分のスピリットがいるなら、ボイドからコア1個を自分のトラッシュに置く。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』コスト3以下の相手のスピリット1体を指定できる。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "自分のフィールドにLv1のこのスピリットしかいない時、アタック時効果で、このスピリット自身を参照してボイドからコアをトラッシュに置けるの？": "いいえ、置けません。Lv2からブロック時効果を持つスピリットがLv1の場合は、ブロック時効果を持つスピリットとしては扱いません。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-045",
@@ -1096,19 +2159,43 @@
       ],
       "cost": 7,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "鉱人"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP5000以下の相手のスピリット1体を指定する。それを手札に戻す。継召して召喚していたなら、かわりに指定するBPを5000以下か8000以上にする。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-045.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "鉱人",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP5000以下の相手のスピリット1体を指定する。それを手札に戻す。継召して召喚していたなら、かわりに指定するBPを5000以下か8000以上にする。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-046",
@@ -1120,20 +2207,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "白妙",
         "錬金"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP3000以下の相手のスピリット2体を指定する。それらを手札に戻す。継召して召喚していたなら、かわりにそれらを好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-046.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "白妙・錬金",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP3000以下の相手のスピリット2体を指定する。それらを手札に戻す。継召して召喚していたなら、かわりにそれらを好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』ボイドからコア1個を自分のトラッシュに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-047",
@@ -1145,20 +2256,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "白妙",
         "生硝"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』BP8000以下の相手のスピリット1体を指定できる。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』自分のスピリット1体を指定できる。それを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-047.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "白妙・生硝",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』BP8000以下の相手のスピリット1体を指定できる。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』自分のスピリット1体を指定できる。それを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-048",
@@ -1170,20 +2305,44 @@
       ],
       "cost": 9,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 10000,
       "family": [
         "白妙",
         "幻影"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』〔ターン1回〕コスト5以下の自分のスピリット1体を指定する。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：3】対戦相手は、スピリットの効果でこのスピリットを指定する時、3コスト支払わなければ指定できない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-048.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "9",
+        "軽減コスト": "",
+        "系統": "白妙・幻影",
+        "BP/コア": "10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    14000\n                    \n\t\t\t\t\t\t\t\t\t\t\t5/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』〔ターン1回〕コスト5以下の自分のスピリット1体を指定する。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：3】対戦相手は、スピリットの効果でこのスピリットを指定する時、3コスト支払わなければ指定できない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 10000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 14000,
+          "cores": 5
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-049",
@@ -1195,19 +2354,43 @@
       ],
       "cost": 9,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "鉱人"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』相手のネクサス1つを指定する。それを手札に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-049.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "9",
+        "軽減コスト": "",
+        "系統": "鉱人",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    11000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『召喚時』相手のネクサス1つを指定する。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-050",
@@ -1219,20 +2402,44 @@
       ],
       "cost": 2,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "黄玉",
         "鬼哭"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv2]このスピリットが相手の効果で疲労した時、疲労状態の系統：「鬼哭」/「呪物」を持つ自分のスピリット1体を指定する。それを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-050.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "2",
+        "軽減コスト": "",
+        "系統": "黄玉・鬼哭",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv2]このスピリットが相手の効果で疲労した時、疲労状態の系統：「鬼哭」/「呪物」を持つ自分のスピリット1体を指定する。それを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-051",
@@ -1244,20 +2451,44 @@
       ],
       "cost": 3,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "黄玉",
         "呪物"
       ],
       "rarity": "C",
       "text": null,
-      "dataComplete": false,
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-051.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "黄玉・呪物",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "-",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-052",
@@ -1269,19 +2500,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "呪物"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]【起動：メイン】〔ターン1回〕このスピリットを疲労させる▶自分のトラッシュの系統：「鬼哭」を持つカード1枚を指定する。それをデッキの上に戻す。このターンに自分が2回以上アタックしていたなら、かわりにそれを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のメインステップ』自分のスピリットが召喚された時、このスピリットを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-052.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "呪物",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]【起動：メイン】〔ターン1回〕このスピリットを疲労させる▶自分のトラッシュの系統：「鬼哭」を持つカード1枚を指定する。それをデッキの上に戻す。このターンに自分が2回以上アタックしていたなら、かわりにそれを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のメインステップ』自分のスピリットが召喚された時、このスピリットを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-053",
@@ -1293,19 +2548,43 @@
       ],
       "cost": 4,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "雷竜"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。この継召で除外したEXシンボル1つにつき、このBP-を-1000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-053.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "雷竜",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。この継召で除外したEXシンボル1つにつき、このBP-を-1000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-054",
@@ -1317,20 +2596,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "黄玉",
         "恐鱗"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック中』お互いのスピリットすべてはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』〔重複不可〕このスピリットが疲労状態なら、系統：「黄玉」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-054.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "黄玉・恐鱗",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『アタック中』お互いのスピリットすべてはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』〔重複不可〕このスピリットが疲労状態なら、系統：「黄玉」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-055",
@@ -1342,19 +2645,43 @@
       ],
       "cost": 5,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "雷竜"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のスピリットの効果で相手のスピリットを破壊した時、コスト4以下で系統：「雷竜」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-055.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "雷竜",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のスピリットの効果で相手のスピリットを破壊した時、コスト4以下で系統：「雷竜」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-056",
@@ -1366,19 +2693,43 @@
       ],
       "cost": 5,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "山臥"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「鬼哭」/「呪物」を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。このターンに自分が2回以上アタックしていたなら、かわりにオープンする枚数を5枚にする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-056.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "山臥",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「鬼哭」/「呪物」を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。このターンに自分が2回以上アタックしていたなら、かわりにオープンする枚数を5枚にする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-057",
@@ -1390,20 +2741,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "黄玉",
         "鬼哭"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』ターンの2回目以降のアタックなら、このスピリットはが置かれていない相手のスピリットからブロックされない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-057.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "黄玉・鬼哭",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』ターンの2回目以降のアタックなら、このスピリットはが置かれていない相手のスピリットからブロックされない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-058",
@@ -1415,19 +2790,43 @@
       ],
       "cost": 6,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "雷竜"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。このターン中、それをBP-6000する。その後、それがBP0なら破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-058.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "雷竜",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。このターン中、それをBP-6000する。その後、それがBP0なら破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-059",
@@ -1439,20 +2838,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "黄玉",
         "呪物"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "このカードを召喚する時、このターンに自分が2回以上アタックしていたなら、自分のトラッシュのシンボルでも軽減できる。[Lv1-2]『召喚時』このスピリット以外の系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0なら破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-059.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "黄玉・呪物",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "このカードを召喚する時、このターンに自分が2回以上アタックしていたなら、自分のトラッシュのシンボルでも軽減できる。[Lv1-2]『召喚時』このスピリット以外の系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0なら破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-060",
@@ -1464,20 +2887,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "黄玉",
         "山臥"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から4枚をオープンする。その中の系統：「黄玉」を持つマジックカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック中』【起動：フラッシュ】〔バトル1回〕自分の手札の系統：「黄玉」を持つマジックカード1枚のフラッシュ効果をコストを支払わずに使用する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-060.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "黄玉・山臥",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』自分のデッキの上から4枚をオープンする。その中の系統：「黄玉」を持つマジックカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック中』【起動：フラッシュ】〔バトル1回〕自分の手札の系統：「黄玉」を持つマジックカード1枚のフラッシュ効果をコストを支払わずに使用する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-061",
@@ -1489,20 +2936,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "黄玉",
         "呪物"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』相手のスピリット1体を指定する。このバトル中、それはブロックできない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、ターンの2回目以降のアタックなら、ボイドからコア1個を自分のライフに置ける。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-061.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "黄玉・呪物",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』相手のスピリット1体を指定する。このバトル中、それはブロックできない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、ターンの2回目以降のアタックなら、ボイドからコア1個を自分のライフに置ける。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-062",
@@ -1514,20 +2985,44 @@
       ],
       "cost": 8,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "黄玉",
         "山臥"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』〔ターン1回〕系統：「鬼哭」/「呪物」を持つ自分のスピリットがアタックした時、相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-062.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "黄玉・山臥",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    11000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』〔ターン1回〕系統：「鬼哭」/「呪物」を持つ自分のスピリットがアタックした時、相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-063",
@@ -1539,20 +3034,44 @@
       ],
       "cost": 3,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "青樹",
         "暴脚"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』系統：「青樹」を持つ自分のネクサス1つを指定する。ボイドからコア1個をそれに置く。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-063.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "青樹・暴脚",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『召喚時』系統：「青樹」を持つ自分のネクサス1つを指定する。ボイドからコア1個をそれに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-064",
@@ -1564,19 +3083,43 @@
       ],
       "cost": 3,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 2000,
       "family": [
         "凶獣"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から3枚をオープンする。その中の系統：「凶獣」を持つネクサスカード1枚をコストを支払わずに配置する。残りは好きな順でデッキの下に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-064.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "凶獣",
+        "BP/コア": "2000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』自分のデッキの上から3枚をオープンする。その中の系統：「凶獣」を持つネクサスカード1枚をコストを支払わずに配置する。残りは好きな順でデッキの下に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-065",
@@ -1588,20 +3131,44 @@
       ],
       "cost": 3,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "青樹",
         "狩獣"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』自分のトラッシュの系統：「青樹」を持つネクサスカード1枚を指定する。それをコストを支払わずに配置する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-065.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "青樹・狩獣",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』自分のトラッシュの系統：「青樹」を持つネクサスカード1枚を指定する。それをコストを支払わずに配置する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-066",
@@ -1613,20 +3180,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "青樹",
         "環形"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-066.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "青樹・環形",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "[Lv1-2]『破壊時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-067",
@@ -1638,20 +3229,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "青樹",
         "暴脚"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]【地鳴：4】『アタック中』バトル終了時、相手のデッキの上から4枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-067.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "青樹・暴脚",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]【地鳴：4】『アタック中』バトル終了時、相手のデッキの上から4枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-068",
@@ -1663,20 +3278,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "青樹",
         "狩獣"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕自分のネクサスすべてが系統：「青樹」を持つなら、このスピリットを疲労させる▶自分のネクサス1つを指定する。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-068.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "青樹・狩獣",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕自分のネクサスすべてが系統：「青樹」を持つなら、このスピリットを疲労させる▶自分のネクサス1つを指定する。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-069",
@@ -1688,20 +3327,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "青樹",
         "爪仁"
       ],
       "rarity": "R",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『アタック時』コスト3以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】〔ターン1回〕このスピリットのコア1個を自分のネクサス1つに置く▶このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-069.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "青樹・爪仁",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『アタック時』コスト3以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】〔ターン1回〕このスピリットのコア1個を自分のネクサス1つに置く▶このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-070",
@@ -1713,20 +3376,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "青樹",
         "暴脚"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]【地鳴：6】『アタック中』バトル終了時、相手のデッキの上から6枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔重複不可〕【地鳴】を持つ自分のスピリットのアタックによって相手のライフを減らした時、相手のデッキの上から6枚を破棄する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-070.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "青樹・暴脚",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]【地鳴：6】『アタック中』バトル終了時、相手のデッキの上から6枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔重複不可〕【地鳴】を持つ自分のスピリットのアタックによって相手のライフを減らした時、相手のデッキの上から6枚を破棄する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-071",
@@ -1738,20 +3425,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "青樹",
         "森威"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]相手のトラッシュにカードが8枚以上あるなら、このスピリットをLv2として扱う。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【地鳴】を持つ自分のスピリットすべてをBP+2000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-071.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "青樹・森威",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t5",
+        "能力・効果": "[Lv1-2]相手のトラッシュにカードが8枚以上あるなら、このスピリットをLv2として扱う。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【地鳴】を持つ自分のスピリットすべてをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 5
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-072",
@@ -1763,19 +3474,43 @@
       ],
       "cost": 6,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "凶獣"
       ],
       "rarity": "C",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のネクサス1つを指定できる。ボイドからコア1個ずつをそれらに置く。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のネクサス1つにつき、このスピリットをBP+1000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-072.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "凶獣",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のネクサス1つを指定できる。ボイドからコア1個ずつをそれらに置く。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のネクサス1つにつき、このスピリットをBP+1000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-073",
@@ -1787,20 +3522,44 @@
       ],
       "cost": 9,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 9000,
       "family": [
         "青樹",
         "立樹"
       ],
       "rarity": "M",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』自分のネクサスを好きなだけ指定する。それらを疲労させる。疲労したネクサス1つにつき、コスト4以下の相手のスピリット1体を指定する。それらを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ開始時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-073.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "9",
+        "軽減コスト": "",
+        "系統": "青樹・立樹",
+        "BP/コア": "9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    11000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』自分のネクサスを好きなだけ指定する。それらを疲労させる。疲労したネクサス1つにつき、コスト4以下の相手のスピリット1体を指定する。それらを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ開始時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 9000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-074",
@@ -1818,14 +3577,38 @@
         "風炎"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』系統：「紅雲」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットのバトル終了時、アタックしていない自分のスピリット1体を指定する。自分のトラッシュの以外のコア1個をそれに置く。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-074.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲・風炎",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2/",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ開始時』系統：「紅雲」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットのバトル終了時、アタックしていない自分のスピリット1体を指定する。自分のトラッシュの以外のコア1個をそれに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-075",
@@ -1842,14 +3625,38 @@
         "紅雲"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『配置時』自分のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-075.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『配置時』自分のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-076",
@@ -1867,14 +3674,40 @@
         "獣憑"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『配置時』自分のトラッシュにEXシンボルがないなら、自分のデッキの上から2枚を破棄する。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で破壊時効果を持つ自分のスピリットを破壊していたなら、疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-076.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "暗紫・獣憑",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『配置時』自分のトラッシュにEXシンボルがないなら、自分のデッキの上から2枚を破棄する。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で破壊時効果を持つ自分のスピリットを破壊していたなら、疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "自分のスピリットを破壊した後にこのネクサスを配置しても、このネクサスのLv2効果は発揮できるの？": "はい、発揮できます。",
+        "Lv2から破壊時効果を持つ、Lv1の自分のスピリットを破壊したターンのエンドステップにこのネクサスのLv2効果は発揮できるの？": "いいえ、発揮できません。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-077",
@@ -1891,14 +3724,38 @@
         "暗紫"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]このターンに【操霊】で召喚された自分のスピリットすべてをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』コア1個の相手のスピリットすべてはアタックできない。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-077.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "暗紫",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]このターンに【操霊】で召喚された自分のスピリットすべてをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』コア1個の相手のスピリットすべてはアタックできない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-078",
@@ -1916,14 +3773,38 @@
         "古蛟"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『自分のアタックステップ』〔重複不可・ターン1回〕系統：「古蛟」を持つ自分の緑のスピリットが相手のライフを減らした時、疲労状態のコスト5以下の相手のスピリット1体を指定する。それを重疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分のスピリットの効果で、自分か相手のスピリットが疲労した時、自分のトラッシュの「ラピッドリッパー」1枚を指定する。それを手札に戻す。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-078.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "海緑・古蛟",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ』〔重複不可・ターン1回〕系統：「古蛟」を持つ自分の緑のスピリットが相手のライフを減らした時、疲労状態のコスト5以下の相手のスピリット1体を指定する。それを重疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分のスピリットの効果で、自分か相手のスピリットが疲労した時、自分のトラッシュの「ラピッドリッパー」1枚を指定する。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-079",
@@ -1941,14 +3822,38 @@
         "古蛟"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『相手のターン』自分の緑のスピリットが相手の効果で消滅した時、消滅したスピリット以外の自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕継召して自分のスピリットが召喚された時、ボイドからコア1個を自分のトラッシュに置く。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-079.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "緑",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "海緑・古蛟",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『相手のターン』自分の緑のスピリットが相手の効果で消滅した時、消滅したスピリット以外の自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕継召して自分のスピリットが召喚された時、ボイドからコア1個を自分のトラッシュに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-080",
@@ -1965,14 +3870,38 @@
         "白妙"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『相手のアタックステップ開始時』系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』コスト6以上で【増幅】を持つ自分のスピリットすべてをBP+2000する。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-080.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "白妙",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『相手のアタックステップ開始時』系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』コスト6以上で【増幅】を持つ自分のスピリットすべてをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-081",
@@ -1990,14 +3919,38 @@
         "生硝"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『相手のアタックステップ開始時』〔重複不可〕コスト3以下の相手のスピリット1体を指定できる。それは可能ならこのステップの最初にアタックしなければならない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』ブロック時効果を持つ自分のスピリット1体を指定できる。それを回復させる。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-081.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "白妙・生硝",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『相手のアタックステップ開始時』〔重複不可〕コスト3以下の相手のスピリット1体を指定できる。それは可能ならこのステップの最初にアタックしなければならない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』ブロック時効果を持つ自分のスピリット1体を指定できる。それを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-082",
@@ -2015,14 +3968,38 @@
         "鬼哭"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定する。このバトル中、それをBP-1000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔重複不可・ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、自分のトラッシュのコスト4以下のスピリットカード1枚を指定する。それを手札に戻す。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-082.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "黄",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "黄玉・鬼哭",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定する。このバトル中、それをBP-1000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔重複不可・ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、自分のトラッシュのコスト4以下のスピリットカード1枚を指定する。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-083",
@@ -2039,14 +4016,39 @@
         "黄玉"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『自分のアタックステップ』BP0で破壊されたコスト5以下の相手のスピリットすべては、トラッシュに置くかわりに好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』〔ターン1回〕アタック/ブロックしていない系統：「黄玉」を持つ自分のスピリットが相手によって破壊された時、1枚ドローする。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-083.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "黄",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "黄玉",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ』BP0で破壊されたコスト5以下の相手のスピリットすべては、トラッシュに置くかわりに好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』〔ターン1回〕アタック/ブロックしていない系統：「黄玉」を持つ自分のスピリットが相手によって破壊された時、1枚ドローする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このネクサスのLv1・2効果で、破壊されたスピリットがデッキの下に戻る場合でも、破壊されたスピリットは破壊時効果を発揮できるの？": "はい、発揮できます。このネクサスの効果は破壊されたスピリットが破壊の待機状態が終わり、カードが実際にトラッシュに移動する時に、かわりにデッキの下に戻す効果になります。そのため、破壊されたスピリットは、破壊の待機状態で破壊時効果を発揮することができます。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-084",
@@ -2063,14 +4065,38 @@
         "青樹"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】このネクサスを疲労させる▶系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』自分のライフが減った時、コスト3以下の相手のスピリット1体を指定する。それを破壊する。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-084.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "青",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "青樹",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】このネクサスを疲労させる▶系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』自分のライフが減った時、コスト3以下の相手のスピリット1体を指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-085",
@@ -2088,14 +4114,38 @@
         "狩獣"
       ],
       "rarity": "C",
-      "text": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』自分のネクサスすべてが系統：「青樹」を持つなら、コスト3以下のスピリットすべては、ターンに合計1回しかアタックできない。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔ターン1回〕本来はネクサスの自分のスピリットがアタックした時、1枚ドローした後、手札1枚をデッキの下に戻す。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-085.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "青",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "青樹・狩獣",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t2",
+        "能力・効果": "[Lv1-2]『お互いのアタックステップ』自分のネクサスすべてが系統：「青樹」を持つなら、コスト3以下のスピリットすべては、ターンに合計1回しかアタックできない。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔ターン1回〕本来はネクサスの自分のスピリットがアタックした時、1枚ドローした後、手札1枚をデッキの下に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-086",
@@ -2112,14 +4162,38 @@
         "青樹"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "[Lv1-2]『配置時』系統：「青樹」を持つ自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】1コスト支払う▶このステップ中、このネクサスはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-086.webp",
+      "_rawDtDd": {
+        "カテゴリー": "ネクサス",
+        "属性": "青",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "青樹",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t0\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『配置時』系統：「青樹」を持つ自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】1コスト支払う▶このステップ中、このネクサスはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-087",
@@ -2136,14 +4210,31 @@
         "紅雲"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：赤》自分の赤シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]自分の赤のスピリット1体を指定する。疲労状態の自分のスピリット1体につき、このターン中、それをBP+3000する。その後、このターン中、それが相手のライフを減らした時、コスト4以下の相手のネクサス1つを指定する。それを破壊する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-087.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：赤》自分の赤シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]自分の赤のスピリット1体を指定する。疲労状態の自分のスピリット1体につき、このターン中、それをBP+3000する。その後、このターン中、それが相手のライフを減らした時、コスト4以下の相手のネクサス1つを指定する。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "疲労状態の自分のスピリットが3体いたので、このマジックのフラッシュ効果でBP+9000した。その後に、疲労状態のスピリットがフィールドを離れて2体になった場合、増加するBPは減少するの？": "いいえ、減少しません。この効果は効果を発揮した時点のスピリットの数を参照しており、効果を発揮した後で、スピリットの数が増減しても、この効果で増加するBPは変動しません。"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-088",
@@ -2160,14 +4251,30 @@
         "暗紫"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：紫》自分の紫シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分の紫のスピリット1体を指定する。このターン中、それをBP+5000する。このバトル終了時、それを破壊する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-088.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "紫",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "暗紫",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：紫》自分の紫シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分の紫のスピリット1体を指定する。このターン中、それをBP+5000する。このバトル終了時、それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-089",
@@ -2184,14 +4291,32 @@
         "海緑"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：緑》自分の緑シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-089.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "緑",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "海緑",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：緑》自分の緑シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このマジックのフラッシュ効果で、相手は、相手のLv1・2効果を発揮している「26RCB01-X07 仮面ライダーエグゼイド ムテキゲーマー」を指定できるの？": "いいえ、指定できません。\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t関連カード",
+        "関連カード": ""
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-090",
@@ -2208,14 +4333,30 @@
         "白妙"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：白》自分の白シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t[メイン]系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それはブロックされない。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-090.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "白妙",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：白》自分の白シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t[メイン]系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それはブロックされない。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-091",
@@ -2233,14 +4374,30 @@
         "唱廻"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：黄》自分の黄シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]相手のスピリット2体を指定する。このターン中、それらをBP-2000する。系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、かわりにそれらをBP-3000する。その後、それらがBP0なら破壊する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-091.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "黄",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "黄玉・唱廻",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：黄》自分の黄シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]相手のスピリット2体を指定する。このターン中、それらをBP-2000する。系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、かわりにそれらをBP-3000する。その後、それらがBP0なら破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-092",
@@ -2257,14 +4414,30 @@
         "青樹"
       ],
       "rarity": "R",
-      "text": null,
+      "text": "《ソウルマジック：青》 自分の青シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このバトル中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。その後、系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-092.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "青",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "青樹",
+        "BP/コア": "-",
+        "能力・効果": "《ソウルマジック：青》 自分の青シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このバトル中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。その後、系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-CP01",
@@ -2281,14 +4454,30 @@
         "紅雲"
       ],
       "rarity": "CP",
-      "text": null,
+      "text": "[メイン]自分のデッキの上から4枚をオープンする。その中の継召を持つスピリットカード2枚までを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-CP01.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "赤",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "紅雲",
+        "BP/コア": "-",
+        "能力・効果": "[メイン]自分のデッキの上から4枚をオープンする。その中の継召を持つスピリットカード2枚までを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X01",
@@ -2300,20 +4489,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "紅雲",
         "東雲"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』自分の赤のスピリット1体を指定する。このターン中、それをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットが相手のライフを減らした時、自分のデッキの上から1枚をオープンできる。それが系統：「紅雲」を持つスピリットカードなら手札に加える。残りはデッキの下に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X01.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "紅雲・東雲",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ開始時』自分の赤のスピリット1体を指定する。このターン中、それをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットが相手のライフを減らした時、自分のデッキの上から1枚をオープンできる。それが系統：「紅雲」を持つスピリットカードなら手札に加える。残りはデッキの下に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X02",
@@ -2325,20 +4538,45 @@
       ],
       "cost": 6,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "紅雲",
         "風炎"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』このターン中、系統：「紅雲」を持つ自分のスピリットすべてをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』【起動：フラッシュ】2コスト支払う▶このターンに相手のライフが減っていなかったなら、BP10000以上の自分のスピリット1体を指定する。このバトル中、それを赤シンボル2つにする。この効果以外でシンボルの数は増えない。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X02.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "紅雲・風炎",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "[Lv1-2]『召喚時』このターン中、系統：「紅雲」を持つ自分のスピリットすべてをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』【起動：フラッシュ】2コスト支払う▶このターンに相手のライフが減っていなかったなら、BP10000以上の自分のスピリット1体を指定する。このバトル中、それを赤シンボル2つにする。この効果以外でシンボルの数は増えない。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このスピリットのLv2効果で、Lv2BP10000のスピリットから2コスト支払い、Lvが下がってBP9000以下になっても、そのスピリットを赤シンボル2つにできるの？": "はい、2コスト支払うのと同時に解決するのでできます。そして、そのバトル中は、BP10000以上でなくても効果は発揮されたままになります。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X03",
@@ -2350,19 +4588,43 @@
       ],
       "cost": 8,
       "costAlleviationColor": "red",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "風牙"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP7000以下の相手のスピリット1体を指定する。それを破壊する。継召して召喚していたなら、破壊したそれの効果を発揮させない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットをBP+3000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X03.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "赤",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "風牙",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP7000以下の相手のスピリット1体を指定する。それを破壊する。継召して召喚していたなら、破壊したそれの効果を発揮させない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットをBP+3000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X04",
@@ -2374,20 +4636,44 @@
       ],
       "cost": 4,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "暗紫",
         "屍骸"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。それのコアが1個になるようにリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『アタック中』ブロックされた時、相手のスピリット2体を指定する。それらのコア1個ずつをリザーブに置く。（置くコアは相手が選ぶ）",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X04.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "暗紫・屍骸",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。それのコアが1個になるようにリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『アタック中』ブロックされた時、相手のスピリット2体を指定する。それらのコア1個ずつをリザーブに置く。（置くコアは相手が選ぶ）",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X05",
@@ -2399,19 +4685,43 @@
       ],
       "cost": 5,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "幻妖"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』破壊時効果を持つ自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で自分の紫のスピリットを破壊していたなら、1枚ドローする。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X05.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "幻妖",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『召喚時』破壊時効果を持つ自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で自分の紫のスピリットを破壊していたなら、1枚ドローする。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X06",
@@ -2423,19 +4733,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "purple",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "獣憑"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。この継召で除外したEXシンボル1つにつき、置くコアを+1個する。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』自分のトラッシュのカードすべてが紫なら、系統：「獣憑」を持つ自分のスピリットすべてをBP+3000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X06.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "紫",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "獣憑",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。この継召で除外したEXシンボル1つにつき、置くコアを+1個する。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』自分のトラッシュのカードすべてが紫なら、系統：「獣憑」を持つ自分のスピリットすべてをBP+3000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このスピリットの召喚時効果で自身を破壊した時、召喚時効果の「そうしたなら」以降の効果を発揮できるの？": "はい、発揮できます。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X07",
@@ -2447,19 +4782,43 @@
       ],
       "cost": 5,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 3000,
       "family": [
         "水精"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『自分のターン』〔重複不可・ターン1回〕自分の効果で、自分か相手のスピリットが疲労した時、ボイドからコア1個を自分のトラッシュに置ける。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のターン』【起動：フラッシュ】〔ターン1回〕自分のスピリット1体を疲労させる▶回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X07.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "水精",
+        "BP/コア": "3000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『自分のターン』〔重複不可・ターン1回〕自分の効果で、自分か相手のスピリットが疲労した時、ボイドからコア1個を自分のトラッシュに置ける。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のターン』【起動：フラッシュ】〔ターン1回〕自分のスピリット1体を疲労させる▶回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X08",
@@ -2471,20 +4830,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "海緑",
         "渦人"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』【起動：フラッシュ】〔ターン1回〕【水流】を持つ自分のスピリット1体を疲労させる▶このバトル中、このスピリットに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕シンボル2つ以上の自分のスピリットがブロックされた時、コスト5以下の自分のスピリットすべてを回復できる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X08.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "海緑・渦人",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    9000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』【起動：フラッシュ】〔ターン1回〕【水流】を持つ自分のスピリット1体を疲労させる▶このバトル中、このスピリットに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕シンボル2つ以上の自分のスピリットがブロックされた時、コスト5以下の自分のスピリットすべてを回復できる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X09",
@@ -2496,19 +4879,43 @@
       ],
       "cost": 8,
       "costAlleviationColor": "green",
-      "bp": null,
+      "bp": 8000,
       "family": [
         "古蛟"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』〔ターン1回〕相手のスピリット1体を指定できる。それを疲労させる。その後、自分のスピリット1体を指定できる。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分の効果で自分か相手のスピリットが疲労した時、疲労状態の相手のスピリット1体を指定できる。それを重疲労させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X09.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "緑",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "古蛟",
+        "BP/コア": "8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    11000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』〔ターン1回〕相手のスピリット1体を指定できる。それを疲労させる。その後、自分のスピリット1体を指定できる。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分の効果で自分か相手のスピリットが疲労した時、疲労状態の相手のスピリット1体を指定できる。それを重疲労させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X10",
@@ -2520,20 +4927,45 @@
       ],
       "cost": 5,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "白妙",
         "錬金"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『ブロック時』自分の手札が4枚以下なら、1枚ドローできる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットのブロック時効果すべてはアタック時にも発揮する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X10.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "白妙・錬金",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『ブロック時』自分の手札が4枚以下なら、1枚ドローできる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットのブロック時効果すべてはアタック時にも発揮する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "このスピリットのLv2効果が発揮している時、ブロック時効果はすべてアタック時として扱うの？": "いいえ、扱いません。この効果は、ブロック時効果をアタック時のタイミングで発揮するようにする効果です。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X11",
@@ -2545,20 +4977,44 @@
       ],
       "cost": 6,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 6000,
       "family": [
         "白妙",
         "幻影"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットが【増幅】を発揮した時、このバトル中、自分のスピリットすべてはそのBP以下の相手のスピリットからブロックされない。\t\t\t\t\t\t\t\t[Lv2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X11.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "6",
+        "軽減コスト": "",
+        "系統": "白妙・幻影",
+        "BP/コア": "6000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    8000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットが【増幅】を発揮した時、このバトル中、自分のスピリットすべてはそのBP以下の相手のスピリットからブロックされない。\t\t\t\t\t\t\t\t[Lv2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X12",
@@ -2570,20 +5026,45 @@
       ],
       "cost": 7,
       "costAlleviationColor": "white",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "白妙",
         "生硝"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP4000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。ブロック時効果を持つ自分のスピリット1体につき、指定するBPを+1000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『ブロック時』〔ターン1回〕このスピリットを回復させる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X12.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "白",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "白妙・生硝",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    11000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP4000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。ブロック時効果を持つ自分のスピリット1体につき、指定するBPを+1000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『ブロック時』〔ターン1回〕このスピリットを回復させる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報",
+        "自分のフィールドにLv1のこのスピリットしかいない時、アタック時効果で、このスピリット自身を参照して指定するBPは+1000されるの？": "いいえ、されません。Lv2からブロック時効果を持つスピリットがLv1の場合は、ブロック時効果を持つスピリットとしては扱いません。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X13",
@@ -2595,20 +5076,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 4000,
       "family": [
         "黄玉",
         "呪物"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』コスト6以下の自分のスピリット1体を指定する。このターン中、それはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、1枚ドローできる。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X13.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "黄玉・呪物",
+        "BP/コア": "4000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "[Lv1-2]『自分のアタックステップ開始時』コスト6以下の自分のスピリット1体を指定する。このターン中、それはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、1枚ドローできる。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X14",
@@ -2620,20 +5125,44 @@
       ],
       "cost": 7,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "黄玉",
         "鬼哭"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0ならデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』【起動：フラッシュ】〔ターン1回〕コスト6以下の自分のスピリット1体を手札に戻す▶このターン中、このスピリットに黄シンボル1つを追加する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X14.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "黄玉・鬼哭",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0ならデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』【起動：フラッシュ】〔ターン1回〕コスト6以下の自分のスピリット1体を手札に戻す▶このターン中、このスピリットに黄シンボル1つを追加する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X15",
@@ -2645,21 +5174,45 @@
       ],
       "cost": 7,
       "costAlleviationColor": "yellow",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "黄玉",
         "唱廻",
         "恐鱗"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "このカードを召喚する時、このターンに自分が黄のマジックカードを使用していたなら、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットのアタックによって相手のライフを減らした時、自分のトラッシュの系統：「黄玉」を持つマジックカード1枚を指定する。それを手札に戻す。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X15.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "黄",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "黄玉・唱廻・恐鱗",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "このカードを召喚する時、このターンに自分が黄のマジックカードを使用していたなら、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットのアタックによって相手のライフを減らした時、自分のトラッシュの系統：「黄玉」を持つマジックカード1枚を指定する。それを手札に戻す。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X16",
@@ -2671,20 +5224,44 @@
       ],
       "cost": 5,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 5000,
       "family": [
         "青樹",
         "森威"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「青樹」を持つネクサスカードすべてを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕系統：「青樹」を持つ本来はネクサスの自分のスピリットが疲労した時、そのスピリットのコスト以下の相手のスピリット1体を指定できる。それを破壊する。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X16.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "青樹・森威",
+        "BP/コア": "5000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3/",
+        "能力・効果": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「青樹」を持つネクサスカードすべてを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕系統：「青樹」を持つ本来はネクサスの自分のスピリットが疲労した時、そのスピリットのコスト以下の相手のスピリット1体を指定できる。それを破壊する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X17",
@@ -2696,19 +5273,43 @@
       ],
       "cost": 7,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "凶獣"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』1枚ドローする。その後、ドローしたカード1枚につき、自分の手札1枚を破棄する。この継召で除外したEXシンボル1つにつき、ドローの枚数を+1枚する。\t\t\t\t\t\t\t\t[Lv2]『アタック時』自分のスピリット1体を指定する。このターン中、それを最高Lvとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X17.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "7",
+        "軽減コスト": "",
+        "系統": "凶獣",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t3",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』1枚ドローする。その後、ドローしたカード1枚につき、自分の手札1枚を破棄する。この継召で除外したEXシンボル1つにつき、ドローの枚数を+1枚する。\t\t\t\t\t\t\t\t[Lv2]『アタック時』自分のスピリット1体を指定する。このターン中、それを最高Lvとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "26RBS02-X18",
@@ -2720,20 +5321,44 @@
       ],
       "cost": 8,
       "costAlleviationColor": "blue",
-      "bp": null,
+      "bp": 7000,
       "family": [
         "青樹",
         "狩獣"
       ],
       "rarity": "X",
-      "text": null,
-      "dataComplete": false,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』このスピリットか、本来はネクサスの自分のスピリットがブロックされた時、コスト5以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』系統：「青樹」を持つ自分のネクサス2つまでを指定する。自分のフィールド/リザーブのコア1個以上をそれらに置き、このステップ中、それらはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "dataComplete": true,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X18.webp",
+      "_rawDtDd": {
+        "カテゴリー": "スピリット",
+        "属性": "青",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "青樹・狩獣",
+        "BP/コア": "7000\n                    \n\t\t\t\t\t\t\t\t\t\t\t1\n                  \n                                    \n                    \n                    10000\n                    \n\t\t\t\t\t\t\t\t\t\t\t4/",
+        "能力・効果": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』このスピリットか、本来はネクサスの自分のスピリットがブロックされた時、コスト5以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』系統：「青樹」を持つ自分のネクサス2つまでを指定する。自分のフィールド/リザーブのコア1個以上をそれらに置き、このステップ中、それらはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[26RBS02]幻惑の翔風/<A>": "カードリスト\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t商品情報"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS01-128",
@@ -2748,14 +5373,47 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[メイン]相手の疲労状態のスピリット1体につき1枚、自分はデッキからカードをドローする。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+3000する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS01-128.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "紫",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t-\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t-\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t-",
+        "能力・効果": "[メイン]相手の疲労状態のスピリット1体につき1枚、自分はデッキからカードをドローする。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+3000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "自分の「メインステップ」のとき、相手の「フィールド」に疲労状態のスピリットが3体いた。この場合、ドローできるカードは何枚になるの？": "相手の「フィールド」に3体の疲労状態のスピリットがいた場合、自分はデッキから3枚カードをドローしてください。",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 3,
+          "bp": null,
+          "cores": null
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS01-145",
@@ -2770,14 +5428,44 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[フラッシュ]このターンの間、ブロックしている自分のスピリットすべてをBP+3000する",
       "dataComplete": false,
       "missingFields": [
-        "bp",
-        "text",
-        "costSymbols",
-        "image"
-      ]
+        "costSymbols"
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS01-145.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "白",
+        "コスト": "4",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-\n                    \n\t\t\t\t\t\t\t\t\t\t\t-\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t-\n                  \n                                    \n                    \n                    -\n                    \n\t\t\t\t\t\t\t\t\t\t\t-",
+        "能力・効果": "[フラッシュ]このターンの間、ブロックしている自分のスピリットすべてをBP+3000する",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "相手の「アタックステップ」で最初の「アタック宣言」時の「フラッシュタイミング」で、このマジックを使った。その後、もう1体のスピリットでブロックとしたとき、その2体目のスピリットもBP+3000されるの？": "はい、されます。この効果は、マジックを使用したときから、そのターンの「エンドステップ」まで効果が持続します。ですので、相手の「アタックステップ」でブロックするすべてのスピリットは、すべてBP+3000されることになります。",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 3,
+          "bp": null,
+          "cores": null
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS03-121",
@@ -2792,14 +5480,39 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[フラッシュ]このターンの間、スピリット1体に、そのスピリットが持つシンボルと同じ色のシンボル1つを追加する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-121.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "赤",
+        "コスト": "8",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-",
+        "能力・効果": "[フラッシュ]このターンの間、スピリット1体に、そのスピリットが持つシンボルと同じ色のシンボル1つを追加する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[BS03]【覇闘】/<->": "カードリスト",
+        "この効果でシンボルが2つあるスピリットがいたら、1体で2コスト軽減できるの？": "はい、2コスト軽減できます。→カードの効果　汎用編　ダブルシンボルに関して　を参照",
+        "この効果でシンボルが2つあるスピリットがアタックして、相手のスピリットにブロックされなかったら、相手のライフを2点減らすことができる？": "はい、できます。→カードの効果　汎用編　ダブルシンボルに関して　を参照",
+        "アタックしてブロックされなかったスピリットに、ブロック後の「フラッシュタイミング」でこのマジックを使って、相手のライフを2点減らすことができる？": "いいえ、できません。「ブロック宣言」されなかったときは、「ブロック宣言」後の「フラッシュタイミング」はなくなります。",
+        "ダブルシンボルのスピリットを対象にこのマジックの効果を使ったら、シンボルを3つにできる？": "はい、できます。",
+        "赤と青のシンボルを持つ「BS09-009烈火の勇者皇アーク」を対象にこのマジックの効果を使ったら、追加するシンボルの色はどうなるの？": "赤か青のどちらかのシンボルを選んで追加します。\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t関連カード",
+        "関連カード": "",
+        "「青のスピリットとしても扱う」効果を持つ「BS09-001ヨロイリザドン」を対象にこのマジックの効果を使ったら、追加するシンボルの色はどうなるの？": "スピリットカードに書いてある赤のシンボルを追加し、「ヨロイリザドン」の効果によって青としても扱うので、赤でも青でもあるシンボルが2つになります。\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t関連カード",
+        "「青のスピリットとしても扱う」Lv2・Lv3効果を持つ「BS09-005銀河竜アンドロメテオス」を対象にこのマジックの効果を使ったら、追加するシンボルの色はどうなるの？": "スピリットカードに書いてある赤のシンボルを追加し、赤のシンボルが2つになります。「銀河竜アンドロメテオス」をLv2にしたら、Lv2・Lv3効果によって青としても扱うので、赤でも青でもあるシンボルが2つになります。\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t関連カード",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS03-128",
@@ -2814,14 +5527,31 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[フラッシュ]ボイドから、疲労状態の自分のスピリット1体につき、コア1個を自分のリザーブに置く。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-128.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "緑",
+        "コスト": "5",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-",
+        "能力・効果": "[フラッシュ]ボイドから、疲労状態の自分のスピリット1体につき、コア1個を自分のリザーブに置く。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[BS03]【覇闘】/<->": "カードリスト",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS03-135",
@@ -2836,14 +5566,32 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[メイン]このターンの間、系統2つ以上を持つ自分のスピリットすべては、BPを比べ相手のスピリットに破壊されたとき手札に戻る。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+2000する。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-135.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "黄",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-",
+        "能力・効果": "[メイン]このターンの間、系統2つ以上を持つ自分のスピリットすべては、BPを比べ相手のスピリットに破壊されたとき手札に戻る。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+2000する。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[BS03]【覇闘】/<->": "カードリスト",
+        "このマジックの効果が発揮された後に、2つめの系統を与えたら、破壊されたとき手札に戻ることができる？": "はい、できます。",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     },
     {
       "id": "BS03-141",
@@ -2858,14 +5606,33 @@
       "bp": null,
       "family": [],
       "rarity": "C",
-      "text": null,
+      "text": "[フラッシュ]このターンの間、スピリット1体のLvを1つ上のものとして扱う。",
       "dataComplete": false,
       "missingFields": [
         "bp",
         "text",
         "costSymbols",
         "image"
-      ]
+      ],
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-141.webp",
+      "_rawDtDd": {
+        "カテゴリー": "マジック",
+        "属性": "青",
+        "コスト": "3",
+        "軽減コスト": "",
+        "系統": "-",
+        "BP/コア": "-",
+        "能力・効果": "[フラッシュ]このターンの間、スピリット1体のLvを1つ上のものとして扱う。",
+        "ブロックアイコン": "<A>",
+        "作品アイコン": "-",
+        "[BS03]【覇闘】/<->": "カードリスト",
+        "Lv1のスピリットに2回使えばLv3になるの？": "はい、なります。ビルドアップはLvを1つ上げるマジックなので、2回使えばLvが2つ上がります。",
+        "Lv2のスピリットにビルドアップを使ってLv3になったあと、置かれているコアが1個になってLv1になったら、そのスピリットはLv2になるの？": "はい、Lv2になります。",
+        "このカードはエターナルのカード番号のままなので、以前のエターナルのカードもスタンダードで使えるの？": "はい、使えます。同じカード番号のカードは再録された場合、以前のカードを最新カードに読み替える際、ブロックアイコンの数字や英字も読み替えます。また、裁定も最新カードに合わせた裁定になります。"
+      },
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null
     }
   ]
 }
