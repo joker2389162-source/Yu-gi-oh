@@ -1,5 +1,5 @@
 {
-  "_readme": "示範卡池。這批卡片是為了讓引擎/卡組編輯器/對戰系統可以完整運作而製作的『系統示範資料』，卡名與效果文字皆為原創占位內容，不是任何官方 Battle Spirits 卡片的逐字重製。要換成真正的官方現行卡表，請把資料改寫成同樣的欄位格式（見下方每張卡的欄位說明）覆蓋此檔案，或串接你自己取得的官方資料來源。collab=true 的卡片同理是虛構示範聯名，不代表任何真實作品的合作卡。",
+  "_readme": "卡池。DEMO-/BS-DEMO- 開頭是為了讓引擎/卡組編輯器/對戰系統可以完整運作而製作的『系統示範資料』，卡名與效果文字皆為原創占位內容，不是任何官方 Battle Spirits 卡片的逐字重製，collab=true 的示範卡同理是虛構聯名。26RBS02- 開頭的卡片則是真實官方現行彈「[26RBS02]幻惑の翔風」的完整資料（用 tools/scrape-card-detail.mjs 抓取、tools/merge-real-set.mjs 併入），卡名/數值/效果文字皆為官方原文。之後要併入更多真實系列，請先在 shared/data/real/<代碼>.json 建立基本清單、跑完 scrape-card-detail.mjs 補齊 bp/text/image，再用 tools/merge-real-set.mjs 併進這個檔案。",
   "schema": {
     "id": "卡片唯一編號",
     "name": "卡名",
@@ -23,53 +23,5918 @@
     "collab": "是否為合作卡",
     "collabSeries": "合作系列名稱（虛構示範）",
     "rarity": "稀有度代碼",
-    "image": "卡圖網址，null 時前端會顯示依顏色產生的佔位卡框"
+    "image": "卡圖網址，null 時前端會顯示依顏色產生的佔位卡框",
+    "bpLevels": "官方「BP/コア」貼核心升級資料，只有真實卡片才有：[{lv, bp, cores}, ...]，代表這張卡貼滿 cores 個核心時BP會變成 bp（據點卡bp一律為null，代表沒有BP數值，不是缺資料）。示範卡沒有這個欄位（等同空陣列），combat時仍用『每貼1核心+1000BP』的簡化規則，見 effectiveBp()。",
+    "blockIcon": "官方「ブロックアイコン」欄位原始值，目前僅供參考顯示，尚未對應到 keywords 裡的 blocker 關鍵字判斷",
+    "workIcon": "官方「作品アイコン」欄位原始值（合作系列的作品圖示），目前僅供參考顯示，尚未對應到 collab/collabSeries 欄位",
+    "costAlleviationColor": "官方「軽減コスト」欄位顯示的顏色圖示，代表某種費用減免條件，跟 costSymbols 是不同機制，目前引擎尚未實作",
+    "missingFields": "尚未確認/抓取完整的欄位名稱清單，供之後補資料時參考，不影響對戰功能"
   },
   "cards": [
-    { "id": "DEMO-001", "name": "白之新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 1, "costSymbols": {"white": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈，示範用最低費卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-002", "name": "白翼哨兵", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 2000, "lv": 1, "family": ["beast"], "keywords": ["blocker"], "burst": null, "text": "【Blocker】可以攔截對手的攻擊。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-003", "name": "聖光防壁", "set": "DEMO-SET", "type": "nexus", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 1000, "lv": 1, "family": ["structure"], "keywords": ["blocker"], "burst": null, "text": "【Blocker】場上的據點，可攔截攻擊。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-004", "name": "白光治療陣", "set": "DEMO-SET", "type": "magic", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：從棄核區將1個核心移回儲備區。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-005", "name": "聖裁天使長", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 5, "costSymbols": {"white": 2}, "bp": 5000, "lv": 1, "family": ["angel"], "keywords": ["doubleBlocker"], "burst": null, "text": "【Blocker】可以連續攔截兩次攻擊（示範用強化關鍵字）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-    { "id": "DEMO-006", "name": "赤炎新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["red"], "cost": 1, "costSymbols": {"red": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-007", "name": "烈焰劍士", "set": "DEMO-SET", "type": "spirit", "colors": ["red"], "cost": 2, "costSymbols": {"red": 1}, "bp": 2500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "攻擊力偏高、無防禦能力的示範攻擊型精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-008", "name": "爆炎術", "set": "DEMO-SET", "type": "magic", "colors": ["red"], "cost": 3, "costSymbols": {"red": 2}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：破壞對手場上一張BP 3000以下的精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-    { "id": "DEMO-009", "name": "紅蓮龍將", "set": "DEMO-SET", "type": "spirit", "colors": ["red"], "cost": 6, "costSymbols": {"red": 3}, "bp": 6000, "lv": 1, "family": ["dragon"], "keywords": ["doubleAttack"], "burst": null, "text": "【Double Attack】攻擊時造成雙倍傷害核心移動（示範用關鍵字）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-010", "name": "赤色爆發兵", "set": "DEMO-SET", "type": "spirit", "colors": ["red"], "cost": 2, "costSymbols": {"red": 1}, "bp": 1500, "lv": 1, "family": ["human"], "keywords": [], "burst": {"condition": "life-reduced", "effectText": "自己生命減少後：本卡無償從手牌覆蓋放置，之後可翻開直接抽1張牌。"}, "text": "可設置為爆發卡；生命減少時觸發抽卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-011", "name": "黃金新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["yellow"], "cost": 1, "costSymbols": {"yellow": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-012", "name": "礦脈採掘者", "set": "DEMO-SET", "type": "spirit", "colors": ["yellow"], "cost": 2, "costSymbols": {"yellow": 1}, "bp": 1500, "lv": 1, "family": ["beast"], "keywords": [], "burst": null, "text": "召喚時：從牌庫上方將1張牌置入手牌下方的核心堆（示範簡化效果，代表加速核心）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-013", "name": "黃金城塞", "set": "DEMO-SET", "type": "nexus", "colors": ["yellow"], "cost": 3, "costSymbols": {"yellow": 1}, "bp": 2000, "lv": 1, "family": ["structure"], "keywords": ["blocker"], "burst": null, "text": "【Blocker】堅固的據點。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-014", "name": "豐穰契約者", "set": "DEMO-SET", "type": "spirit", "colors": ["yellow"], "cost": 3, "costSymbols": {"yellow": 2}, "bp": 3000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "契約卡：每副牌組限入1張。在場時：每回合開始多獲得1個儲備核心。", "contractCard": true, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-015", "name": "青色新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["blue"], "cost": 1, "costSymbols": {"blue": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-016", "name": "深海斥候", "set": "DEMO-SET", "type": "spirit", "colors": ["blue"], "cost": 2, "costSymbols": {"blue": 1}, "bp": 1500, "lv": 1, "family": ["fish"], "keywords": ["flash"], "burst": null, "text": "【Flash】可在對手回合中以此卡效果介入（示範用瞬間速度關鍵字）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-017", "name": "潮汐幻術", "set": "DEMO-SET", "type": "magic", "colors": ["blue"], "cost": 2, "costSymbols": {"blue": 1}, "bp": null, "lv": 1, "family": [], "keywords": ["flash"], "burst": null, "text": "【Flash】使用時：讓對手一張攻擊中的精靈這次攻擊視為被攔截。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-    { "id": "DEMO-018", "name": "深淵海龍", "set": "DEMO-SET", "type": "spirit", "colors": ["blue"], "cost": 5, "costSymbols": {"blue": 2}, "bp": 4500, "lv": 1, "family": ["dragon"], "keywords": [], "burst": null, "text": "登場時：將對手一張未攻擊過的精靈的核心全數移至棄核區（示範簡化的削弱效果）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-019", "name": "綠色新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["green"], "cost": 1, "costSymbols": {"green": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-020", "name": "森林巨蟒", "set": "DEMO-SET", "type": "spirit", "colors": ["green"], "cost": 3, "costSymbols": {"green": 1}, "bp": 3500, "lv": 1, "family": ["beast"], "keywords": [], "burst": null, "text": "高BP、低費用的示範肉盾型精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-021", "name": "藤蔓纏縛", "set": "DEMO-SET", "type": "magic", "colors": ["green"], "cost": 1, "costSymbols": {"green": 1}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：本回合對手一張精靈不能攻擊。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-022", "name": "翠玉巨人", "set": "DEMO-SET", "type": "spirit", "colors": ["green"], "cost": 6, "costSymbols": {"green": 3}, "bp": 7000, "lv": 1, "family": ["giant"], "keywords": [], "burst": null, "text": "全示範卡池中BP最高的重量級精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-023", "name": "紫色新兵", "set": "DEMO-SET", "type": "spirit", "colors": ["purple"], "cost": 1, "costSymbols": {"purple": 1}, "bp": 1000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無特殊效果的基礎精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-024", "name": "暗影盜賊", "set": "DEMO-SET", "type": "spirit", "colors": ["purple"], "cost": 2, "costSymbols": {"purple": 1}, "bp": 2000, "lv": 1, "family": ["undead"], "keywords": [], "burst": null, "text": "登場時：查看對手手牌1張（示範簡化的窺視效果，實際對戰以UI顯示提示為主）。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-025", "name": "亡者甦醒", "set": "DEMO-SET", "type": "magic", "colors": ["purple"], "cost": 3, "costSymbols": {"purple": 2}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：從自己的卡片棄卻區選1張精靈卡加入手牌。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-    { "id": "DEMO-026", "name": "深淵魔王", "set": "DEMO-SET", "type": "spirit", "colors": ["purple"], "cost": 5, "costSymbols": {"purple": 3}, "bp": 4000, "lv": 1, "family": ["demon"], "keywords": ["encore"], "burst": null, "text": "【Encore】被破壞時，支付1核心可讓本卡回到手牌，而不是進入棄卻區。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-027", "name": "彩虹契約使者", "set": "DEMO-SET", "type": "spirit", "colors": ["white", "red", "yellow", "blue", "green", "purple"], "cost": 4, "costSymbols": {}, "bp": 3000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "契約卡：每副牌組限入1張。無顏色符號需求，任意6色核心皆可支付費用。", "contractCard": true, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-028", "name": "星導守護者・雷歐", "set": "DEMO-COLLAB-01", "type": "spirit", "colors": ["blue", "white"], "cost": 3, "costSymbols": {"blue": 1, "white": 1}, "bp": 3000, "lv": 1, "family": ["collab-demo"], "keywords": ["blocker"], "burst": null, "text": "【Blocker】示範合作卡（虛構聯名IP，非真實作品）。召喚時：抽1張牌後棄1張牌。", "contractCard": false, "collab": true, "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）", "rarity": "CB" },
-    { "id": "DEMO-029", "name": "星導方舟・極光號", "set": "DEMO-COLLAB-01", "type": "nexus", "colors": ["blue", "white"], "cost": 4, "costSymbols": {"blue": 1, "white": 1}, "bp": 3000, "lv": 1, "family": ["collab-demo"], "keywords": ["blocker"], "burst": null, "text": "【Blocker】示範合作卡（虛構聯名IP，非真實作品）。", "contractCard": false, "collab": true, "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）", "rarity": "CB" },
-    { "id": "DEMO-030", "name": "銀河沖擊砲", "set": "DEMO-COLLAB-01", "type": "magic", "colors": ["blue"], "cost": 3, "costSymbols": {"blue": 2}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "示範合作卡（虛構聯名IP，非真實作品）。使用時：破壞對手場上一張BP 4000以下的精靈或據點。", "contractCard": false, "collab": true, "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）", "rarity": "CB" },
-    { "id": "DEMO-031", "name": "無色核心使徒", "set": "DEMO-SET", "type": "spirit", "colors": [], "cost": 2, "costSymbols": {}, "bp": 2000, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無顏色需求，任意2核心即可支付。示範用泛用卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-032", "name": "核心迴收術", "set": "DEMO-SET", "type": "magic", "colors": [], "cost": 1, "costSymbols": {}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": null, "text": "使用時：將棄核區2個核心移回儲備區。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-    { "id": "DEMO-033", "name": "終焉裁決者", "set": "DEMO-SET", "type": "spirit", "colors": ["red", "purple"], "cost": 7, "costSymbols": {"red": 2, "purple": 2}, "bp": 8000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "text": "【Double Attack】示範卡池中最重量級的雙色精靈。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-    { "id": "DEMO-034", "name": "微光護符", "set": "DEMO-SET", "type": "magic", "colors": ["white"], "cost": 1, "costSymbols": {"white": 1}, "bp": null, "lv": 1, "family": [], "keywords": [], "burst": {"condition": "opponent-spirit-summoned", "effectText": "對手精靈召喚後：本卡無償從手牌覆蓋放置，之後可翻開讓自己抽1張牌。"}, "text": "可設置為爆發卡；對手召喚精靈時觸發抽卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" },
-
-    { "id": "DEMO-035", "name": "見習劍士", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 1500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "awakening": {"condition": "life-reduced", "afterId": "DEMO-036"}, "text": "【轉醒】自己生命核心減少後，自動翻面成「覺醒．聖裁劍聖」，不需額外付費。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-    { "id": "DEMO-036", "name": "覺醒．聖裁劍聖", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 2, "costSymbols": {"white": 1}, "bp": 4000, "lv": 1, "family": ["human"], "keywords": ["doubleAttack"], "burst": null, "awokenForm": true, "text": "【轉醒後】「見習劍士」轉醒後的樣貌，BP大幅提升並獲得【Double Attack】。此面不能直接放進卡組，只能透過轉醒抵達。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "R" },
-
-    { "id": "DEMO-037", "name": "煌臨．聖光天使", "set": "DEMO-SET", "type": "spirit", "colors": ["white"], "cost": 4, "costSymbols": {"white": 2}, "bp": 4000, "lv": 1, "family": ["angel"], "keywords": ["blocker"], "burst": null, "kourin": {"cost": 2, "targetFamily": ["human"]}, "text": "【煌臨：2核心／人系】也可以直接支付4費一般召喚；若改用煌臨疊放在自己場上的人系卡片上，不算召喚（不會觸發對手的「精靈召喚」類效果），且保留原本疊放對象的核心。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-
-    { "id": "DEMO-038", "name": "究極．滅世龍神", "set": "DEMO-SET", "type": "ultimate", "colors": ["red", "purple"], "cost": 6, "costSymbols": {"red": 2, "purple": 2}, "bp": 10000, "lv": 1, "family": ["dragon", "demon"], "keywords": ["doubleAttack"], "burst": null, "summonCondition": {"type": "sacrifice", "value": 2, "text": "犧牲自己場上2張卡片"}, "uTrigger": {"effectText": "命中時：抽1張牌（示範效果）"}, "text": "【究極】跟精靈一樣走一般召喚程序，但召喚條件是犧牲自己場上2張卡片。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "UR" },
-
-    { "id": "DEMO-040", "name": "究極．蒼焰爆裂者", "set": "DEMO-SET", "type": "ultimate", "colors": ["blue"], "cost": 5, "costSymbols": {"blue": 2}, "bp": 7000, "lv": 1, "family": ["dragon"], "keywords": ["blocker"], "burst": null, "summonCondition": {"type": "ownFieldBpAtLeast", "value": 3000, "text": "自己場上需有BP3000以上的卡片"}, "uTrigger": {"effectText": "命中時：抽1張牌（示範效果）"}, "text": "【究極】跟精靈一樣走一般召喚程序，召喚條件是自己場上需有一張BP3000以上的卡片（不需要犧牲卡片）。【Blocker】。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "SR" },
-
-    { "id": "DEMO-039", "name": "核心之礎", "set": "DEMO-SET", "type": "spirit", "colors": [], "cost": 1, "costSymbols": {}, "bp": 500, "lv": 1, "family": ["human"], "keywords": [], "burst": null, "text": "無顏色需求的最低費填充卡，用於湊卡組張數的示範用卡。", "contractCard": false, "collab": false, "collabSeries": null, "rarity": "C" }
+    {
+      "id": "DEMO-001",
+      "name": "白之新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈，示範用最低費卡。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-002",
+      "name": "白翼哨兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "beast"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】可以攔截對手的攻擊。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-003",
+      "name": "聖光防壁",
+      "set": "DEMO-SET",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "structure"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】場上的據點，可攔截攻擊。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-004",
+      "name": "白光治療陣",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "使用時：從棄核區將1個核心移回儲備區。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-005",
+      "name": "聖裁天使長",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {
+        "white": 2
+      },
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "angel"
+      ],
+      "keywords": [
+        "doubleBlocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】可以連續攔截兩次攻擊（示範用強化關鍵字）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-006",
+      "name": "赤炎新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "red": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-007",
+      "name": "烈焰劍士",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "red": 1
+      },
+      "bp": 2500,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "攻擊力偏高、無防禦能力的示範攻擊型精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-008",
+      "name": "爆炎術",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "red": 2
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "使用時：破壞對手場上一張BP 3000以下的精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-009",
+      "name": "紅蓮龍將",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costSymbols": {
+        "red": 3
+      },
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "dragon"
+      ],
+      "keywords": [
+        "doubleAttack"
+      ],
+      "burst": null,
+      "text": "【Double Attack】攻擊時造成雙倍傷害核心移動（示範用關鍵字）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-010",
+      "name": "赤色爆發兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "red": 1
+      },
+      "bp": 1500,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": {
+        "condition": "life-reduced",
+        "effectText": "自己生命減少後：本卡無償從手牌覆蓋放置，之後可翻開直接抽1張牌。"
+      },
+      "text": "可設置為爆發卡；生命減少時觸發抽卡。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-011",
+      "name": "黃金新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "yellow": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-012",
+      "name": "礦脈採掘者",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "yellow": 1
+      },
+      "bp": 1500,
+      "lv": 1,
+      "family": [
+        "beast"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "召喚時：從牌庫上方將1張牌置入手牌下方的核心堆（示範簡化效果，代表加速核心）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-013",
+      "name": "黃金城塞",
+      "set": "DEMO-SET",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "yellow": 1
+      },
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "structure"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】堅固的據點。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-014",
+      "name": "豐穰契約者",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "yellow": 2
+      },
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "契約卡：每副牌組限入1張。在場時：每回合開始多獲得1個儲備核心。",
+      "contractCard": true,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-015",
+      "name": "青色新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "blue": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-016",
+      "name": "深海斥候",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "blue": 1
+      },
+      "bp": 1500,
+      "lv": 1,
+      "family": [
+        "fish"
+      ],
+      "keywords": [
+        "flash"
+      ],
+      "burst": null,
+      "text": "【Flash】可在對手回合中以此卡效果介入（示範用瞬間速度關鍵字）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-017",
+      "name": "潮汐幻術",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "blue": 1
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [
+        "flash"
+      ],
+      "burst": null,
+      "text": "【Flash】使用時：讓對手一張攻擊中的精靈這次攻擊視為被攔截。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-018",
+      "name": "深淵海龍",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costSymbols": {
+        "blue": 2
+      },
+      "bp": 4500,
+      "lv": 1,
+      "family": [
+        "dragon"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "登場時：將對手一張未攻擊過的精靈的核心全數移至棄核區（示範簡化的削弱效果）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-019",
+      "name": "綠色新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "green": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-020",
+      "name": "森林巨蟒",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "green": 1
+      },
+      "bp": 3500,
+      "lv": 1,
+      "family": [
+        "beast"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "高BP、低費用的示範肉盾型精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-021",
+      "name": "藤蔓纏縛",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "green": 1
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "使用時：本回合對手一張精靈不能攻擊。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-022",
+      "name": "翠玉巨人",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costSymbols": {
+        "green": 3
+      },
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "giant"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "全示範卡池中BP最高的重量級精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-023",
+      "name": "紫色新兵",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "purple": 1
+      },
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無特殊效果的基礎精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-024",
+      "name": "暗影盜賊",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "purple": 1
+      },
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "undead"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "登場時：查看對手手牌1張（示範簡化的窺視效果，實際對戰以UI顯示提示為主）。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-025",
+      "name": "亡者甦醒",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "purple": 2
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "使用時：從自己的卡片棄卻區選1張精靈卡加入手牌。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-026",
+      "name": "深淵魔王",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {
+        "purple": 3
+      },
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "demon"
+      ],
+      "keywords": [
+        "encore"
+      ],
+      "burst": null,
+      "text": "【Encore】被破壞時，支付1核心可讓本卡回到手牌，而不是進入棄卻區。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-027",
+      "name": "彩虹契約使者",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white",
+        "red",
+        "yellow",
+        "blue",
+        "green",
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "契約卡：每副牌組限入1張。無顏色符號需求，任意6色核心皆可支付費用。",
+      "contractCard": true,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-028",
+      "name": "星導守護者・雷歐",
+      "set": "DEMO-COLLAB-01",
+      "type": "spirit",
+      "colors": [
+        "blue",
+        "white"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "blue": 1,
+        "white": 1
+      },
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "collab-demo"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】示範合作卡（虛構聯名IP，非真實作品）。召喚時：抽1張牌後棄1張牌。",
+      "contractCard": false,
+      "collab": true,
+      "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）",
+      "rarity": "CB"
+    },
+    {
+      "id": "DEMO-029",
+      "name": "星導方舟・極光號",
+      "set": "DEMO-COLLAB-01",
+      "type": "nexus",
+      "colors": [
+        "blue",
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {
+        "blue": 1,
+        "white": 1
+      },
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "collab-demo"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "text": "【Blocker】示範合作卡（虛構聯名IP，非真實作品）。",
+      "contractCard": false,
+      "collab": true,
+      "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）",
+      "rarity": "CB"
+    },
+    {
+      "id": "DEMO-030",
+      "name": "銀河沖擊砲",
+      "set": "DEMO-COLLAB-01",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {
+        "blue": 2
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "示範合作卡（虛構聯名IP，非真實作品）。使用時：破壞對手場上一張BP 4000以下的精靈或據點。",
+      "contractCard": false,
+      "collab": true,
+      "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）",
+      "rarity": "CB"
+    },
+    {
+      "id": "DEMO-031",
+      "name": "無色核心使徒",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無顏色需求，任意2核心即可支付。示範用泛用卡。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-032",
+      "name": "核心迴收術",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [],
+      "cost": 1,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "使用時：將棄核區2個核心移回儲備區。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-033",
+      "name": "終焉裁決者",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "cost": 7,
+      "costSymbols": {
+        "red": 2,
+        "purple": 2
+      },
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "dragon",
+        "demon"
+      ],
+      "keywords": [
+        "doubleAttack"
+      ],
+      "burst": null,
+      "text": "【Double Attack】示範卡池中最重量級的雙色精靈。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-034",
+      "name": "微光護符",
+      "set": "DEMO-SET",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 1,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": {
+        "condition": "opponent-spirit-summoned",
+        "effectText": "對手精靈召喚後：本卡無償從手牌覆蓋放置，之後可翻開讓自己抽1張牌。"
+      },
+      "text": "可設置為爆發卡；對手召喚精靈時觸發抽卡。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "DEMO-035",
+      "name": "見習劍士",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": 1500,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "awakening": {
+        "condition": "life-reduced",
+        "afterId": "DEMO-036"
+      },
+      "text": "【轉醒】自己生命核心減少後，自動翻面成「覺醒．聖裁劍聖」，不需額外付費。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-036",
+      "name": "覺醒．聖裁劍聖",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costSymbols": {
+        "white": 1
+      },
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [
+        "doubleAttack"
+      ],
+      "burst": null,
+      "awokenForm": true,
+      "text": "【轉醒後】「見習劍士」轉醒後的樣貌，BP大幅提升並獲得【Double Attack】。此面不能直接放進卡組，只能透過轉醒抵達。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R"
+    },
+    {
+      "id": "DEMO-037",
+      "name": "煌臨．聖光天使",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {
+        "white": 2
+      },
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "angel"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "kourin": {
+        "cost": 2,
+        "targetFamily": [
+          "human"
+        ]
+      },
+      "text": "【煌臨：2核心／人系】也可以直接支付4費一般召喚；若改用煌臨疊放在自己場上的人系卡片上，不算召喚（不會觸發對手的「精靈召喚」類效果），且保留原本疊放對象的核心。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-038",
+      "name": "究極．滅世龍神",
+      "set": "DEMO-SET",
+      "type": "ultimate",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "cost": 6,
+      "costSymbols": {
+        "red": 2,
+        "purple": 2
+      },
+      "bp": 10000,
+      "lv": 1,
+      "family": [
+        "dragon",
+        "demon"
+      ],
+      "keywords": [
+        "doubleAttack"
+      ],
+      "burst": null,
+      "summonCondition": {
+        "type": "sacrifice",
+        "value": 2,
+        "text": "犧牲自己場上2張卡片"
+      },
+      "uTrigger": {
+        "effectText": "命中時：抽1張牌（示範效果）"
+      },
+      "text": "【究極】跟精靈一樣走一般召喚程序，但召喚條件是犧牲自己場上2張卡片。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "UR"
+    },
+    {
+      "id": "DEMO-040",
+      "name": "究極．蒼焰爆裂者",
+      "set": "DEMO-SET",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costSymbols": {
+        "blue": 2
+      },
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "dragon"
+      ],
+      "keywords": [
+        "blocker"
+      ],
+      "burst": null,
+      "summonCondition": {
+        "type": "ownFieldBpAtLeast",
+        "value": 3000,
+        "text": "自己場上需有BP3000以上的卡片"
+      },
+      "uTrigger": {
+        "effectText": "命中時：抽1張牌（示範效果）"
+      },
+      "text": "【究極】跟精靈一樣走一般召喚程序，召喚條件是自己場上需有一張BP3000以上的卡片（不需要犧牲卡片）。【Blocker】。【U觸發】攻擊時：棄對手牌庫最上面1張，若那張牌費用比本卡低則命中，命中時抽1張牌。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "SR"
+    },
+    {
+      "id": "DEMO-039",
+      "name": "核心之礎",
+      "set": "DEMO-SET",
+      "type": "spirit",
+      "colors": [],
+      "cost": 1,
+      "costSymbols": {},
+      "bp": 500,
+      "lv": 1,
+      "family": [
+        "human"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "無顏色需求的最低費填充卡，用於湊卡組張數的示範用卡。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C"
+    },
+    {
+      "id": "26RBS02-001",
+      "name": "スクイラルーパー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "降風"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』このスピリットがBP3000以下なら、このスピリットはアタック/ブロックできない。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットが相手のライフを減らした時、このスピリットがBP10000以上なら、BP7000以下の相手のスピリット1体を指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-001.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-002",
+      "name": "ロップ＝ヤーラ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "風炎"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": null,
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-002.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-003",
+      "name": "ストリアレス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "風牙"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』継召を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-003.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-004",
+      "name": "三羽一体スパロッツ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "風牙"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』疲労状態の自分の赤のスピリットがいるなら、自分のトラッシュのコスト6以上で系統：「風牙」を持つスピリットカード1枚を指定する。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-004.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-005",
+      "name": "飛兵コーンヒーロ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "降風"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』自分の赤のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕【激突】を持つ自分のスピリットが、BP比べで相手のスピリットだけを破壊した時、このスピリットを回復できる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-005.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-006",
+      "name": "捕縛者チェイネル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "光焔"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。このスピリットがブロックされているなら、かわりに指定する体数を2体にする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-006.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-007",
+      "name": "チャコルーラー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "風炎"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック中』このスピリットをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』「BPを+する」効果を受けている自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-007.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-008",
+      "name": "老練なエルダリー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "翔龍"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック中』このスピリットをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+3000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-008.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-009",
+      "name": "スネイ＝クラウド",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "東雲"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』【激突】を持つ自分のスピリット1体を指定する。それを回復させ、このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-009.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-010",
+      "name": "裂神アマノサキミコ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "天翔"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ開始時』〔重複不可〕【激突】を持つ自分のスピリット1体を指定する。このターン中、それがBP比べで相手のスピリットだけを破壊した時、1枚ドローする。\t\t\t\t\t\t\t\t[Lv2]【激突】『アタック中』相手のスピリットすべては、可能ならブロックする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-010.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-011",
+      "name": "角力ブルファル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "翔龍"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP3000以下の相手のスピリット1体を指定する。それを破壊する。BP10000以上の自分のスピリットがいるなら、かわりに指定するBPを5000以下にする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-011.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-012",
+      "name": "回炎デュラルエル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "光焔"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定する。このターン中、それをBP+3000する。この継召で除外したEXシンボル1つにつき、指定する体数を+1体する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』〔ターン1回〕バトル終了時、このスピリットのBP10000につき、コスト6以下の自分のスピリット1体を指定できる。それらを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-012.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-013",
+      "name": "パピスロープ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "獣憑"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック/ブロック中』このスピリットをBP+3000する。バトル終了時、このスピリットを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-013.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 1000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-014",
+      "name": "ブラックシャール",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "血醒"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv2]《真界放》『アタック時』このターンに自分のスピリットが破壊されていたなら、相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-014.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-015",
+      "name": "セメリペット",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 1000,
+      "lv": 1,
+      "family": [
+        "屍骸"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-015.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 1000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 2000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-016",
+      "name": "長靴プシビル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "業魔"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から2枚を破棄する。その後、破棄した系統：「獣憑」を持つカード1枚を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【起動：フラッシュ】このスピリットを破壊する▶疲労状態のコスト4以下の相手のスピリット1体を指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-016.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-017",
+      "name": "デーン＝グレイ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "獣憑"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』疲労状態のコスト1/2の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態のコスト3/4の相手のスピリット1体を指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-017.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-018",
+      "name": "ロアスピス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "変異"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のデッキの上から1枚をオープンできる。その中のカード1枚を破棄する。残りは好きな順でデッキの下に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-018.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-019",
+      "name": "ウィル＝ゲイル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "業魔"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック/ブロック中』【起動：フラッシュ】このスピリットを破壊する▶アタック/ブロックしている相手のスピリット1体を指定する。それの以外のコア2個をリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-019.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-020",
+      "name": "再起するドゥーブー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "屍骸"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": null,
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-020.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-021",
+      "name": "不死剣奴ダスクロン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "屍骸"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "このカードは、【操霊】で召喚する時、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『破壊時』疲労状態の相手のスピリット2体を指定する。それらの以外のコア1個ずつをリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-021.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-022",
+      "name": "羽黒エボニスエス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "幻妖"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』このスピリット以外の自分のスピリット1体を指定できる。それを破壊する。そうしたなら、1枚ドローする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-022.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-023",
+      "name": "悲嘆ラローナ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "血醒"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]【操霊：暗紫＆コスト4以下】『召喚時』自分のトラッシュのコスト4以下で系統：「暗紫」を持つスピリットカード1枚を指定できる。それを召喚する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『破壊時』このスピリットの【操霊】を発揮できる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-023.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-024",
+      "name": "有刺スコー・ルビー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "変異"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、疲労状態の相手のスピリット1体を指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-024.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-025",
+      "name": "シゼリン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "無形"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": null,
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-025.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-026",
+      "name": "フィンドル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "渦人"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-026.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-027",
+      "name": "アルフロスト",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "氷雪"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』疲労状態のコスト3以下の相手のスピリット1体を指定する。それをデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-027.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-028",
+      "name": "カルカロード",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "甲魚"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]【水流：海緑＆コスト8以上】『自分のアタックステップ』【起動：フラッシュ】このスピリットを疲労させる▶コスト8以上で系統：「海緑」を持つ自分のスピリット1体を指定する。このバトル中、それに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]『破壊時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-028.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-029",
+      "name": "クロル・ガレイロ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "古蛟"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[フラッシュ]『相手のアタックステップ』手札のこのカードは、召喚コストの支払いと上に置くコアをリザーブから使用して召喚できる。[Lv1-2]『召喚時』疲労状態のコスト4以下の相手のスピリット1体を指定する。それを重疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-029.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-030",
+      "name": "ポーラ＝フォークス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "氷雪"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『相手のアタックステップ』相手のスピリットがアタックした時、回復状態のコスト3以下の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-030.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-031",
+      "name": "誘引アングラン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "淡光"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-031.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-032",
+      "name": "エラスマ＝ウルス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "古蛟"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "『自分のターン』〔重複不可〕トラッシュのこのカードは、自分の効果で相手のスピリットが重疲労した時、系統：「古蛟」を持つ自分のスピリット/ネクサスがあるなら、手札に戻せる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-032.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-033",
+      "name": "泥濘招きのデイジー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "渦人"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』相手のスピリット1体を指定する。それが、回復状態なら疲労させ、疲労状態なら重疲労させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』回復状態の相手のスピリットが1体以下なら、重疲労状態ではない疲労状態の相手のスピリット1体を、相手が指定する。それを重疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-033.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-034",
+      "name": "八つ裂きバズソーン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "甲魚"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』ボイドからコア1個をこのスピリットに置く。\t\t\t\t\t\t\t\t[Lv2]『破壊時』相手のスピリット1体を指定できる。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-034.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-035",
+      "name": "ノーザステラー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "水精"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック中』相手のライフが減った時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』バトル終了時、疲労状態の相手のスピリット1体を指定できる。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-035.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-036",
+      "name": "妖光セロモア",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "淡光"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』継召して召喚していたなら、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『アタック中』相手のライフが減った時、自分の手札すべてを破棄できる。1枚以上破棄したなら、3枚ドローする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-036.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 12000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-037",
+      "name": "灰波グレイケン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "激浪"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定できる。それを疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分の効果で自分か相手のスピリットが疲労した時、自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-037.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-038",
+      "name": "ラスレア",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "生硝"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『ブロック時』アタックしていないBP2000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-038.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-039",
+      "name": "ブレティ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "怪石"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『ブロック時』自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-039.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-040",
+      "name": "絶盾アルマール",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "水銀"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-040.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-041",
+      "name": "アージェントール",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "水銀"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』BP3000以下の相手のスピリット1体を指定する。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕自分のスピリットが【増幅】を発揮した時、ボイドからコア1個を自分のリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-041.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-042",
+      "name": "中継鹿サブリック",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "怪石"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンする。その中のブロック時効果を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』ブロック時効果を持つ自分のスピリット1体につき、このスピリットをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-042.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-043",
+      "name": "ファラキャトル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "怪石"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": null,
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-043.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-044",
+      "name": "モルタライザー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "地皮"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック時』ブロック時効果を持つ自分のスピリットがいるなら、ボイドからコア1個を自分のトラッシュに置く。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』コスト3以下の相手のスピリット1体を指定できる。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-044.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-045",
+      "name": "白炉ブレストン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "鉱人"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP5000以下の相手のスピリット1体を指定する。それを手札に戻す。継召して召喚していたなら、かわりに指定するBPを5000以下か8000以上にする。\t\t\t\t\t\t\t\t[Lv2]【迷彩：1】対戦相手は、スピリットの効果でこのスピリットを指定する時、1コスト支払わなければ指定できない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-045.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-046",
+      "name": "リカオ＝クルス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "錬金"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP3000以下の相手のスピリット2体を指定する。それらを手札に戻す。継召して召喚していたなら、かわりにそれらを好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック時』ボイドからコア1個を自分のトラッシュに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-046.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-047",
+      "name": "刃脚グラスラナー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "生硝"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』BP8000以下の相手のスピリット1体を指定できる。それを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』自分のスピリット1体を指定できる。それを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-047.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-048",
+      "name": "迷彩カムフラン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 9,
+      "costSymbols": {},
+      "bp": 10000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "幻影"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『ブロック時』〔ターン1回〕コスト5以下の自分のスピリット1体を指定する。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]《真界放》【迷彩：3】対戦相手は、スピリットの効果でこのスピリットを指定する時、3コスト支払わなければ指定できない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-048.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 10000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 14000,
+          "cores": 5
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-049",
+      "name": "突出レイダラス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 9,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "鉱人"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』相手のネクサス1つを指定する。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-049.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-050",
+      "name": "孤独なツノワラシ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "鬼哭"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv2]このスピリットが相手の効果で疲労した時、疲労状態の系統：「鬼哭」/「呪物」を持つ自分のスピリット1体を指定する。それを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-050.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-051",
+      "name": "ソードオネット",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "呪物"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": null,
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-051.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-052",
+      "name": "カースポーン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "呪物"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]【起動：メイン】〔ターン1回〕このスピリットを疲労させる▶自分のトラッシュの系統：「鬼哭」を持つカード1枚を指定する。それをデッキの上に戻す。このターンに自分が2回以上アタックしていたなら、かわりにそれを手札に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のメインステップ』自分のスピリットが召喚された時、このスピリットを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-052.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-053",
+      "name": "雷輪オレオル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "雷竜"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。この継召で除外したEXシンボル1つにつき、このBP-を-1000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-053.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-054",
+      "name": "雷爪ジノリス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "恐鱗"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック中』お互いのスピリットすべてはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』〔重複不可〕このスピリットが疲労状態なら、系統：「黄玉」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-054.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-055",
+      "name": "ダイアグラム・ドラゴン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "雷竜"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のスピリットの効果で相手のスピリットを破壊した時、コスト4以下で系統：「雷竜」を持つ自分のスピリット1体を指定できる。それを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-055.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-056",
+      "name": "グレイトズーク",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "山臥"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「鬼哭」/「呪物」を持つカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。このターンに自分が2回以上アタックしていたなら、かわりにオープンする枚数を5枚にする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-056.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-057",
+      "name": "艶舞ワルタナ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "鬼哭"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック時』相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]『アタック中』ターンの2回目以降のアタックなら、このスピリットはが置かれていない相手のスピリットからブロックされない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-057.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-058",
+      "name": "カルノコンカラー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "雷竜"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。このターン中、それをBP-6000する。その後、それがBP0なら破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-058.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-059",
+      "name": "五寸杭ビスキュラー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "呪物"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "このカードを召喚する時、このターンに自分が2回以上アタックしていたなら、自分のトラッシュのシンボルでも軽減できる。[Lv1-2]『召喚時』このスピリット以外の系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0なら破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-059.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-060",
+      "name": "鹵獲者トルタザード",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "山臥"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から4枚をオープンする。その中の系統：「黄玉」を持つマジックカード1枚を手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『ブロック中』【起動：フラッシュ】〔バトル1回〕自分の手札の系統：「黄玉」を持つマジックカード1枚のフラッシュ効果をコストを支払わずに使用する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-060.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-061",
+      "name": "甦るミライーマ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "呪物"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』相手のスピリット1体を指定する。このバトル中、それはブロックできない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットのアタックによって相手のライフを減らした時、ターンの2回目以降のアタックなら、ボイドからコア1個を自分のライフに置ける。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-061.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-062",
+      "name": "メガロディアス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "山臥"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』〔ターン1回〕系統：「鬼哭」/「呪物」を持つ自分のスピリットがアタックした時、相手のスピリット1体を指定する。このターン中、それをBP-2000する。その後、それがBP0なら破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-062.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-063",
+      "name": "萎縮するディーバグ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "暴脚"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』系統：「青樹」を持つ自分のネクサス1つを指定する。ボイドからコア1個をそれに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-063.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 3000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-064",
+      "name": "ベアラマ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 2000,
+      "lv": 1,
+      "family": [
+        "凶獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』自分のデッキの上から3枚をオープンする。その中の系統：「凶獣」を持つネクサスカード1枚をコストを支払わずに配置する。残りは好きな順でデッキの下に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-064.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 2000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 4000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-065",
+      "name": "ムー＝ステラ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "狩獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』自分のトラッシュの系統：「青樹」を持つネクサスカード1枚を指定する。それをコストを支払わずに配置する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-065.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-066",
+      "name": "モーラ・マイラ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "環形"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-066.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 6000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-067",
+      "name": "密集陣のファロテス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "暴脚"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]【地鳴：4】『アタック中』バトル終了時、相手のデッキの上から4枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-067.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-068",
+      "name": "ディパード",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "狩獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】〔ターン1回〕自分のネクサスすべてが系統：「青樹」を持つなら、このスピリットを疲労させる▶自分のネクサス1つを指定する。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-068.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-069",
+      "name": "一足飛びのぺディエス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "爪仁"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『アタック時』コスト3以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】〔ターン1回〕このスピリットのコア1個を自分のネクサス1つに置く▶このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-069.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-070",
+      "name": "棘突マンデア",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "暴脚"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]【地鳴：6】『アタック中』バトル終了時、相手のデッキの上から6枚を破棄する。相手のトラッシュのブロックしたスピリットカードのコスト1につき、破棄する枚数を-1枚する。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔重複不可〕【地鳴】を持つ自分のスピリットのアタックによって相手のライフを減らした時、相手のデッキの上から6枚を破棄する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-070.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-071",
+      "name": "散弾樹ハノーキ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "森威"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]相手のトラッシュにカードが8枚以上あるなら、このスピリットをLv2として扱う。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』【地鳴】を持つ自分のスピリットすべてをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-071.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 5
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-072",
+      "name": "ヌータリウス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "凶獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』この継召で除外したEXシンボル1つにつき、自分のネクサス1つを指定できる。ボイドからコア1個ずつをそれらに置く。\t\t\t\t\t\t\t\t[Lv2]『アタック中』自分のネクサス1つにつき、このスピリットをBP+1000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-072.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-073",
+      "name": "暴樹オルドリリー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 9,
+      "costSymbols": {},
+      "bp": 9000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "立樹"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』自分のネクサスを好きなだけ指定する。それらを疲労させる。疲労したネクサス1つにつき、コスト4以下の相手のスピリット1体を指定する。それらを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ開始時』系統：「青樹」を持つ自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このステップ中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "M",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-073.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 9000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-074",
+      "name": "戦局：浮岩装天",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "風炎"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』系統：「紅雲」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットのバトル終了時、アタックしていない自分のスピリット1体を指定する。自分のトラッシュの以外のコア1個をそれに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-074.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-075",
+      "name": "浮岩城塞",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "紅雲"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『配置時』自分のスピリット1体を指定する。このターン中、それに“【激突】『アタック中』相手のスピリットすべては、可能ならブロックする”を与える。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』自分のスピリットがBP比べで相手のスピリットだけを破壊した時、自分のスピリット1体を指定する。このターン中、それをBP+5000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-075.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-076",
+      "name": "戦局：鱗粉防壁",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "獣憑"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『配置時』自分のトラッシュにEXシンボルがないなら、自分のデッキの上から2枚を破棄する。\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で破壊時効果を持つ自分のスピリットを破壊していたなら、疲労状態の相手のスピリット1体を指定する。それの以外のコア1個をリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-076.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-077",
+      "name": "バイオレットホール",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "暗紫"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]このターンに【操霊】で召喚された自分のスピリットすべてをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』コア1個の相手のスピリットすべてはアタックできない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-077.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-078",
+      "name": "戦局：水泡大盾",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "古蛟"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ』〔重複不可・ターン1回〕系統：「古蛟」を持つ自分の緑のスピリットが相手のライフを減らした時、疲労状態のコスト5以下の相手のスピリット1体を指定する。それを重疲労させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分のスピリットの効果で、自分か相手のスピリットが疲労した時、自分のトラッシュの「ラピッドリッパー」1枚を指定する。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-078.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-079",
+      "name": "深孔ホール",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "古蛟"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『相手のターン』自分の緑のスピリットが相手の効果で消滅した時、消滅したスピリット以外の自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕継召して自分のスピリットが召喚された時、ボイドからコア1個を自分のトラッシュに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-079.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-080",
+      "name": "ガードタワー",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "白妙"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『相手のアタックステップ開始時』系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』コスト6以上で【増幅】を持つ自分のスピリットすべてをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-080.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-081",
+      "name": "戦局：太陽大破",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "生硝"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『相手のアタックステップ開始時』〔重複不可〕コスト3以下の相手のスピリット1体を指定できる。それは可能ならこのステップの最初にアタックしなければならない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のエンドステップ』ブロック時効果を持つ自分のスピリット1体を指定できる。それを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-081.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-082",
+      "name": "戦局：真門鹵獲",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "鬼哭"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ』自分のスピリットがブロックされた時、相手のスピリット1体を指定する。このバトル中、それをBP-1000する。その後、それがBP0なら破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔重複不可・ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、自分のトラッシュのコスト4以下のスピリットカード1枚を指定する。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-082.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-083",
+      "name": "覇王樹壁",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "黄玉"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ』BP0で破壊されたコスト5以下の相手のスピリットすべては、トラッシュに置くかわりに好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]『お互いのアタックステップ』〔ターン1回〕アタック/ブロックしていない系統：「黄玉」を持つ自分のスピリットが相手によって破壊された時、1枚ドローする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-083.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-084",
+      "name": "群青の林檎",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "青樹"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』【起動：フラッシュ】このネクサスを疲労させる▶系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。\t\t\t\t\t\t\t\t[Lv2]『相手のアタックステップ』自分のライフが減った時、コスト3以下の相手のスピリット1体を指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-084.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-085",
+      "name": "戦局：樹根隆起",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "狩獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『お互いのアタックステップ』自分のネクサスすべてが系統：「青樹」を持つなら、コスト3以下のスピリットすべては、ターンに合計1回しかアタックできない。\t\t\t\t\t\t\t\t[Lv2]『自分のアタックステップ』〔ターン1回〕本来はネクサスの自分のスピリットがアタックした時、1枚ドローした後、手札1枚をデッキの下に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-085.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 2
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-086",
+      "name": "記憶の宮殿",
+      "set": "26RBS02",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "青樹"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『配置時』系統：「青樹」を持つ自分のスピリット1体を指定する。ボイドからコア1個をそれに置く。\t\t\t\t\t\t\t\t[Lv2]《真界放》『相手のアタックステップ』【起動：フラッシュ】1コスト支払う▶このステップ中、このネクサスはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-086.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": 0
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-087",
+      "name": "フレイムサモニング",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "紅雲"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：赤》自分の赤シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]自分の赤のスピリット1体を指定する。疲労状態の自分のスピリット1体につき、このターン中、それをBP+3000する。その後、このターン中、それが相手のライフを減らした時、コスト4以下の相手のネクサス1つを指定する。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-087.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-088",
+      "name": "アンマスク",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "暗紫"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：紫》自分の紫シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分の紫のスピリット1体を指定する。このターン中、それをBP+5000する。このバトル終了時、それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-088.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-089",
+      "name": "ラピッドリッパー",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "海緑"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：緑》自分の緑シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-089.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-090",
+      "name": "ラッシュアウト",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "白妙"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：白》自分の白シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t[メイン]系統：「白妙」を持つ自分のスピリット1体を指定する。このターン中、それはブロックされない。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-090.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-091",
+      "name": "ポータルハック",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "唱廻"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：黄》自分の黄シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[フラッシュ]相手のスピリット2体を指定する。このターン中、それらをBP-2000する。系統：「鬼哭」/「呪物」を持つ自分のスピリットがいるなら、かわりにそれらをBP-3000する。その後、それらがBP0なら破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-091.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-092",
+      "name": "ブーストエナジー",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "青樹"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《ソウルマジック：青》 自分の青シンボルがあればだけで使用できる。\t\t\t\t\t\t\t\tこのカードはメインステップでは使用できない。\t\t\t\t\t\t\t\t[フラッシュ]自分のネクサス1つを指定できる。自分のフィールド/リザーブのコア1個以上をそれに置き、このバトル中、それはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。その後、系統：「青樹」を持つ自分のスピリット1体を指定する。このバトル中、それをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "R",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-092.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-CP01",
+      "name": "ゲートオープン、界放",
+      "set": "26RBS02",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [
+        "紅雲"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[メイン]自分のデッキの上から4枚をオープンする。その中の継召を持つスピリットカード2枚までを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[フラッシュ]自分のスピリット1体を指定する。このターン中、それをBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "CP",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-CP01.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X01",
+      "name": "ジーン・ローズ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "東雲"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』自分の赤のスピリット1体を指定する。このターン中、それをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕BP10000以上の自分のスピリットが相手のライフを減らした時、自分のデッキの上から1枚をオープンできる。それが系統：「紅雲」を持つスピリットカードなら手札に加える。残りはデッキの下に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X01.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X02",
+      "name": "大焔精フレンディス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "紅雲",
+        "風炎"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』このターン中、系統：「紅雲」を持つ自分のスピリットすべてをBP+3000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』【起動：フラッシュ】2コスト支払う▶このターンに相手のライフが減っていなかったなら、BP10000以上の自分のスピリット1体を指定する。このバトル中、それを赤シンボル2つにする。この効果以外でシンボルの数は増えない。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X02.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X03",
+      "name": "断罪者コンシュラー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "風牙"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』BP7000以下の相手のスピリット1体を指定する。それを破壊する。継召して召喚していたなら、破壊したそれの効果を発揮させない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』このスピリットをBP+3000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X03.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X04",
+      "name": "待命ロマスリカ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "暗紫",
+        "屍骸"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『破壊時』相手のスピリット1体を指定する。それのコアが1個になるようにリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『アタック中』ブロックされた時、相手のスピリット2体を指定する。それらのコア1個ずつをリザーブに置く。（置くコアは相手が選ぶ）",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X04.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X05",
+      "name": "悠々たるムルナー",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "幻妖"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』破壊時効果を持つ自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]『自分のエンドステップ』〔重複不可〕このターンに自分の効果で自分の紫のスピリットを破壊していたなら、1枚ドローする。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X05.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X06",
+      "name": "黒の暗殺者オ＝セロ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "獣憑"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』自分のスピリット1体を指定できる。それを破壊する。そうしたなら、相手のスピリット1体を指定する。それのコア1個をリザーブに置く。この継召で除外したEXシンボル1つにつき、置くコアを+1個する。（置くコアは相手が選ぶ）\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』自分のトラッシュのカードすべてが紫なら、系統：「獣憑」を持つ自分のスピリットすべてをBP+3000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X06.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X07",
+      "name": "偉大なるエイペラン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 3000,
+      "lv": 1,
+      "family": [
+        "水精"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のターン』〔重複不可・ターン1回〕自分の効果で、自分か相手のスピリットが疲労した時、ボイドからコア1個を自分のトラッシュに置ける。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のターン』【起動：フラッシュ】〔ターン1回〕自分のスピリット1体を疲労させる▶回復状態の相手のスピリット1体を、相手が指定する。それを疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X07.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 3000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 5000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X08",
+      "name": "三叉槍カリカオン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "海緑",
+        "渦人"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック中』【起動：フラッシュ】〔ターン1回〕【水流】を持つ自分のスピリット1体を疲労させる▶このバトル中、このスピリットに緑シンボル1つを追加する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕シンボル2つ以上の自分のスピリットがブロックされた時、コスト5以下の自分のスピリットすべてを回復できる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X08.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 9000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X09",
+      "name": "海神レヴィアクラン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 8000,
+      "lv": 1,
+      "family": [
+        "古蛟"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』〔ターン1回〕相手のスピリット1体を指定できる。それを疲労させる。その後、自分のスピリット1体を指定できる。それを回復させる。\t\t\t\t\t\t\t\t[Lv2]『自分のターン』〔ターン1回〕自分の効果で自分か相手のスピリットが疲労した時、疲労状態の相手のスピリット1体を指定できる。それを重疲労させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X09.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 8000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X10",
+      "name": "球凶ホワイトベアド",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "錬金"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『ブロック時』自分の手札が4枚以下なら、1枚ドローできる。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットのブロック時効果すべてはアタック時にも発揮する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X10.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X11",
+      "name": "光輝ペパーズティラノ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 6,
+      "costSymbols": {},
+      "bp": 6000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "幻影"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ』系統：「白妙」を持つ自分のスピリットが【増幅】を発揮した時、このバトル中、自分のスピリットすべてはそのBP以下の相手のスピリットからブロックされない。\t\t\t\t\t\t\t\t[Lv2]【増幅：白妙+1000】『アタック/ブロック中』【起動：フラッシュ】〔バトル1回〕1コスト支払う▶系統：「白妙」を持つ自分のスピリット1体につき、このバトル中、このスピリットをBP+1000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X11.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 6000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 8000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X12",
+      "name": "漂硝姫ファサリリ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "白妙",
+        "生硝"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『アタック時』BP4000以下の相手のスピリット1体を指定する。それをデッキの下に戻す。ブロック時効果を持つ自分のスピリット1体につき、指定するBPを+1000する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『ブロック時』〔ターン1回〕このスピリットを回復させる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X12.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 11000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X13",
+      "name": "操者マリネル",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 4000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "呪物"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『自分のアタックステップ開始時』コスト6以下の自分のスピリット1体を指定する。このターン中、それはBP比べで破壊されない。\t\t\t\t\t\t\t\t[Lv2]《真界放》『自分のアタックステップ』〔ターン1回〕自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、1枚ドローできる。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X13.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 4000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X14",
+      "name": "閃烈姫ソルジュレト",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "鬼哭"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』自分がターンの2回目以降のアタックをした時、アタックしたスピリットが系統：「鬼哭」/「呪物」を持つなら、相手のスピリット1体を指定する。このターン中、それをBP-4000する。その後、それがBP0ならデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック中』【起動：フラッシュ】〔ターン1回〕コスト6以下の自分のスピリット1体を手札に戻す▶このターン中、このスピリットに黄シンボル1つを追加する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X14.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X15",
+      "name": "百雷ガノトール",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "黄玉",
+        "唱廻",
+        "恐鱗"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "このカードを召喚する時、このターンに自分が黄のマジックカードを使用していたなら、軽減シンボルすべてを満たす。\t\t\t\t\t\t\t\t[Lv2]『アタック中』このスピリットのアタックによって相手のライフを減らした時、自分のトラッシュの系統：「黄玉」を持つマジックカード1枚を指定する。それを手札に戻す。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X15.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X16",
+      "name": "五煙吐息ガラージャ",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": 5000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "森威"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "[Lv1-2]『召喚時』自分のデッキの上から3枚をオープンできる。その中の系統：「青樹」を持つネクサスカードすべてを手札に加える。残りは好きな順でデッキの下に戻す。\t\t\t\t\t\t\t\t[Lv2]《真界放》『お互いのアタックステップ』〔ターン1回〕系統：「青樹」を持つ本来はネクサスの自分のスピリットが疲労した時、そのスピリットのコスト以下の相手のスピリット1体を指定できる。それを破壊する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X16.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 5000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 7000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X17",
+      "name": "極爪ギガスロス",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 7,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "凶獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『召喚時』1枚ドローする。その後、ドローしたカード1枚につき、自分の手札1枚を破棄する。この継召で除外したEXシンボル1つにつき、ドローの枚数を+1枚する。\t\t\t\t\t\t\t\t[Lv2]『アタック時』自分のスピリット1体を指定する。このターン中、それを最高Lvとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X17.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 3
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "26RBS02-X18",
+      "name": "蒼き獣牙ガオガザン",
+      "set": "26RBS02",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": 7000,
+      "lv": 1,
+      "family": [
+        "青樹",
+        "狩獣"
+      ],
+      "keywords": [],
+      "burst": null,
+      "text": "《継召》トラッシュのEXシンボルを除外し軽減できる。\t\t\t\t\t\t\t\t[Lv1-2]『自分のアタックステップ』このスピリットか、本来はネクサスの自分のスピリットがブロックされた時、コスト5以下の相手のスピリット1体を指定する。それを破壊する。\t\t\t\t\t\t\t\t[Lv2]《真界放》『アタック時』系統：「青樹」を持つ自分のネクサス2つまでを指定する。自分のフィールド/リザーブのコア1個以上をそれらに置き、このステップ中、それらはネクサスの効果を発揮せず、“①Lv1BP5000、③Lv2BP7000”のスピリットとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "X",
+      "image": "https://www.battlespirits.com/images/cardlist/26RBS02-X18.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": 7000,
+          "cores": 1
+        },
+        {
+          "lv": 2,
+          "bp": 10000,
+          "cores": 4
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS01-128",
+      "name": "カオスドロー",
+      "set": "BS01",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[メイン]相手の疲労状態のスピリット1体につき1枚、自分はデッキからカードをドローする。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+3000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS01-128.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 3,
+          "bp": null,
+          "cores": null
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "purple",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS01-145",
+      "name": "ディフェンシブオーラ",
+      "set": "BS01",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[フラッシュ]このターンの間、ブロックしている自分のスピリットすべてをBP+3000する",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS01-145.webp",
+      "bpLevels": [
+        {
+          "lv": 1,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 2,
+          "bp": null,
+          "cores": null
+        },
+        {
+          "lv": 3,
+          "bp": null,
+          "cores": null
+        }
+      ],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "white",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS03-121",
+      "name": "ダブルハート",
+      "set": "BS03",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[フラッシュ]このターンの間、スピリット1体に、そのスピリットが持つシンボルと同じ色のシンボル1つを追加する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-121.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "red",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS03-128",
+      "name": "マルチプルコア",
+      "set": "BS03",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[フラッシュ]ボイドから、疲労状態の自分のスピリット1体につき、コア1個を自分のリザーブに置く。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-128.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "green",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS03-135",
+      "name": "エスケープルート",
+      "set": "BS03",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[メイン]このターンの間、系統2つ以上を持つ自分のスピリットすべては、BPを比べ相手のスピリットに破壊されたとき手札に戻る。\t\t\t\t\t\t\t\t[フラッシュ]このターンの間、スピリット1体をBP+2000する。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-135.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "yellow",
+      "missingFields": [
+        "costSymbols"
+      ]
+    },
+    {
+      "id": "BS03-141",
+      "name": "ビルドアップ",
+      "set": "BS03",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costSymbols": {},
+      "bp": null,
+      "lv": 1,
+      "family": [],
+      "keywords": [],
+      "burst": null,
+      "text": "[フラッシュ]このターンの間、スピリット1体のLvを1つ上のものとして扱う。",
+      "contractCard": false,
+      "collab": false,
+      "collabSeries": null,
+      "rarity": "C",
+      "image": "https://www.battlespirits.com/images/cardlist/BS03-141.webp",
+      "bpLevels": [],
+      "blockIcon": "<A>",
+      "workIcon": null,
+      "costAlleviationColor": "blue",
+      "missingFields": [
+        "costSymbols"
+      ]
+    }
   ]
 }

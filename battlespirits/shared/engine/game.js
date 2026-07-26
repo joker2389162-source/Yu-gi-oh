@@ -193,10 +193,25 @@ export class Game {
     this.log.push({ type: 'attach-core', player: playerIdx, target: targetUid });
   }
 
+  // 官方真實機制「BP/コア」：卡片印刷面上直接記載多階段的「貼滿N個核心時BP
+  // 變成多少」門檻表（bpLevels），不是每貼1個核心固定+1000。只有貼到的核心數
+  // 達到某一階門檻，BP才會跳到那一階印的數值；沒有 bpLevels 資料的卡（目前
+  // 只有示範卡池）則維持舊有的簡化規則（每貼1核心+1000BP），維持向下相容。
+  // 附註：這個門檻表是否為「累計貼在這張卡上的核心數」，是從官方頁面實測資料
+  // 反推出來的最合理解讀，沒有對照過官方規則書逐字確認，之後如有官方規則
+  // 文字可再校正。
   effectiveBp(instance) {
     const card = this.db.getCard(instance.cardId);
+    const coreCount = instance.cores.length;
+    if (Array.isArray(card.bpLevels) && card.bpLevels.length > 0) {
+      let bp = card.bp || 0;
+      for (const level of card.bpLevels) {
+        if (level.bp !== null && coreCount >= level.cores) bp = level.bp;
+      }
+      return bp;
+    }
     const base = card.bp || 0;
-    return base + instance.cores.length * 1000;
+    return base + coreCount * 1000;
   }
 
   // ---- 召喚條件檢查（僅究極卡需要；一般精靈/據點沒有這道檢查） ----

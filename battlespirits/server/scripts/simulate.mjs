@@ -211,3 +211,28 @@ console.log('\n== 手動測試：U觸發（攻擊時棄對手牌庫頂並比較�
   console.log('同費用情境 pendingUTriggerResult:', g7.pendingUTriggerResult);
   if (g7.pendingUTriggerResult.hit) { console.error('同費用不應該算命中！'); process.exitCode = 1; }
 }
+
+console.log('\n== 手動測試：真實卡片的BP/コア貼核心升級（26RBS02-001，Lv1 2000/1核心、Lv2 3000/3核心）====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g8 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g8.start();
+  const p = g8._p(0);
+  const inst = { uid: 'lv-test', cardId: '26RBS02-001', cores: [], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['26RBS02-001'] };
+  p.field.push(inst);
+
+  const atCores = (n) => { inst.cores = Array(n).fill(1); return g8.effectiveBp(inst); };
+  const results = [0, 1, 2, 3, 4].map((n) => `${n}核心=${atCores(n)}`);
+  console.log('26RBS02-001 各核心數效BP:', results.join('、'));
+  if (atCores(0) !== 2000) { console.error('0核心應該是印刷值/Lv1的2000！'); process.exitCode = 1; }
+  if (atCores(2) !== 2000) { console.error('2核心還沒到Lv2門檻(3)，應該維持2000！'); process.exitCode = 1; }
+  if (atCores(3) !== 3000) { console.error('3核心應該達到Lv2門檻，變成3000！'); process.exitCode = 1; }
+  if (atCores(4) !== 3000) { console.error('超過Lv2門檻應該維持最高一階的3000！'); process.exitCode = 1; }
+
+  // 示範卡沒有 bpLevels，應該維持舊有的「每貼1核心+1000BP」簡化規則
+  const demoInst = { uid: 'demo-test', cardId: 'DEMO-001', cores: [1, 1], summonedTurn: 0, blockedThisTurn: false, attackedThisTurn: false, awakened: false, kourinStack: ['DEMO-001'] };
+  p.field.push(demoInst);
+  const demoBp = g8.effectiveBp(demoInst);
+  console.log('示範卡 DEMO-001 貼2核心 BP=', demoBp, '（應為 1000+2000=3000）');
+  if (demoBp !== 3000) { console.error('示範卡的簡化規則不應該被真實卡的bpLevels邏輯影響！'); process.exitCode = 1; }
+}
