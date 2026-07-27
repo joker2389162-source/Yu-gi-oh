@@ -26,6 +26,35 @@
    ```
    `shared/data/official-reference.json` 是另一份系列/商品層級的真實參考資料（283筆真實系列/
    商品代碼與名稱、342個真實系統/家族名稱、真實稀有度代碼等）。
+
+   **目前收錄進度**：
+   - 已完整併入 `cards.json`（可直接對戰）：`26RBS02`（117張）。
+   - 已收錄基本清單、**還缺 bp/效果文字/卡圖**（需要在自己電腦上跑
+     `scrape-card-detail.mjs` 才能併入）：`26RBS01`（創世の鼓動，144張）、`BS76`
+     （エターナルブースター 永皇の輝き，117張，含10張ブレイヴ/type='brave'、3張
+     契約ネクサス）、`26RCB01`（コラボブースター 仮面ライダー 運命の戦線，78張）、
+     `26RSD07`（コラボスターター 仮面ライダー AGENT OF DREAM，16張）、`PROMO`
+     （橫跨200多個商品代碼的促銷卡綜合卡池，1262張，已排除跟其他系列重複的
+     card_no，含66張真實究極卡與98張ブレイヴ——是目前唯一收錄到的真實究極卡
+     資料）。要補齊這5份，在自己電腦上依序跑：
+     ```bash
+     cd battlespirits/tools
+     npm install
+     node scrape-card-detail.mjs 26RBS01
+     node scrape-card-detail.mjs BS76
+     node scrape-card-detail.mjs 26RCB01
+     node scrape-card-detail.mjs 26RSD07
+     node scrape-card-detail.mjs PROMO   # 1262張，抓完大約要8~9分鐘（每張間隔0.4秒禮貌延遲）
+     ```
+     每份跑完把更新後的 `shared/data/real/<代碼>.json` 傳回來，我再用
+     `merge-real-set.mjs` 併進 `cards.json`。
+   - 新發現的官方真實資料：「軽減コスト」欄位其實連圖示張數都能算出來
+     （`costAlleviationCount`），不是只有顏色，`_costAlleviationAmount()`
+     已經改用真實張數計算折抵上限（沒有這份資料的卡，含 `26RBS02` 跟示範卡池，
+     還是先假設固定折抵1點）。另外真實卡片還發現兩種本引擎完全沒實作規則的
+     卡片種類：**ブレイヴ（Brave，`type:'brave'`）**與**トークンスピリット
+     （效果生成的代用靈魂卡，`token:true`，不可放入卡組）**，資料已如實收錄，
+     規則之後再補。
 2. **官方規則書已核對過，先前的錯誤假設與已知落差都已修正**（使用者提供了《總合規則》
    《地板規則》《官方規則手冊[STANDARD]》《官方規則手冊[ETERNAL]》四份PDF，2026-07-26 核對，
    同一批次校正）：

@@ -1,5 +1,5 @@
 {
-  "_readme": "系列(彈)清單，用來判斷標準賽輪替合法性。此檔案為資料驅動設計：新增新彈只要加一筆物件即可，不用改引擎程式碼。releaseDate/standardFrom 等日期請對照官方最新公告校正 —— 目前環境無法直接爬取 battlespirits.com，此處僅先建立結構與少量示範資料。下方 real_* 開頭的條目是使用者提供官方頁面存檔後，2026-07-23 加入的『真實』系列代碼/名稱（見 official-reference.json 有完整283筆清單），但目前底下還沒有任何卡片資料指向它們（還沒有拿到個別卡片的數值/效果文字），standardLegal/collab 等欄位是依代碼命名規律（26R開頭=2026年新彈）與官方繁中站新聞內容推斷，不是逐字對照官方規則手冊，請之後校正。",
+  "_readme": "系列(彈)清單，用來判斷標準賽輪替合法性。此檔案為資料驅動設計：新增新彈只要加一筆物件即可，不用改引擎程式碼。code 欄位一律用官方原始代碼（不加 real_ 前綴），因為要跟 cards.json 裡每張卡的 set 欄位對得上（isCardLegal 用 card.set 去查這裡的 code）。releaseDate 等日期請對照官方最新公告校正。standardLegal/collab 等欄位是依代碼命名規律（26R開頭=2026年新彈）與官方繁中站新聞內容推斷，還沒卡片資料的條目（note裡寫「尚無卡片資料」的）尤其還沒校正過，之後有真實卡片資料進來時請一併確認。已有真實卡片資料的系列（見各條目 note）流程都是：官方列表頁存檔解析出基本清單 → tools/scrape-card-detail.mjs（使用者自己電腦跑）補齊 bp/text/image/blockIcon → tools/merge-real-set.mjs 併入 shared/data/cards.json。",
   "sets": [
     {
       "code": "DEMO-SET",
@@ -17,17 +17,18 @@
       "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）"
     },
     { "code": "26RBS02", "name": "幻惑の翔風", "releaseDate": "2026-06-01", "standardLegal": true, "collab": false, "note": "真實官方彈；117張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；仍缺 costSymbols（顏色符號需求，官方頁面用圖示顯示，尚未解析），目前引擎本身也還沒有實際檢查這個欄位（只在畫面上顯示），不影響對戰" },
-    { "code": "real_26RBS01", "name": "創世の鼓動", "releaseDate": "2026-04-01", "standardLegal": true, "collab": false, "note": "真實官方彈代碼/名稱，尚無卡片資料" },
-    { "code": "real_BS76", "name": "エターナルブースター 永皇の輝き", "releaseDate": "2026-05-01", "standardLegal": false, "collab": false, "note": "真實官方彈；名稱本身標明是 Eternal 用補充包（非 Standard），尚無卡片資料" },
-    { "code": "real_26RSD07", "name": "コラボスターター 仮面ライダー AGENT OF DREAM", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RCB01", "name": "コラボブースター 仮面ライダー 運命の戦線", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD06", "name": "バトスピエントリーデッキ 蒼淵ノ凶獣", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD05", "name": "バトスピエントリーデッキ 煌陽ノ雷竜", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD04", "name": "バトスピエントリーデッキ 白命ノ鉱人", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD03", "name": "バトスピエントリーデッキ 翆海ノ甲魚", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD02", "name": "バトスピエントリーデッキ 紫幻ノ血醒", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_26RSD01", "name": "バトスピエントリーデッキ 赫焔ノ風牙", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
-    { "code": "real_BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" }
+    { "code": "26RBS01", "name": "創世の鼓動", "releaseDate": "2026-04-01", "standardLegal": true, "collab": false, "note": "真實官方彈；144張卡片清單（card_no/稀有度/卡名/費用/屬性/種類/家族/軽減コスト）已收錄於 shared/data/real/26RBS01.json，尚缺 bp/效果文字/卡圖/blockIcon，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入" },
+    { "code": "BS76", "name": "エターナルブースター 永皇の輝き", "releaseDate": "2026-05-01", "standardLegal": false, "collab": false, "note": "真實官方彈；名稱本身標明是Eternal用補充包（非Standard，且117張卡都沒有blockIcon資料的話會自動判定成Eternal限定，符合預期）。117張卡片清單已收錄於 shared/data/real/BS76.json（含10張ブレイヴ/브레이브type='brave'、3張契約ネクサスtype='nexus'+contractCard=true，這兩種真實卡片種類引擎目前都還沒有實際規則支援，只先如實記錄資料），尚缺 bp/效果文字/卡圖，流程同上" },
+    { "code": "26RSD07", "name": "コラボスターター 仮面ライダー AGENT OF DREAM", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；16張卡片清單已收錄於 shared/data/real/26RSD07.json，尚缺 bp/效果文字/卡圖，流程同上" },
+    { "code": "26RCB01", "name": "コラボブースター 仮面ライダー 運命の戦線", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；78張卡片清單已收錄於 shared/data/real/26RCB01.json，尚缺 bp/效果文字/卡圖，流程同上" },
+    { "code": "PROMO", "name": "促銷卡（プロモーションカード）綜合卡池", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單（已排除跟其他已收錄系列重複的card_no）已收錄於 shared/data/real/PROMO.json，含66張真實究極卡(type=ultimate)和98張ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷要看每張卡各自的 blockIcon，等 scrape-card-detail.mjs 補齊後才有意義）；沒有對應 sets.json 條目的促銷卡，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。" },
+    { "code": "26RSD06", "name": "バトスピエントリーデッキ 蒼淵ノ凶獣", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "26RSD05", "name": "バトスピエントリーデッキ 煌陽ノ雷竜", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "26RSD04", "name": "バトスピエントリーデッキ 白命ノ鉱人", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "26RSD03", "name": "バトスピエントリーデッキ 翆海ノ甲魚", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "26RSD02", "name": "バトスピエントリーデッキ 紫幻ノ血醒", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "26RSD01", "name": "バトスピエントリーデッキ 赫焔ノ風牙", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組（エントリーデッキ）代碼/名稱，尚無卡片資料" },
+    { "code": "BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" }
   ],
   "standardRotation": {
     "_note": "已對照官方規則手冊校正：標準賽合法性真正的判斷依據是卡片印刷面的「區塊圖示」（見 cards.json 的 blockIcon 欄位）—— 區塊圖示是英文字母的卡片，才能在標準賽使用，且必須落在該字母對應的官方公告輪替期間內；區塊圖示是數字或沒有區塊圖示的卡片，只能在永恆賽使用。目前唯一公告的期間是「A」：2026/4/1～2027/3/31（《官方規則手冊[STANDARD]》第7頁）。blockWindows 之後有新一期公告（例如「B」）時，直接在這裡新增一筆即可，不用改程式碼。cutoffDate／舊有的「依系列發售日期」判斷，只在卡片沒有 blockIcon 資料時（目前僅示範卡池 DEMO-SET/DEMO-COLLAB-01）當作退回用的簡化規則，等示範卡池也補上 blockIcon 後可以整個移除。",

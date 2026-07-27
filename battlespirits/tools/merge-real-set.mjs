@@ -37,8 +37,13 @@ let updated = 0;
 let skippedIncomplete = 0;
 
 for (const rc of real.cards) {
-  if (rc.bp === null && (rc.type === 'spirit' || rc.type === 'ultimate')) {
-    // 精靈/究極卡沒有BP是資料還沒抓完整，不能拿來對戰，先跳過不併入。
+  if (rc.bp === null && ['spirit', 'ultimate', 'brave'].includes(rc.type)) {
+    // 精靈/究極/ブレイヴ卡沒有BP是資料還沒抓完整，不能拿來對戰，先跳過不併入。
+    skippedIncomplete++;
+    continue;
+  }
+  if (rc.cost === null || typeof rc.cost !== 'number') {
+    // 費用欄位不是數字（列表頁解析時原樣保留的異常值），資料不完整先跳過。
     skippedIncomplete++;
     continue;
   }
@@ -59,7 +64,8 @@ for (const rc of real.cards) {
     keywords: [],
     burst: null,
     text: rc.text,
-    contractCard: false,
+    contractCard: rc.contractCard || false,
+    token: rc.token || false,
     collab: false,
     collabSeries: null,
     rarity: rc.rarity,
@@ -68,6 +74,7 @@ for (const rc of real.cards) {
     blockIcon: rc.blockIcon || null,
     workIcon: rc.workIcon || null,
     costAlleviationColor: rc.costAlleviationColor || null,
+    costAlleviationCount: rc.costAlleviationCount || 0,
     missingFields,
   };
 

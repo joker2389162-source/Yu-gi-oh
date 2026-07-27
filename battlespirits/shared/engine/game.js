@@ -20,8 +20,11 @@ import { RULES, TURN_STEPS } from './rules.js';
 //     「每貼1核心+1000BP、無最低需求」的舊版簡化規則，向下相容。
 //   - 軽減コスト（費用減免）：自己場上如果有跟卡片「減輕標誌」同色的標誌，
 //     召喚/配置/使用費用會強制折抵（不能選擇不折抵），見 _costAlleviationAmount。
-//     目前資料只記錄減輕標誌的顏色，沒有記錄實際張數，先固定折抵1點；
-//     「6色任一色」／「究極」專用／「神」專用這幾種特殊減輕標誌還沒有對應資料，
+//     26RBS01/BS76/26RCB01/26RSD07/PROMO 這批資料連減輕標誌的實際張數
+//     （costAlleviationCount）都抓到了，折抵上限會用這個真實數字；沒有這份
+//     資料的卡（含目前已併入的26RBS02，當初抓取時還沒發現這個欄位，以及
+//     示範卡池）先固定折抵1點。「6色任一色」／「究極」專用／「神」專用這幾種
+//     特殊減輕標誌還沒有對應資料，
 //     暫不支援。
 //   - 轉醒（Awakening）：卡片有「轉醒前」「轉醒後」兩個面，事件觸發時自動翻面，
 //     翻面不需額外付費（見 card.awakening = { condition, afterId }）。官方規則
@@ -349,19 +352,21 @@ export class Game {
 
   // 官方「軽減コスト」機制：自己場上如果有跟這張卡「減輕標誌」同色的標誌，
   // 就能折抵費用，折抵到不能超額支付；規則明講「若可減輕費用，則必須進行
-  // 減輕」（強制，不能選擇不減）。
-  // 附註：目前抓到的官方卡片資料只記錄了減輕標誌的顏色（costAlleviationColor），
-  // 沒有記錄實際張數，這裡先假設固定可折抵1點；「6色任一色」／「究極」專用／
-  // 「神」專用這幾種特殊減輕標誌也還沒有對應資料可以分辨，暫不支援，之後補到
-  // 資料再擴充。
+  // 減輕」（強制，不能選擇不減）。可折抵的上限是這張卡印刷的減輕標誌張數
+  // （costAlleviationCount，從列表頁圖示數量算出的真實資料），受限於自己
+  // 場上目前有幾張同色的卡（近似「場上同色標誌數量」，用「場上該色卡片數」
+  // 當代理值，實際規則的「標誌」是否恰好等於卡片顏色數尚未逐字確認）。
+  // 附註：「6色任一色」／「究極」專用／「神」專用這幾種特殊減輕標誌還沒有
+  // 對應資料可以分辨，暫不支援，之後補到資料再擴充。
   _costAlleviationAmount(playerIdx, card) {
     if (!card.costAlleviationColor) return 0;
     const p = this._p(playerIdx);
-    const hasStamp = p.field.some((inst) => {
+    const matchingFieldCount = p.field.filter((inst) => {
       const c = this.db.getCard(inst.cardId);
       return (c.colors || []).includes(card.costAlleviationColor);
-    });
-    return hasStamp ? 1 : 0;
+    }).length;
+    const cardLimit = card.costAlleviationCount || 1; // 沒有張數資料的卡（示範卡池）先假設1點
+    return Math.min(matchingFieldCount, cardLimit);
   }
 
   // ---- 主要步驟：從手牌打出卡片 ----
