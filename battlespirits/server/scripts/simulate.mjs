@@ -314,3 +314,19 @@ console.log('\n== 手動測試：契約卡因對手效果離場時變成「魂�
   if (p0.cardTrash.includes('DEMO-014')) { console.error('契約卡因對手效果離場，不應該進棄卻區，應該變成魂狀態！'); process.exitCode = 1; }
   if (!p0.soulStateZone.some((s) => s.cardId === 'DEMO-014')) { console.error('契約卡應該出現在魂狀態區！'); process.exitCode = 1; }
 }
+
+console.log('\n== 手動測試：真實究極卡（BS34-CP07）召喚時自動放置能量達到最低Lv3 ====');
+{
+  const deckAdv = startersData.starters.find((s) => s.id === 'STARTER-ADVANCED');
+  const g12 = new Game([deckAdv, startersData.starters.find((s) => s.id === 'STARTER-A')], db);
+  g12.start();
+  const p = g12._p(0);
+  p.reserve = 30;
+  p.hand.unshift('BS34-CP07'); // cost 8, bpLevels: Lv1(1核心/12000) Lv2(3核心/18000) Lv3(5核心/25000)
+  const reserveBefore = p.reserve;
+  const inst = g12.playCard(0, 0);
+  console.log(`召喚 BS34-CP07：核心數=${inst.cores.length}、BP=${g12.effectiveBp(inst)}、花費預備核心=${reserveBefore - p.reserve}`);
+  if (inst.cores.length !== 5) { console.error('究極卡最低Lv3，應該自動放置5點能量！'); process.exitCode = 1; }
+  if (g12.effectiveBp(inst) !== 25000) { console.error('Lv3的BP應該是25000！'); process.exitCode = 1; }
+  if (reserveBefore - p.reserve !== 13) { console.error('應該花費 費用8+最低能量5=13 點預備核心！'); process.exitCode = 1; }
+}
