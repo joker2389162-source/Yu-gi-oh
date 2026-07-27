@@ -32,7 +32,11 @@
     { "code": "PB48", "name": "バトルスピリッツ プレミアムフルールBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），18張卡片清單（已排除跟其他已收錄系列重複的card_no）收錄於 shared/data/real/PB48.json，standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明），沒有對應sets.json條目的商品代碼在標準賽會直接判不合法、永恆賽正常可用" },
     { "code": "PB47", "name": "バトルスピリッツ プレミアムブレイヴBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，5張卡片清單（已排除重複）收錄於 shared/data/real/PB47.json，性質同PB48" },
     { "code": "BSC51", "name": "ディーバブースター メモリアルレコード", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，87張卡片清單（已排除重複）收錄於 shared/data/real/BSC51.json，性質同PB48" },
-    { "code": "BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" }
+    { "code": "BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" },
+    { "code": "PB46", "name": "バトルスピリッツ コラボスターターセット 仮面ライダー 時刻の特異点", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），20張卡片清單（已排除重複card_no）收錄於 shared/data/real/PB46.json，standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明）" },
+    { "code": "PB45", "name": "バトルスピリッツ ディーバ総選挙BOX 2025", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，11張卡片清單（已排除重複）收錄於 shared/data/real/PB45.json，性質同PB46" },
+    { "code": "BSC50", "name": "アニメブースター RESONATING STARS", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，73張卡片清單（已排除重複）收錄於 shared/data/real/BSC50.json，性質同PB46" },
+    { "code": "PB44", "name": "バトルスピリッツ コラボスターターセット アイカツ！ アツいアイドル活動！", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "アイカツ！（真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，22張卡片清單（已排除重複）收錄於 shared/data/real/PB44.json，性質同PB46" }
   ],
   "standardRotation": {
     "_note": "已對照官方規則手冊校正：標準賽合法性真正的判斷依據是卡片印刷面的「區塊圖示」（見 cards.json 的 blockIcon 欄位）—— 區塊圖示是英文字母的卡片，才能在標準賽使用，且必須落在該字母對應的官方公告輪替期間內；區塊圖示是數字或沒有區塊圖示的卡片，只能在永恆賽使用。目前唯一公告的期間是「A」：2026/4/1～2027/3/31（《官方規則手冊[STANDARD]》第7頁）。blockWindows 之後有新一期公告（例如「B」）時，直接在這裡新增一筆即可，不用改程式碼。cutoffDate／舊有的「依系列發售日期」判斷，只在卡片沒有 blockIcon 資料時（目前僅示範卡池 DEMO-SET/DEMO-COLLAB-01）當作退回用的簡化規則，等示範卡池也補上 blockIcon 後可以整個移除。",
