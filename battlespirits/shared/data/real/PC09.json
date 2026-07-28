@@ -1,0 +1,226 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 バトスピプレミアムカードセット アイカツ！ ルミナス＆トライスター（PC09））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 バトスピプレミアムカードセット アイカツ！ ルミナス＆トライスター（PC09））",
+  "setCode": "PC09",
+  "setName": "バトスピプレミアムカードセット アイカツ！ ルミナス＆トライスター",
+  "cardCount": 8,
+  "typeCounts": {
+    "spirit": 6,
+    "nexus": 1,
+    "magic": 1
+  },
+  "cards": [
+    {
+      "id": "PC09-001",
+      "name": "[マジカルグリーンコーデ]一ノ瀬かえで",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-002",
+      "name": "[マジカルパープルコーデ]神崎美月",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-003",
+      "name": "[マジカルネイビーコーデ]藤堂ユリカ",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-004",
+      "name": "いつでも熱く、アイカツ！",
+      "set": "PC09",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星麗"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-005",
+      "name": "TRAVEL RIBBON",
+      "set": "PC09",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "星麗"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-X01",
+      "name": "[ライラックイルミネイトコーデ]氷上スミレ",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-X02",
+      "name": "[アルメリアイルミネイトコーデ]大空あかり",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC09-X03",
+      "name": "[マーガレットイルミネイトコーデ]新条ひなき",
+      "set": "PC09",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星麗",
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}
