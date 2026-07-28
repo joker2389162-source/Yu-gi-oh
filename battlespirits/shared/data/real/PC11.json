@@ -1,0 +1,232 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 バトスピプレミアムカードセット ゴジラ対エヴァンゲリオン（PC11））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 バトスピプレミアムカードセット ゴジラ対エヴァンゲリオン（PC11））",
+  "setCode": "PC11",
+  "setName": "バトスピプレミアムカードセット ゴジラ対エヴァンゲリオン",
+  "cardCount": 8,
+  "typeCounts": {
+    "spirit": 8
+  },
+  "cards": [
+    {
+      "id": "PC11-001",
+      "name": "ジェットジャガー -ver.JA02-",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "機人",
+        "WILLE"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-002",
+      "name": "3式機龍 -エヴァンゲリオン 試験初号機仕様-",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "white",
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "機獣",
+        "造兵",
+        "NERV"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-003",
+      "name": "3式機龍〈改〉 高機動型 -エヴァンゲリオン 正規実用型 2号機仕様-",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "white",
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "機獣",
+        "造兵",
+        "NERV"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-004",
+      "name": "第4の使徒＆サイボーグ怪獣ガイガン",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "blue",
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "使徒",
+        "星竜",
+        "機獣"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-005",
+      "name": "第6の使徒＆超翔竜メガギラス",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "blue",
+        "green"
+      ],
+      "cost": 7,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "使徒",
+        "怪虫"
+      ],
+      "rarity": "PC",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-X01",
+      "name": "エヴァンゲリオン2号機 ビースト“G”モード",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "造兵",
+        "古竜",
+        "NERV"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-X02",
+      "name": "使徒の王 キングギドラ",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "星竜",
+        "使徒"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "PC11-X03",
+      "name": "エヴァンゲリオン初号機“G”覚醒形態",
+      "set": "PC11",
+      "type": "spirit",
+      "colors": [
+        "purple",
+        "red"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "造兵",
+        "地竜",
+        "NERV"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}
