@@ -1,0 +1,2690 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 転醒編 第3章 紫電一閃（BS54））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 転醒編 第3章 紫電一閃（BS54））",
+  "setCode": "BS54",
+  "setName": "転醒編 第3章 紫電一閃",
+  "cardCount": 103,
+  "typeCounts": {
+    "spirit": 79,
+    "nexus": 9,
+    "magic": 14,
+    "brave": 1
+  },
+  "cards": [
+    {
+      "id": "BS54-001",
+      "name": "ヨウガントビウオ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "溶魚"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-002",
+      "name": "雷の四天王ドラゴン・ザ・ツナ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-003",
+      "name": "ドラグノ魔石強化兵",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-004",
+      "name": "ブレーノドサウルス",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "地竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-005",
+      "name": "ランスアノール",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "爬獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-006",
+      "name": "ドラグノ総軍団長",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-007",
+      "name": "風龍フェブラーニカ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "翼竜"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-008",
+      "name": "ドラグノ攻城兵",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-009",
+      "name": "雷の四天王サカターノ・ベア",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "覇皇",
+        "皇獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-010",
+      "name": "雷の覇王ライコウ・ドラゴン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "覇皇",
+        "竜人"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-011",
+      "name": "ミストモンキー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "霊獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-012",
+      "name": "魔法少女ドール♰パナシェ♰",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "界渡",
+        "呪鬼"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-013",
+      "name": "魔石の竜騎士ザクソン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-014",
+      "name": "竜騎士ウルリッヒ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "魔影"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-015",
+      "name": "ノーリッジスネーク",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "妖蛇"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-016",
+      "name": "竜騎士長ジャンヴァルジャン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "魔影"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-017",
+      "name": "紅の公爵エル・フォリオ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "夜族"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-018",
+      "name": "天空の竜騎士スクライヴァー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "魔影"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-019",
+      "name": "ガスノーベア",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "霊獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-020",
+      "name": "重竜騎士アダムス",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-021",
+      "name": "ウィンゼル",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "剣獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-022",
+      "name": "ジグソーカミキリ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "刃虫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-023",
+      "name": "西の大樹ワーズワース",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-024",
+      "name": "ラフレシアン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-025",
+      "name": "魔石の樹婦人アイビィエッタ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-026",
+      "name": "甲殻騎士ポルテリー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天渡",
+        "殻人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-027",
+      "name": "守護樹ボタニカイザー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-028",
+      "name": "甲蛾上忍ルリチュウレンジ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "忍風",
+        "殻人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-029",
+      "name": "大樹獣カルマ・カラマ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-030",
+      "name": "黒き刃のジャガーディウス",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "剣獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-031",
+      "name": "涙戦ティアドロッパー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "動器"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-032",
+      "name": "零華の姫君ミロスラーヴァ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "氷姫"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-033",
+      "name": "魔石の守護者レナータ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "氷姫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-034",
+      "name": "スパイクテールリザード",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "甲竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-035",
+      "name": "スノーフレークサーベル",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "機獣"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-036",
+      "name": "ワルキューレ・スリマ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "機人",
+        "氷姫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-037",
+      "name": "恐竜機プテラソニック",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "機獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-038",
+      "name": "エグザード・ギア",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "武装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-039",
+      "name": "氷騎士グラフィーラ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "氷姫"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-040",
+      "name": "氷空の要塞亀オーサ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "巨獣",
+        "甲獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-041",
+      "name": "アルカナパラディン・スペキュレート",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 1,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "起幻",
+        "四道"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-042",
+      "name": "マカロンロン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 1,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "起幻",
+        "菓族"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-043",
+      "name": "ピム",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "小玩"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-044",
+      "name": "魔石の堕天使キアーヴェル",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天霊",
+        "導魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-045",
+      "name": "コブラン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "想獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-046",
+      "name": "天使ミニエル",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天霊"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-047",
+      "name": "魔術竜ヤクルス",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "想獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-048",
+      "name": "古の魔女エルフィーリア",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "導魔"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-049",
+      "name": "センティコア",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "想獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-050",
+      "name": "堕天使モノクレール",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天霊",
+        "導魔"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-051",
+      "name": "時計職人クロロクロロ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "創手"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-052",
+      "name": "WBS魔石レスラー イシャン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-053",
+      "name": "異海人ダイグソク",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "異合"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-054",
+      "name": "WBS青のカリスマ アニク",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "闘神"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-055",
+      "name": "異海人シーホース",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "異合"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-056",
+      "name": "WBSレジェンドレスラー オーガン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-057",
+      "name": "大空の剣士ジャスティ・イーグル",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "獣頭"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-058",
+      "name": "クロム・ゴレム",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "造兵"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-059",
+      "name": "爆獣デトロイド・バイソン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "爆蒼"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-060",
+      "name": "WBSレスラー クトゥルー・ザ・ベイダー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "闘神"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-061",
+      "name": "竜人の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-062",
+      "name": "竜騎士の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-063",
+      "name": "樹魔の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-064",
+      "name": "氷姫の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-065",
+      "name": "導魔の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-066",
+      "name": "闘神の創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-067",
+      "name": "イラプションドロー",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-068",
+      "name": "シックスブレイズ",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-069",
+      "name": "リターンズドラグーン",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-070",
+      "name": "デスアタラクシア",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-071",
+      "name": "グロウスブースター",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-072",
+      "name": "真空爪破斬",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-073",
+      "name": "リインフォースメント",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-074",
+      "name": "フリージングピラー",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-075",
+      "name": "トゥインクルベール",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-076",
+      "name": "リセットスフィア",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 12,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-077",
+      "name": "ウェーブスマッシュ",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-078",
+      "name": "ビーストレイン",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV001",
+      "name": "ドラグノ暗殺者",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV002",
+      "name": "ドラグノ突撃兵",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV003",
+      "name": "ガブノハシ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV004",
+      "name": "六花の司書長サーガ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "氷姫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV005",
+      "name": "氷剣使モリガン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "起幻",
+        "剣使",
+        "氷姫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-RV006",
+      "name": "天使プリマ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天霊"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TCP01",
+      "name": "ヘラ・パスト",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "界渡",
+        "呪鬼"
+      ],
+      "rarity": "CP",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TCP02",
+      "name": "アレス・パスト",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "起幻",
+        "天渡",
+        "殻人"
+      ],
+      "rarity": "CP",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TCP03",
+      "name": "デメテール・パスト",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "導魔"
+      ],
+      "rarity": "CP",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TX01",
+      "name": "聖龍帝の大創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "red",
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TX02",
+      "name": "魔術皇の大創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "purple",
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TX03",
+      "name": "凶虎王の大創界石",
+      "set": "BS54",
+      "type": "nexus",
+      "colors": [
+        "green",
+        "white"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "創界石",
+        "起幻"
+      ],
+      "rarity": "転醒X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-TX04",
+      "name": "シーズグローリー",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "転醒X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X01",
+      "name": "ドラグノ王",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "竜人"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X02",
+      "name": "無限機導ヴェルゲン・ツァイト",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "時冠"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X03",
+      "name": "蛇皇龍ガルメジャード",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "醒皇",
+        "妖蛇"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X04",
+      "name": "神樹鳥ボタニカルフェニックス",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X05",
+      "name": "氷神姫フリージアム",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "醒皇",
+        "氷姫"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X06",
+      "name": "約束の魔女エルネーゼ",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "醒皇",
+        "導魔"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X07",
+      "name": "WBS初代王者ザ・ビースト",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "闘神"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X08",
+      "name": "真・炎魔神",
+      "set": "BS54",
+      "type": "brave",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "異魔神",
+        "起幻",
+        "機竜"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-X09",
+      "name": "零ノ障壁",
+      "set": "BS54",
+      "type": "magic",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-XX01",
+      "name": "三天神デイブレイカー",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "起幻",
+        "三天神"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-XX02",
+      "name": "三天神ヌーンタイド",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "起幻",
+        "三天神"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS54-XX03",
+      "name": "三天神サン・ダウン",
+      "set": "BS54",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "起幻",
+        "三天神"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}

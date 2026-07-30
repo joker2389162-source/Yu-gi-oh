@@ -1,0 +1,449 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 メガデッキ 魔王災誕（SD57））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 メガデッキ 魔王災誕（SD57））",
+  "setCode": "SD57",
+  "setName": "メガデッキ 魔王災誕",
+  "cardCount": 16,
+  "typeCounts": {
+    "spirit": 12,
+    "brave": 1,
+    "nexus": 1,
+    "magic": 2
+  },
+  "cards": [
+    {
+      "id": "BS34-XX02",
+      "name": "天魔王ゴッド・ゼクス　-破ノ型-",
+      "set": "BS34",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 10,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "天魔王"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD32-001",
+      "name": "さまよう甲冑",
+      "set": "SD32",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD32-002",
+      "name": "イチバンスピアー",
+      "set": "SD32",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "機巧",
+        "武装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD32-X02",
+      "name": "天魔王ゴッド・ゼクス",
+      "set": "SD32",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "天魔王"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-001",
+      "name": "ロクテンヘイ",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-002",
+      "name": "ロクテンハヤブサ",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起幻",
+        "樹魔",
+        "霊獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-003",
+      "name": "ロクテンヘッド",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-004",
+      "name": "ロクテン・コンジュラー",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-005",
+      "name": "天魔王ウェポンズ",
+      "set": "SD57",
+      "type": "brave",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "剣刃"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-006",
+      "name": "オワリノ世界",
+      "set": "SD57",
+      "type": "nexus",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "起幻"
+      ],
+      "rarity": "転醒R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-RV002",
+      "name": "犀ボーグ",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "機獣",
+        "皇獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-RV003",
+      "name": "ギュウキ",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "妖戒",
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-RV004",
+      "name": "天魔王降臨",
+      "set": "SD57",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-RV005",
+      "name": "魔王刃",
+      "set": "SD57",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-TX01",
+      "name": "天魔王ゴッド・ゼクス　-地ノ型-",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "天魔王"
+      ],
+      "rarity": "転醒X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD57-X01",
+      "name": "クィーン・お市",
+      "set": "SD57",
+      "type": "spirit",
+      "colors": [
+        "purple",
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "起幻",
+        "機巧",
+        "魔影"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}
