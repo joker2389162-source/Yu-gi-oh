@@ -16,105 +16,794 @@
       "collab": true,
       "collabSeries": "DEMO-COLLAB：銀河守護隊（虛構示範用IP，非真實作品）"
     },
-    { "code": "26RBS02", "name": "幻惑の翔風", "releaseDate": "2026-06-01", "standardLegal": true, "collab": false, "note": "真實官方彈；117張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；仍缺 costSymbols（顏色符號需求，官方頁面用圖示顯示，尚未解析），目前引擎本身也還沒有實際檢查這個欄位（只在畫面上顯示），不影響對戰" },
-    { "code": "26RBS01", "name": "創世の鼓動", "releaseDate": "2026-04-01", "standardLegal": true, "collab": false, "note": "真實官方彈；144張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>，跟真正的官方判定結果一致（標準賽合法）" },
-    { "code": "BS76", "name": "エターナルブースター 永皇の輝き", "releaseDate": "2026-05-01", "standardLegal": false, "collab": false, "note": "真實官方彈；117張卡片已完整併入 shared/data/cards.json（含10張ブレイヴ type='brave'、3張契約ネクサス type='nexus'+contractCard=true，這兩種真實卡片種類引擎目前都還沒有實際規則支援，只先如實記錄資料）。實測blockIcon皆為<13>（數字，不是英文字母），isCardLegal 已正確判定為僅永恆賽可用，驗證過能組出合法的40張永恆賽牌組，印證了標準賽/永恆賽用blockIcon判定（而非系列發售日期）這件事" },
-    { "code": "26RSD07", "name": "コラボスターター 仮面ライダー AGENT OF DREAM", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>" },
-    { "code": "26RCB01", "name": "コラボブースター 仮面ライダー 運命の戦線", "releaseDate": "2026-06-01", "standardLegal": true, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；78張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>" },
-    { "code": "PROMO", "name": "促銷卡（プロモーションカード）綜合卡池", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。" },
-    { "code": "26RSD06", "name": "バトスピエントリーデッキ 蒼淵ノ凶獣", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組" },
-    { "code": "26RSD05", "name": "バトスピエントリーデッキ 煌陽ノ雷竜", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組" },
-    { "code": "26RSD04", "name": "バトスピエントリーデッキ 白命ノ鉱人", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組" },
-    { "code": "26RSD03", "name": "バトスピエントリーデッキ 翆海ノ甲魚", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組" },
-    { "code": "26RSD02", "name": "バトスピエントリーデッキ 紫幻ノ血醒", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組" },
-    { "code": "26RSD01", "name": "バトスピエントリーデッキ 赫焔ノ風牙", "releaseDate": "2026-03-01", "standardLegal": true, "collab": false, "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json（7組現行預組全部收錄完畢），對戰引擎可直接使用，blockIcon皆為<A>" },
-    { "code": "BS75", "name": "契約編:環 第4章 英雄傑集", "releaseDate": "2026-04-01", "standardLegal": true, "collab": false, "note": "真實官方彈，其他已收錄卡片的規則問答裡有提到這彈「2026年4月より導入されるゲームフォーマットの「スタンダード」でも使えるカードです」，確認是標準賽可用的現行彈。114張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，blockIcon皆為<A>" },
-    { "code": "PB48", "name": "バトルスピリッツ プレミアムフルールBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），18張卡片已完整併入 shared/data/cards.json（已排除跟其他已收錄系列重複的card_no），standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明），沒有對應sets.json條目的商品代碼在標準賽會直接判不合法、永恆賽正常可用" },
-    { "code": "PB47", "name": "バトルスピリッツ プレミアムブレイヴBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，5張卡片清單中4張已完整併入 shared/data/cards.json（1張BS11-X01因為是合体スピリット、官方頁面BP/コア欄位結構特殊、腳本沒解析出來，跳過未併入，留在 shared/data/real/PB47.json 供之後人工檢查），性質同PB48" },
-    { "code": "BSC51", "name": "ディーバブースター メモリアルレコード", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，87張卡片已完整併入 shared/data/cards.json（已排除重複），性質同PB48" },
-    { "code": "BS40", "name": "煌臨編 第1章 伝説ノ英雄", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料" },
-    { "code": "PB46", "name": "バトルスピリッツ コラボスターターセット 仮面ライダー 時刻の特異点", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），20張卡片已完整併入 shared/data/cards.json（已排除重複card_no），standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明）" },
-    { "code": "PB45", "name": "バトルスピリッツ ディーバ総選挙BOX 2025", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，11張卡片已完整併入 shared/data/cards.json（已排除重複），性質同PB46" },
-    { "code": "BSC50", "name": "アニメブースター RESONATING STARS", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，73張卡片清單中72張已完整併入 shared/data/cards.json（已排除重複；1張BSC50-027極星剣機ポーラ・キャリバーLTブレイヴ因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC50.json 供之後人工檢查），性質同PB46" },
-    { "code": "PB44", "name": "バトルスピリッツ コラボスターターセット アイカツ！ アツいアイドル活動！", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "アイカツ！（真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，22張卡片清單中21張已完整併入 shared/data/cards.json（已排除重複；1張PB44-RV X01因BP欄位解析異常跳過未併入，留在 shared/data/real/PB44.json 供之後人工檢查），性質同PB46" },
-    { "code": "BS74", "name": "契約編:環 第3章 覇極来臨", "releaseDate": "2026-02-01", "standardLegal": false, "collab": false, "note": "真實官方彈；113張卡片已完整併入 shared/data/cards.json（含7張真實究極卡type=ultimate、2張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<12>（數字，只有1張是<13>），跟先前對BS75/26RSD系列的推測不同——這彈本身不是標準賽合法，只有下一彈BS75才是（BS75的規則問答也證實了這點：BS75是「2026年4月導入」才開始可用），已修正standardLegal為false" },
-    { "code": "BSC49", "name": "ドリームブースター 巡る星々", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ドリームブースター系列）；117張卡片已完整併入 shared/data/cards.json（含24張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<12>，印證是永恆賽限定" },
-    { "code": "PB43", "name": "バトルスピリッツ プレミアム烈火BOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，16張卡片清單中9張（已排除重複card_no）已完整併入 shared/data/cards.json，性質同PB46" },
-    { "code": "PB42", "name": "バトルスピリッツ コラボスターターセット 仮面ライダー おかしな絆", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，20張卡片清單中19張（已排除重複）已完整併入 shared/data/cards.json，性質同PB46" },
-    { "code": "BS73", "name": "契約編:環 第2章 天地転世", "releaseDate": "2025-12-01", "standardLegal": false, "collab": false, "note": "真實官方彈（BS74/BS75的前一彈，同屬「契約編:環」系列）；108張卡片已完整併入 shared/data/cards.json（含1張トークンネクサス type=nexus+token=true——本引擎新發現的真實卡片種類，跟トークンスピリット同性質但是ネクサス），對戰引擎可直接使用。實測blockIcon幾乎全為<12>（僅1張<13>），跟BS74一樣是永恆賽限定，standardLegal維持false" },
-    { "code": "BSC48", "name": "アニメブースター バーニングレガシー", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的アニメブースター系列，跟BSC50/BSC49同性質）；77張卡片清單中76張已完整併入 shared/data/cards.json（1張BSC48-034一期一振LTブレイヴ因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC48.json 供之後人工檢查），對戰引擎可直接使用" },
-    { "code": "PB41", "name": "バトルスピリッツ コラボスターターセット ウルトラマン 継承される正義", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，21張卡片清單中20張（已排除重複card_no）已完整併入 shared/data/cards.json，性質同PB46" },
-    { "code": "BSC47", "name": "テーマブースター REBIRTH OF LEGENDS", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的復刻向テーマブースター（一半是BSC47自己的新編號，一半是沿用原卡的card_no重印，性質上跟PROMO/PB4x系列一樣要排重），120張卡片清單中112張已完整併入 shared/data/cards.json（已排除跟其他已收錄系列重複的card_no；2張BSC47-RV X01/X02因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC47.json 供之後人工檢查）" },
-    { "code": "BS72", "name": "契約編:環 第1章 廻帰再醒", "releaseDate": "2025-10-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:環」系列第1章，是BS73/BS74/BS75這一整條系列裡最早的一彈）；99張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<12>，跟BS73/BS74一樣是永恆賽限定，standardLegal維持false" },
-    { "code": "CB34", "name": "コラボブースター 仮面ライダー 善悪の選択", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈（跟26RCB01性質相同的假面騎士合作コラボブースター，但是較早期的一彈）；92張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定，standardLegal維持false" },
-    { "code": "BSC46", "name": "ディーバブースター 10thアフターパーティー", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB45先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的77張官方清單）；77張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PB40", "name": "バトルスピリッツ メモリアルバトスピセットVol.1", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），15張卡片已完整併入 shared/data/cards.json（已排除重複card_no），恰好全部是創界神系ネクサス（type=nexus，例如「魔導の契約神ハデス」）" },
-    { "code": "PB39", "name": "バトルスピリッツ プレミアムペンタンBOXII", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，29張卡片清單中18張已完整併入 shared/data/cards.json（已排除重複card_no；5張PB39-RV X01~X05因官方頁面本身抓取異常（疑似該商品的復刻卡沒有獨立詳細頁）跳過未併入，留在 shared/data/real/PB39.json 供之後人工檢查）" },
-    { "code": "PB38", "name": "バトルスピリッツ ディーバ総選挙BOX2024", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，17張卡片清單中6張（已排除重複，多數已透過PB45等其他ディーバ系復刻商品收錄過）已完整併入 shared/data/cards.json" },
-    { "code": "PB37", "name": "バトルスピリッツ プレミアム激覇BOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，20張卡片清單中8張已完整併入 shared/data/cards.json（已排除重複；1張BS43-RV X05因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/PB37.json 供之後人工檢查）" },
-    { "code": "PB36", "name": "バトルスピリッツ バトラーズグッズセット 仮面ライダー03", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，10張卡片清單中5張（已排除重複）已完整併入 shared/data/cards.json" },
-    { "code": "SD70", "name": "コラボスターター ペルソナ３ リロード", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "女神異聞錄3 Reload（ペルソナ３ リロード，真實官方合作系列）", "note": "真實官方彈；14張卡片清單中13張已完整併入 shared/data/cards.json（1張因官方頁面抓取異常跳過），對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定" },
-    { "code": "CB33", "name": "コラボブースター ペルソナ３ リロード", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "女神異聞錄3 Reload（ペルソナ３ リロード，真實官方合作系列）", "note": "真實官方彈；90張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定" },
-    { "code": "BS71", "name": "契約編:真 第4章 神王の帰還", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:真」系列，跟BS72/BS73/BS74/BS75所屬的「契約編:環」系列不同）；113張卡片已完整併入 shared/data/cards.json（含11張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<11>（2張<12>），永恆賽限定，standardLegal維持false" },
-    { "code": "SD69", "name": "メガデッキ 豪炎の創世主", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈；14張卡片清單中12張已完整併入 shared/data/cards.json（2張SD69-RV X01/X02因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/SD69.json 供之後人工檢查），對戰引擎可直接使用" },
-    { "code": "CB32", "name": "コラボブースター ウルトラマン イマジネーションパワー", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）", "note": "真實官方彈；72張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定" },
-    { "code": "BS70", "name": "契約編:真 第3章 全天の覇神", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:真」系列，跟BS69/BS71同系列）；111張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（1張<12>），永恆賽限定" },
-    { "code": "BSC45", "name": "ドリームブースター 巡るヒカリ", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ドリームブースター系列，PB37先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的108張官方清單）；108張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB31", "name": "コラボブースター 仮面ライダー Exceed the limit", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈，但重印比例很高（77張裡有將近三成是沿用CB08/CB09/CB10等舊商品代碼的重印卡），性質上跟BSC47一樣要排重；77張卡片清單中71張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BSC44", "name": "テーマブースター AGE OF AVENGERS", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈，重印比例很高（80張裡有近半是沿用BS49/BS50/BS51等舊商品代碼的重印卡），性質同CB31要排重；80張卡片清單中71張已排除重複，其中68張已完整併入 shared/data/cards.json（3張BSC44-RV X01~X03因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/BSC44.json 供之後人工檢查），對戰引擎可直接使用" },
-    { "code": "BS69", "name": "契約編:真 第2章 原初の襲来", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:真」系列，跟BS70/BS71同系列，是這條系列最早的一彈）；107張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（1張<12>），永恆賽限定" },
-    { "code": "BSC43", "name": "ディーバブースター 10thパーティー", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB38/PB45先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的106張官方清單）；106張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BS68", "name": "契約編:真 第1章 神々の戦い", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:真」系列第1章，是BS69/BS70/BS71這一整條系列裡最早的一彈，跟PB36裡的「プルトニックウォール」同系列）；98張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（2張<12>），永恆賽限定，跟BS69/BS70/BS71一致" },
-    { "code": "SD68", "name": "メガデッキ 太陽神の顕現", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（跟PB40收錄的「炎輪の契約神アポローン」同系列）；14張卡片清單中12張已完整併入 shared/data/cards.json（1張SD68-RV X01因官方頁面本身抓取異常跳過未併入；另有1張SD68-004爬取結果的text欄位一開始被抓到無關的FAQ回答「はい、破壊できます。」，已用_rawDtDd裡的正確能力文字手動修正後才併入），對戰引擎可直接使用" },
-    { "code": "PB35", "name": "バトルスピリッツ プレミアム レイ・オーバBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，15張卡片清單中6張（已排除重複，多數已透過PB36/PB37/PB38等其他復刻商品收錄過）已完整併入 shared/data/cards.json，性質同PB46" },
-    { "code": "PB34", "name": "バトルスピリッツ 15th プレミアムバトラーズBOX", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的收藏向復刻商品，26張卡片清單中13張（已排除重複，多數已透過PB37等其他復刻商品或BS31等正式系列收錄過）已排除重複，其中12張已完整併入 shared/data/cards.json（1張BS38-RV X01因官方頁面本身抓取異常跳過未併入），含1張究極卡type=ultimate，性質同PB46" },
-    { "code": "CB30", "name": "コラボブースター 仮面ライダー 神秘なる願い", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；90張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BS67", "name": "契約編:界 第4章 界導", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:界」系列，跟BS68/BS69/BS70/BS71所屬的「契約編:真」系列不同）；118張卡片已完整併入 shared/data/cards.json（含9張真實究極卡type=ultimate、10張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<10>，永恆賽限定" },
-    { "code": "PC12", "name": "バトスピプレミアムカードセット 新世紀エヴァンゲリオン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）", "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PC11", "name": "バトスピプレミアムカードセット ゴジラ対エヴァンゲリオン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "哥吉拉對新世紀福音戰士（ゴジラ対エヴァンゲリオン，真實官方合作系列）", "note": "真實官方彈；8張卡片清單中7張已完整併入 shared/data/cards.json（1張PC11-003因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/PC11.json 供之後人工檢查），對戰引擎可直接使用" },
-    { "code": "CBX01", "name": "コラボブースターEX ガンダム 運命と自由", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）", "note": "真實官方彈，但重印比例很高（45張裡有近半是沿用CB13/CB16/CB27等舊商品代碼的重印卡），性質上跟CB31/BSC47一樣要排重；45張卡片清單中44張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB29", "name": "コラボブースター ガンダム 魔女の宿命", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）", "note": "真實官方彈；94張卡片已完整併入 shared/data/cards.json（含18張ブレイヴ），對戰引擎可直接使用" },
-    { "code": "BS66", "name": "契約編:界 第3章 紡約", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:界」系列，跟BS67同系列）；115張卡片已完整併入 shared/data/cards.json（含9張真實究極卡type=ultimate、9張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<10>，永恆賽限定，跟BS67一致" },
-    { "code": "PC10", "name": "バトスピプレミアムカードセット TIGER & BUNNY UNSTOPPABLE HERO", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "TIGER & BUNNY（真實官方合作系列）", "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PC09", "name": "バトスピプレミアムカードセット アイカツ！ ルミナス＆トライスター", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "アイカツ！（真實官方合作系列）", "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；PC09-005爬取結果的text欄位一開始被抓到無關的FAQ回答「はい、できます。」開頭那段，已用_rawDtDd裡的正確能力文字手動修正後才併入" },
-    { "code": "PC08", "name": "バトスピプレミアムカードセット アイカツ！ ソレイユ＆ぽわぽわプリリン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "アイカツ！（真實官方合作系列）", "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB28", "name": "コラボブースター ゴジラ 怪獣王ノ帰還", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "哥吉拉（ゴジラ，真實官方合作系列）", "note": "真實官方彈；62張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "SD67", "name": "バトスピドリームデッキ 究極の新星", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方現行預組；17張卡片已完整併入 shared/data/cards.json（含7張真實究極卡type=ultimate，比例很高，是本引擎目前收錄究極卡最集中的一彈），對戰引擎可直接使用" },
-    { "code": "SD66", "name": "バトスピドリームデッキ 紅蓮の異世界", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方現行預組；17張卡片已完整併入 shared/data/cards.json（含1張ブレイヴ），對戰引擎可直接使用；SD66-CX01爬取結果的text欄位一開始被抓到無關的FAQ回答「いいえ、発揮できません。」，已用_rawDtDd裡的正確能力文字手動修正後才併入" },
-    { "code": "PC07", "name": "バトスピプレミアムカードセット 最強銀河 究極ゼロ ～バトルスピリッツ～", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "最強銀河 究極ゼロ（真實官方合作系列）", "note": "跟一般プレミアムカードセット不同，這一款幾乎全是沿用BS65/BS60/BS62/BS63等舊商品代碼的重印卡，8張卡片清單中3張（已排除重複card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PC06", "name": "バトスピプレミアムカードセット バトルスピリッツ 少年突破バシン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跟一般プレミアムカードセット不同，這一款幾乎全是沿用BS60/BS64/BS61等舊商品代碼的重印卡，8張卡片清單中4張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BS65", "name": "契約編:界 第2章 極争", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:界」系列，跟BS66/BS67同系列）；108張卡片已完整併入 shared/data/cards.json（含15張真實究極卡type=ultimate——本引擎收錄過最多究極卡的一彈、9張ブレイヴ、1張契約アルティメット「極相棒ゼッター」——本引擎新發現的真實卡片種類，跟契約ネクサス/契約スピリット同性質但是アルティメット），對戰引擎可直接使用。實測blockIcon幾乎全為<10>（1張<11>），永恆賽限定，跟BS66/BS67一致" },
-    { "code": "BSC42", "name": "ドラフトブースター 巡るキセキ", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ドラフトブースター系列，PB36/PB37先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的96張官方清單）；96張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PB33", "name": "エクストリームゲームメモリアルバトスピセット", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈；8張卡片清單全部是自己的card_no（跟一般跨商品代碼的PB系列復刻商品不同，這款不用排重），已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PC05", "name": "バトスピプレミアムカードセット エヴァンゲリオン 紡がれる想い", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）", "note": "真實官方彈；8張卡片清單中6張（已排除2張CB21重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PC04", "name": "バトスピプレミアムカードセット ウルトラマン 新たな光", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）", "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BS64", "name": "契約編:界 第１章 閃刃", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（「契約編:界」系列第1章，是BS65/BS66/BS67這一整條系列裡最早的一彈）；107張卡片已完整併入 shared/data/cards.json（含6張真實究極卡type=ultimate、15張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<10>（1張<11>），永恆賽限定，跟BS65/BS66/BS67一致" },
-    { "code": "SD65", "name": "メガデッキ ニュージェネレーション", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈；15張卡片清單中13張已完整併入 shared/data/cards.json（12張是真實究極卡type=ultimate，比例極高，主題圍繞「ムゲン」/新生系究極卡，含1張契約アルティメット「相棒魔卿ジャバド」；1張SD65-RV X01因官方頁面本身抓取異常跳過未併入），對戰引擎可直接使用" },
-    { "code": "PB32", "name": "バトルスピリッツ コラボスターター ウルトラマン 英雄たちの軌跡", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴（全部沿用LM19/PB18等舊代碼），17張卡片清單中11張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BSC41", "name": "GREATEST RECORD 2023", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "跨多個商品代碼的復刻精選集（跟BSC41這個代碼本身完全沒有自己的card_no，全部是重印卡），81張卡片清單中52張（已排除跟其他已收錄系列重複的card_no）已排除重複，其中51張已完整併入 shared/data/cards.json（1張因BP欄位解析異常跳過未併入），對戰引擎可直接使用" },
-    { "code": "BSC40", "name": "ディーバブースター 白黒幻奏", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB38先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的69張官方清單）；69張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PB30", "name": "バトルスピリッツ バトラーズグッズセット ガンダム 閃光のハサウェイ", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，5張卡片清單中2張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PB29", "name": "バトスピプレミアムコラボBOX アイカツ！ 10周年セット", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "アイカツ！（真實官方合作系列）", "note": "跨多個商品代碼的收藏向復刻商品，37張卡片清單中34張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB27", "name": "コラボブースター ガンダム 魔女の覚醒", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）", "note": "真實官方彈，但重印比例很高（68張裡有一半以上是沿用CB13/SD53/SD54/CB16/SD52等舊商品代碼的重印卡），性質上跟CB31/CBX01一樣要排重；68張卡片清單中61張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "BS63", "name": "契約編 第4章 ビヨンドエボリューション", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS64起的「契約編:真」系列不同、更早期的系列）；115張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB26", "name": "コラボブースター TIGER & BUNNY HERO SCRAMBLE", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "TIGER & BUNNY（真實官方合作系列）", "note": "真實官方彈；93張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "PB27", "name": "バトスピプレイマット＆スリーブセット ジャンヌ・ドラニエス", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（周邊商品同捆卡，只有1張自己的card_no）；1張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用" },
-    { "code": "CB25", "name": "コラボブースター ガンダム 魔女の切り札", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）", "note": "真實官方彈；89張卡片已完整併入 shared/data/cards.json（含16張ブレイヴ），對戰引擎可直接使用" },
-    { "code": "PC03", "name": "バトスピプレミアムカードセット シン・ウルトラマン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "超人力霸王（シン・ウルトラマン，真實官方合作系列）", "note": "真實官方彈；8張卡片清單已收錄於 shared/data/real/PC03.json，尚缺 bp/效果文字/卡圖，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入" },
-    { "code": "BS61", "name": "契約編 第2章 リベレーションオブゴッド", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS63同系列的更早一章）；94張卡片清單已收錄於 shared/data/real/BS61.json（含3張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上" },
-    { "code": "CB23", "name": "バトルスピリッツ コラボブースター エヴァンゲリオン シン実の贖罪", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）", "note": "真實官方彈；69張卡片清單已收錄於 shared/data/real/CB23.json（含9張ブレイヴ），尚缺 bp/效果文字/卡圖，流程同上" },
-    { "code": "PC02", "name": "バトスピプレミアムカードセット ショコラ", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈；8張卡片清單中7張自己前綴的收錄於 shared/data/real/PC02.json（含1張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上" },
-    { "code": "PC01", "name": "バトスピプレミアムカードセット イアン", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈；8張卡片清單中7張自己前綴的收錄於 shared/data/real/PC01.json（含1張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上" },
-    { "code": "BS62", "name": "契約編 第3章 ライズオブライバルズ", "releaseDate": "2018-01-01", "standardLegal": false, "collab": false, "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS61/BS63同系列）；94張卡片清單已收錄於 shared/data/real/BS62.json，尚缺 bp/效果文字/卡圖，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入" },
-    { "code": "CB24", "name": "コラボブースター 仮面ライダー 最高の相棒", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）", "note": "真實官方彈；92張卡片清單已收錄於 shared/data/real/CB24.json（含3張ブレイヴ），尚缺 bp/效果文字/卡圖，流程同上" },
-    { "code": "PB26", "name": "バトルスピリッツ バトラーズグッズセット シン・エヴァンゲリオン劇場版", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）", "note": "跨商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，3張卡片清單已收錄於 shared/data/real/PB26.json，尚缺 bp/效果文字/卡圖，性質同PB46，流程同上" },
-    { "code": "PB25", "name": "バトルスピリッツ バトラーズグッズセット ヱヴァンゲリヲン新劇場版：Q", "releaseDate": "2018-01-01", "standardLegal": false, "collab": true, "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）", "note": "跨商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，3張卡片清單已收錄於 shared/data/real/PB25.json，尚缺 bp/效果文字/卡圖，性質同PB46，流程同上" }
+    {
+      "code": "26RBS02",
+      "name": "幻惑の翔風",
+      "releaseDate": "2026-06-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方彈；117張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；仍缺 costSymbols（顏色符號需求，官方頁面用圖示顯示，尚未解析），目前引擎本身也還沒有實際檢查這個欄位（只在畫面上顯示），不影響對戰"
+    },
+    {
+      "code": "26RBS01",
+      "name": "創世の鼓動",
+      "releaseDate": "2026-04-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方彈；144張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>，跟真正的官方判定結果一致（標準賽合法）"
+    },
+    {
+      "code": "BS76",
+      "name": "エターナルブースター 永皇の輝き",
+      "releaseDate": "2026-05-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；117張卡片已完整併入 shared/data/cards.json（含10張ブレイヴ type='brave'、3張契約ネクサス type='nexus'+contractCard=true，這兩種真實卡片種類引擎目前都還沒有實際規則支援，只先如實記錄資料）。實測blockIcon皆為<13>（數字，不是英文字母），isCardLegal 已正確判定為僅永恆賽可用，驗證過能組出合法的40張永恆賽牌組，印證了標準賽/永恆賽用blockIcon判定（而非系列發售日期）這件事"
+    },
+    {
+      "code": "26RSD07",
+      "name": "コラボスターター 仮面ライダー AGENT OF DREAM",
+      "releaseDate": "2026-06-01",
+      "standardLegal": true,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>"
+    },
+    {
+      "code": "26RCB01",
+      "name": "コラボブースター 仮面ライダー 運命の戦線",
+      "releaseDate": "2026-06-01",
+      "standardLegal": true,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈；78張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組；blockIcon皆為<A>"
+    },
+    {
+      "code": "PROMO",
+      "name": "促銷卡（プロモーションカード）綜合卡池",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。"
+    },
+    {
+      "code": "26RSD06",
+      "name": "バトスピエントリーデッキ 蒼淵ノ凶獣",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組"
+    },
+    {
+      "code": "26RSD05",
+      "name": "バトスピエントリーデッキ 煌陽ノ雷竜",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組"
+    },
+    {
+      "code": "26RSD04",
+      "name": "バトスピエントリーデッキ 白命ノ鉱人",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組"
+    },
+    {
+      "code": "26RSD03",
+      "name": "バトスピエントリーデッキ 翆海ノ甲魚",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組"
+    },
+    {
+      "code": "26RSD02",
+      "name": "バトスピエントリーデッキ 紫幻ノ血醒",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，驗證過能組出合法的40張標準賽牌組"
+    },
+    {
+      "code": "26RSD01",
+      "name": "バトスピエントリーデッキ 赫焔ノ風牙",
+      "releaseDate": "2026-03-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方現行預組；16張卡片已完整併入 shared/data/cards.json（7組現行預組全部收錄完畢），對戰引擎可直接使用，blockIcon皆為<A>"
+    },
+    {
+      "code": "BS75",
+      "name": "契約編:環 第4章 英雄傑集",
+      "releaseDate": "2026-04-01",
+      "standardLegal": true,
+      "collab": false,
+      "note": "真實官方彈，其他已收錄卡片的規則問答裡有提到這彈「2026年4月より導入されるゲームフォーマットの「スタンダード」でも使えるカードです」，確認是標準賽可用的現行彈。114張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，blockIcon皆為<A>"
+    },
+    {
+      "code": "PB48",
+      "name": "バトルスピリッツ プレミアムフルールBOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），18張卡片已完整併入 shared/data/cards.json（已排除跟其他已收錄系列重複的card_no），standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明），沒有對應sets.json條目的商品代碼在標準賽會直接判不合法、永恆賽正常可用"
+    },
+    {
+      "code": "PB47",
+      "name": "バトルスピリッツ プレミアムブレイヴBOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，5張卡片清單中4張已完整併入 shared/data/cards.json（1張BS11-X01因為是合体スピリット、官方頁面BP/コア欄位結構特殊、腳本沒解析出來，跳過未併入，留在 shared/data/real/PB47.json 供之後人工檢查），性質同PB48"
+    },
+    {
+      "code": "BSC51",
+      "name": "ディーバブースター メモリアルレコード",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，87張卡片已完整併入 shared/data/cards.json（已排除重複），性質同PB48"
+    },
+    {
+      "code": "BS40",
+      "name": "煌臨編 第1章 伝説ノ英雄",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈代碼/名稱，只是歷史悠久的舊彈，僅供 Eternal 賽制參考範例，尚無卡片資料"
+    },
+    {
+      "code": "PB46",
+      "name": "バトルスピリッツ コラボスターターセット 仮面ライダー 時刻の特異点",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），20張卡片已完整併入 shared/data/cards.json（已排除重複card_no），standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷交給每張卡各自的blockIcon（見PROMO條目說明）"
+    },
+    {
+      "code": "PB45",
+      "name": "バトルスピリッツ ディーバ総選挙BOX 2025",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，11張卡片已完整併入 shared/data/cards.json（已排除重複），性質同PB46"
+    },
+    {
+      "code": "BSC50",
+      "name": "アニメブースター RESONATING STARS",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，73張卡片清單中72張已完整併入 shared/data/cards.json（已排除重複；1張BSC50-027極星剣機ポーラ・キャリバーLTブレイヴ因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC50.json 供之後人工檢查），性質同PB46"
+    },
+    {
+      "code": "PB44",
+      "name": "バトルスピリッツ コラボスターターセット アイカツ！ アツいアイドル活動！",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "アイカツ！（真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，22張卡片清單中21張已完整併入 shared/data/cards.json（已排除重複；1張PB44-RV X01因BP欄位解析異常跳過未併入，留在 shared/data/real/PB44.json 供之後人工檢查），性質同PB46"
+    },
+    {
+      "code": "BS74",
+      "name": "契約編:環 第3章 覇極来臨",
+      "releaseDate": "2026-02-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；113張卡片已完整併入 shared/data/cards.json（含7張真實究極卡type=ultimate、2張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<12>（數字，只有1張是<13>），跟先前對BS75/26RSD系列的推測不同——這彈本身不是標準賽合法，只有下一彈BS75才是（BS75的規則問答也證實了這點：BS75是「2026年4月導入」才開始可用），已修正standardLegal為false"
+    },
+    {
+      "code": "BSC49",
+      "name": "ドリームブースター 巡る星々",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ドリームブースター系列）；117張卡片已完整併入 shared/data/cards.json（含24張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<12>，印證是永恆賽限定"
+    },
+    {
+      "code": "PB43",
+      "name": "バトルスピリッツ プレミアム烈火BOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，16張卡片清單中9張（已排除重複card_no）已完整併入 shared/data/cards.json，性質同PB46"
+    },
+    {
+      "code": "PB42",
+      "name": "バトルスピリッツ コラボスターターセット 仮面ライダー おかしな絆",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，20張卡片清單中19張（已排除重複）已完整併入 shared/data/cards.json，性質同PB46"
+    },
+    {
+      "code": "BS73",
+      "name": "契約編:環 第2章 天地転世",
+      "releaseDate": "2025-12-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（BS74/BS75的前一彈，同屬「契約編:環」系列）；108張卡片已完整併入 shared/data/cards.json（含1張トークンネクサス type=nexus+token=true——本引擎新發現的真實卡片種類，跟トークンスピリット同性質但是ネクサス），對戰引擎可直接使用。實測blockIcon幾乎全為<12>（僅1張<13>），跟BS74一樣是永恆賽限定，standardLegal維持false"
+    },
+    {
+      "code": "BSC48",
+      "name": "アニメブースター バーニングレガシー",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的アニメブースター系列，跟BSC50/BSC49同性質）；77張卡片清單中76張已完整併入 shared/data/cards.json（1張BSC48-034一期一振LTブレイヴ因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC48.json 供之後人工檢查），對戰引擎可直接使用"
+    },
+    {
+      "code": "PB41",
+      "name": "バトルスピリッツ コラボスターターセット ウルトラマン 継承される正義",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，21張卡片清單中20張（已排除重複card_no）已完整併入 shared/data/cards.json，性質同PB46"
+    },
+    {
+      "code": "BSC47",
+      "name": "テーマブースター REBIRTH OF LEGENDS",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的復刻向テーマブースター（一半是BSC47自己的新編號，一半是沿用原卡的card_no重印，性質上跟PROMO/PB4x系列一樣要排重），120張卡片清單中112張已完整併入 shared/data/cards.json（已排除跟其他已收錄系列重複的card_no；2張BSC47-RV X01/X02因BP欄位解析異常跳過未併入，留在 shared/data/real/BSC47.json 供之後人工檢查）"
+    },
+    {
+      "code": "BS72",
+      "name": "契約編:環 第1章 廻帰再醒",
+      "releaseDate": "2025-10-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:環」系列第1章，是BS73/BS74/BS75這一整條系列裡最早的一彈）；99張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<12>，跟BS73/BS74一樣是永恆賽限定，standardLegal維持false"
+    },
+    {
+      "code": "CB34",
+      "name": "コラボブースター 仮面ライダー 善悪の選択",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈（跟26RCB01性質相同的假面騎士合作コラボブースター，但是較早期的一彈）；92張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定，standardLegal維持false"
+    },
+    {
+      "code": "BSC46",
+      "name": "ディーバブースター 10thアフターパーティー",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB45先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的77張官方清單）；77張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB40",
+      "name": "バトルスピリッツ メモリアルバトスピセットVol.1",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品（跟PROMO卡池同性質），15張卡片已完整併入 shared/data/cards.json（已排除重複card_no），恰好全部是創界神系ネクサス（type=nexus，例如「魔導の契約神ハデス」）"
+    },
+    {
+      "code": "PB39",
+      "name": "バトルスピリッツ プレミアムペンタンBOXII",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，29張卡片清單中18張已完整併入 shared/data/cards.json（已排除重複card_no；5張PB39-RV X01~X05因官方頁面本身抓取異常（疑似該商品的復刻卡沒有獨立詳細頁）跳過未併入，留在 shared/data/real/PB39.json 供之後人工檢查）"
+    },
+    {
+      "code": "PB38",
+      "name": "バトルスピリッツ ディーバ総選挙BOX2024",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，17張卡片清單中6張（已排除重複，多數已透過PB45等其他ディーバ系復刻商品收錄過）已完整併入 shared/data/cards.json"
+    },
+    {
+      "code": "PB37",
+      "name": "バトルスピリッツ プレミアム激覇BOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，20張卡片清單中8張已完整併入 shared/data/cards.json（已排除重複；1張BS43-RV X05因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/PB37.json 供之後人工檢查）"
+    },
+    {
+      "code": "PB36",
+      "name": "バトルスピリッツ バトラーズグッズセット 仮面ライダー03",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，10張卡片清單中5張（已排除重複）已完整併入 shared/data/cards.json"
+    },
+    {
+      "code": "SD70",
+      "name": "コラボスターター ペルソナ３ リロード",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "女神異聞錄3 Reload（ペルソナ３ リロード，真實官方合作系列）",
+      "note": "真實官方彈；14張卡片清單中13張已完整併入 shared/data/cards.json（1張因官方頁面抓取異常跳過），對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定"
+    },
+    {
+      "code": "CB33",
+      "name": "コラボブースター ペルソナ３ リロード",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "女神異聞錄3 Reload（ペルソナ３ リロード，真實官方合作系列）",
+      "note": "真實官方彈；90張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定"
+    },
+    {
+      "code": "BS71",
+      "name": "契約編:真 第4章 神王の帰還",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:真」系列，跟BS72/BS73/BS74/BS75所屬的「契約編:環」系列不同）；113張卡片已完整併入 shared/data/cards.json（含11張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<11>（2張<12>），永恆賽限定，standardLegal維持false"
+    },
+    {
+      "code": "SD69",
+      "name": "メガデッキ 豪炎の創世主",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；14張卡片清單中12張已完整併入 shared/data/cards.json（2張SD69-RV X01/X02因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/SD69.json 供之後人工檢查），對戰引擎可直接使用"
+    },
+    {
+      "code": "CB32",
+      "name": "コラボブースター ウルトラマン イマジネーションパワー",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）",
+      "note": "真實官方彈；72張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon皆為<11>，永恆賽限定"
+    },
+    {
+      "code": "BS70",
+      "name": "契約編:真 第3章 全天の覇神",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:真」系列，跟BS69/BS71同系列）；111張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（1張<12>），永恆賽限定"
+    },
+    {
+      "code": "BSC45",
+      "name": "ドリームブースター 巡るヒカリ",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ドリームブースター系列，PB37先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的108張官方清單）；108張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB31",
+      "name": "コラボブースター 仮面ライダー Exceed the limit",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈，但重印比例很高（77張裡有將近三成是沿用CB08/CB09/CB10等舊商品代碼的重印卡），性質上跟BSC47一樣要排重；77張卡片清單中71張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BSC44",
+      "name": "テーマブースター AGE OF AVENGERS",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈，重印比例很高（80張裡有近半是沿用BS49/BS50/BS51等舊商品代碼的重印卡），性質同CB31要排重；80張卡片清單中71張已排除重複，其中68張已完整併入 shared/data/cards.json（3張BSC44-RV X01~X03因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/BSC44.json 供之後人工檢查），對戰引擎可直接使用"
+    },
+    {
+      "code": "BS69",
+      "name": "契約編:真 第2章 原初の襲来",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:真」系列，跟BS70/BS71同系列，是這條系列最早的一彈）；107張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（1張<12>），永恆賽限定"
+    },
+    {
+      "code": "BSC43",
+      "name": "ディーバブースター 10thパーティー",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB38/PB45先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的106張官方清單）；106張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BS68",
+      "name": "契約編:真 第1章 神々の戦い",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:真」系列第1章，是BS69/BS70/BS71這一整條系列裡最早的一彈，跟PB36裡的「プルトニックウォール」同系列）；98張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用。實測blockIcon幾乎全為<11>（2張<12>），永恆賽限定，跟BS69/BS70/BS71一致"
+    },
+    {
+      "code": "SD68",
+      "name": "メガデッキ 太陽神の顕現",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（跟PB40收錄的「炎輪の契約神アポローン」同系列）；14張卡片清單中12張已完整併入 shared/data/cards.json（1張SD68-RV X01因官方頁面本身抓取異常跳過未併入；另有1張SD68-004爬取結果的text欄位一開始被抓到無關的FAQ回答「はい、破壊できます。」，已用_rawDtDd裡的正確能力文字手動修正後才併入），對戰引擎可直接使用"
+    },
+    {
+      "code": "PB35",
+      "name": "バトルスピリッツ プレミアム レイ・オーバBOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，15張卡片清單中6張（已排除重複，多數已透過PB36/PB37/PB38等其他復刻商品收錄過）已完整併入 shared/data/cards.json，性質同PB46"
+    },
+    {
+      "code": "PB34",
+      "name": "バトルスピリッツ 15th プレミアムバトラーズBOX",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的收藏向復刻商品，26張卡片清單中13張（已排除重複，多數已透過PB37等其他復刻商品或BS31等正式系列收錄過）已排除重複，其中12張已完整併入 shared/data/cards.json（1張BS38-RV X01因官方頁面本身抓取異常跳過未併入），含1張究極卡type=ultimate，性質同PB46"
+    },
+    {
+      "code": "CB30",
+      "name": "コラボブースター 仮面ライダー 神秘なる願い",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈；90張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BS67",
+      "name": "契約編:界 第4章 界導",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:界」系列，跟BS68/BS69/BS70/BS71所屬的「契約編:真」系列不同）；118張卡片已完整併入 shared/data/cards.json（含9張真實究極卡type=ultimate、10張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<10>，永恆賽限定"
+    },
+    {
+      "code": "PC12",
+      "name": "バトスピプレミアムカードセット 新世紀エヴァンゲリオン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）",
+      "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PC11",
+      "name": "バトスピプレミアムカードセット ゴジラ対エヴァンゲリオン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "哥吉拉對新世紀福音戰士（ゴジラ対エヴァンゲリオン，真實官方合作系列）",
+      "note": "真實官方彈；8張卡片清單中7張已完整併入 shared/data/cards.json（1張PC11-003因官方頁面本身抓取異常跳過未併入，留在 shared/data/real/PC11.json 供之後人工檢查），對戰引擎可直接使用"
+    },
+    {
+      "code": "CBX01",
+      "name": "コラボブースターEX ガンダム 運命と自由",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）",
+      "note": "真實官方彈，但重印比例很高（45張裡有近半是沿用CB13/CB16/CB27等舊商品代碼的重印卡），性質上跟CB31/BSC47一樣要排重；45張卡片清單中44張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB29",
+      "name": "コラボブースター ガンダム 魔女の宿命",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）",
+      "note": "真實官方彈；94張卡片已完整併入 shared/data/cards.json（含18張ブレイヴ），對戰引擎可直接使用"
+    },
+    {
+      "code": "BS66",
+      "name": "契約編:界 第3章 紡約",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:界」系列，跟BS67同系列）；115張卡片已完整併入 shared/data/cards.json（含9張真實究極卡type=ultimate、9張ブレイヴ），對戰引擎可直接使用。實測blockIcon皆為<10>，永恆賽限定，跟BS67一致"
+    },
+    {
+      "code": "PC10",
+      "name": "バトスピプレミアムカードセット TIGER & BUNNY UNSTOPPABLE HERO",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "TIGER & BUNNY（真實官方合作系列）",
+      "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PC09",
+      "name": "バトスピプレミアムカードセット アイカツ！ ルミナス＆トライスター",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "アイカツ！（真實官方合作系列）",
+      "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；PC09-005爬取結果的text欄位一開始被抓到無關的FAQ回答「はい、できます。」開頭那段，已用_rawDtDd裡的正確能力文字手動修正後才併入"
+    },
+    {
+      "code": "PC08",
+      "name": "バトスピプレミアムカードセット アイカツ！ ソレイユ＆ぽわぽわプリリン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "アイカツ！（真實官方合作系列）",
+      "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB28",
+      "name": "コラボブースター ゴジラ 怪獣王ノ帰還",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "哥吉拉（ゴジラ，真實官方合作系列）",
+      "note": "真實官方彈；62張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "SD67",
+      "name": "バトスピドリームデッキ 究極の新星",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方現行預組；17張卡片已完整併入 shared/data/cards.json（含7張真實究極卡type=ultimate，比例很高，是本引擎目前收錄究極卡最集中的一彈），對戰引擎可直接使用"
+    },
+    {
+      "code": "SD66",
+      "name": "バトスピドリームデッキ 紅蓮の異世界",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方現行預組；17張卡片已完整併入 shared/data/cards.json（含1張ブレイヴ），對戰引擎可直接使用；SD66-CX01爬取結果的text欄位一開始被抓到無關的FAQ回答「いいえ、発揮できません。」，已用_rawDtDd裡的正確能力文字手動修正後才併入"
+    },
+    {
+      "code": "PC07",
+      "name": "バトスピプレミアムカードセット 最強銀河 究極ゼロ ～バトルスピリッツ～",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "最強銀河 究極ゼロ（真實官方合作系列）",
+      "note": "跟一般プレミアムカードセット不同，這一款幾乎全是沿用BS65/BS60/BS62/BS63等舊商品代碼的重印卡，8張卡片清單中3張（已排除重複card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PC06",
+      "name": "バトスピプレミアムカードセット バトルスピリッツ 少年突破バシン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跟一般プレミアムカードセット不同，這一款幾乎全是沿用BS60/BS64/BS61等舊商品代碼的重印卡，8張卡片清單中4張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BS65",
+      "name": "契約編:界 第2章 極争",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:界」系列，跟BS66/BS67同系列）；108張卡片已完整併入 shared/data/cards.json（含15張真實究極卡type=ultimate——本引擎收錄過最多究極卡的一彈、9張ブレイヴ、1張契約アルティメット「極相棒ゼッター」——本引擎新發現的真實卡片種類，跟契約ネクサス/契約スピリット同性質但是アルティメット），對戰引擎可直接使用。實測blockIcon幾乎全為<10>（1張<11>），永恆賽限定，跟BS66/BS67一致"
+    },
+    {
+      "code": "BSC42",
+      "name": "ドラフトブースター 巡るキセキ",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ドラフトブースター系列，PB36/PB37先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的96張官方清單）；96張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB33",
+      "name": "エクストリームゲームメモリアルバトスピセット",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；8張卡片清單全部是自己的card_no（跟一般跨商品代碼的PB系列復刻商品不同，這款不用排重），已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PC05",
+      "name": "バトスピプレミアムカードセット エヴァンゲリオン 紡がれる想い",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）",
+      "note": "真實官方彈；8張卡片清單中6張（已排除2張CB21重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PC04",
+      "name": "バトスピプレミアムカードセット ウルトラマン 新たな光",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）",
+      "note": "真實官方彈；8張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BS64",
+      "name": "契約編:界 第１章 閃刃",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（「契約編:界」系列第1章，是BS65/BS66/BS67這一整條系列裡最早的一彈）；107張卡片已完整併入 shared/data/cards.json（含6張真實究極卡type=ultimate、15張ブレイヴ），對戰引擎可直接使用。實測blockIcon幾乎全為<10>（1張<11>），永恆賽限定，跟BS65/BS66/BS67一致"
+    },
+    {
+      "code": "SD65",
+      "name": "メガデッキ ニュージェネレーション",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；15張卡片清單中13張已完整併入 shared/data/cards.json（12張是真實究極卡type=ultimate，比例極高，主題圍繞「ムゲン」/新生系究極卡，含1張契約アルティメット「相棒魔卿ジャバド」；1張SD65-RV X01因官方頁面本身抓取異常跳過未併入），對戰引擎可直接使用"
+    },
+    {
+      "code": "PB32",
+      "name": "バトルスピリッツ コラボスターター ウルトラマン 英雄たちの軌跡",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "超人力霸王（ウルトラマン，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴（全部沿用LM19/PB18等舊代碼），17張卡片清單中11張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BSC41",
+      "name": "GREATEST RECORD 2023",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "跨多個商品代碼的復刻精選集（跟BSC41這個代碼本身完全沒有自己的card_no，全部是重印卡），81張卡片清單中52張（已排除跟其他已收錄系列重複的card_no）已排除重複，其中51張已完整併入 shared/data/cards.json（1張因BP欄位解析異常跳過未併入），對戰引擎可直接使用"
+    },
+    {
+      "code": "BSC40",
+      "name": "ディーバブースター 白黒幻奏",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（永恆賽向的ディーバブースター系列，PB38先前已透過復刻收藏商品收錄了其中幾張，這裡補齊完整的69張官方清單）；69張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB30",
+      "name": "バトルスピリッツ バトラーズグッズセット ガンダム 閃光のハサウェイ",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，5張卡片清單中2張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB29",
+      "name": "バトスピプレミアムコラボBOX アイカツ！ 10周年セット",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "アイカツ！（真實官方合作系列）",
+      "note": "跨多個商品代碼的收藏向復刻商品，37張卡片清單中34張（已排除重複）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB27",
+      "name": "コラボブースター ガンダム 魔女の覚醒",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）",
+      "note": "真實官方彈，但重印比例很高（68張裡有一半以上是沿用CB13/SD53/SD54/CB16/SD52等舊商品代碼的重印卡），性質上跟CB31/CBX01一樣要排重；68張卡片清單中61張（已排除跟其他已收錄系列重複的card_no）已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "BS63",
+      "name": "契約編 第4章 ビヨンドエボリューション",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS64起的「契約編:真」系列不同、更早期的系列）；115張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB26",
+      "name": "コラボブースター TIGER & BUNNY HERO SCRAMBLE",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "TIGER & BUNNY（真實官方合作系列）",
+      "note": "真實官方彈；93張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB27",
+      "name": "バトスピプレイマット＆スリーブセット ジャンヌ・ドラニエス",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（周邊商品同捆卡，只有1張自己的card_no）；1張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "CB25",
+      "name": "コラボブースター ガンダム 魔女の切り札",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "機動戰士鋼彈（ガンダム，真實官方合作系列）",
+      "note": "真實官方彈；89張卡片已完整併入 shared/data/cards.json（含16張ブレイヴ），對戰引擎可直接使用"
+    },
+    {
+      "code": "PC03",
+      "name": "バトスピプレミアムカードセット シン・ウルトラマン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "超人力霸王（シン・ウルトラマン，真實官方合作系列）",
+      "note": "真實官方彈；8張卡片清單已收錄於 shared/data/real/PC03.json，尚缺 bp/效果文字/卡圖，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入"
+    },
+    {
+      "code": "BS61",
+      "name": "契約編 第2章 リベレーションオブゴッド",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS63同系列的更早一章）；94張卡片清單已收錄於 shared/data/real/BS61.json（含3張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "CB23",
+      "name": "バトルスピリッツ コラボブースター エヴァンゲリオン シン実の贖罪",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）",
+      "note": "真實官方彈；69張卡片清單已收錄於 shared/data/real/CB23.json（含9張ブレイヴ），尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "PC02",
+      "name": "バトスピプレミアムカードセット ショコラ",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；8張卡片清單中7張自己前綴的收錄於 shared/data/real/PC02.json（含1張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "PC01",
+      "name": "バトスピプレミアムカードセット イアン",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈；8張卡片清單中7張自己前綴的收錄於 shared/data/real/PC01.json（含1張真實究極卡type=ultimate），尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "BS62",
+      "name": "契約編 第3章 ライズオブライバルズ",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（沒有:真/:界/:環字尾的「契約編」系列，跟BS61/BS63同系列）；94張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；blockIcon為<9>/<10>/<11>（Eternal限定），與BS61/BS63同為永恆賽用彈"
+    },
+    {
+      "code": "CB24",
+      "name": "コラボブースター 仮面ライダー 最高の相棒",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈（含3張ブレイヴ）；92張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用"
+    },
+    {
+      "code": "PB26",
+      "name": "バトルスピリッツ バトラーズグッズセット シン・エヴァンゲリオン劇場版",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）",
+      "note": "跨商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，3張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，性質同PB46"
+    },
+    {
+      "code": "PB25",
+      "name": "バトルスピリッツ バトラーズグッズセット ヱヴァンゲリヲン新劇場版：Q",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "新世紀福音戰士（新世紀エヴァンゲリオン，真實官方合作系列）",
+      "note": "跨商品代碼的收藏向復刻商品，完全沒有自己的card_no前綴，3張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用，性質同PB46"
+    }
   ],
   "standardRotation": {
     "_note": "已對照官方規則手冊校正：標準賽合法性真正的判斷依據是卡片印刷面的「區塊圖示」（見 cards.json 的 blockIcon 欄位）—— 區塊圖示是英文字母的卡片，才能在標準賽使用，且必須落在該字母對應的官方公告輪替期間內；區塊圖示是數字或沒有區塊圖示的卡片，只能在永恆賽使用。目前唯一公告的期間是「A」：2026/4/1～2027/3/31（《官方規則手冊[STANDARD]》第7頁）。blockWindows 之後有新一期公告（例如「B」）時，直接在這裡新增一筆即可，不用改程式碼。cutoffDate／舊有的「依系列發售日期」判斷，只在卡片沒有 blockIcon 資料時（目前僅示範卡池 DEMO-SET/DEMO-COLLAB-01）當作退回用的簡化規則，等示範卡池也補上 blockIcon 後可以整個移除。",
     "cutoffDate": "2024-04-01",
     "blockWindows": {
-      "A": { "from": "2026-04-01", "to": "2027-03-31" }
+      "A": {
+        "from": "2026-04-01",
+        "to": "2027-03-31"
+      }
     }
   }
 }
