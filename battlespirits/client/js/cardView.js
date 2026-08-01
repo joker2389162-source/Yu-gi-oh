@@ -43,7 +43,9 @@ function placeholderGradient(card) {
 // 卡圖：有 image 網址就顯示真圖，沒有就用依屬性色產生的佔位卡框（不是真的官方卡圖）。
 export function cardArtHtml(card, { small } = {}) {
   if (card.image) {
-    return `<img class="bs-card-art" src="${card.image}" alt="${card.name}" loading="lazy" />`;
+    // 官方圖片伺服器會依 Referer 擋掉非官方網域的請求（防盜連結），
+    // 不送 Referer 就能正常載入。
+    return `<img class="bs-card-art" src="${card.image}" alt="${card.name}" loading="lazy" referrerpolicy="no-referrer" />`;
   }
   const grad = placeholderGradient(card);
   const typeLabel = TYPE_LABELS[card.type] || card.type;
