@@ -64,7 +64,7 @@
       "releaseDate": "2018-01-01",
       "standardLegal": false,
       "collab": false,
-      "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。另外新增2張卡（BS01-117、SD17-016）：來自「バトルスピリッツ メモリアルカードダスセット Hero Ver.」，該商品官方頁面完全找不到自身的商品代碼括號標籤，且這2張卡的card_no都沿用各自原本所屬系列（BS01、SD17）的編號，跟其他PROMO卡片的模式一致，因此比照現有規則歸入PROMO.json，而非另外猜測建立新代碼；目前 bp/text 尚未補齊（dataComplete:false），待使用者抓取後併入。"
+      "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。另外新增20張卡，來源：「バトルスピリッツ メモリアルカードダスセット Hero Ver.」（BS01-117、SD17-016共2張）與「バトスピ10周年記念 プレミアムペンタンBOX」（18張，跟已有代碼的[PB39]プレミアムペンタンBOXII是不同商品），這兩個商品官方頁面都沒有自身的商品代碼括號標籤，且新卡的card_no都沿用各自原本所屬系列的編號，跟其他PROMO卡片的模式一致，因此比照現有規則歸入PROMO.json，而非另外猜測建立新代碼；PROMO.json卡片總數1264→1282。其中6張magic/nexus類型（BS01-117/SD17-016/BS05-064/BS05-080/BS21-082/BS38-075）因為費用欄位是數字，已用 tools/merge-real-set.mjs 併入 shared/data/cards.json（但text/bp仍是null，比照PROMO.json裡其他同類卡片的既有慣例，先允許bp為null但text之後仍要補齊）；其餘14張spirit/brave類型因為BP是null照規則被自動跳過未併入。這20張卡完整的bp/效果文字/卡圖尚未抓取，因為PROMO.json本身已有1282張大部分完整的卡片、不適合整份重新抓取，改把這20張另外存到 shared/data/real/PROMO_STAGE.json 這個暫存檔，用 tools/scrape-card-detail.mjs PROMO_STAGE 只抓這20張，抓完後由我手動比對id更新回 real/PROMO.json、再重新併入。"
     },
     {
       "code": "26RSD06",
@@ -1474,6 +1474,40 @@
       "standardLegal": false,
       "collab": false,
       "note": "真實官方構築済みデッキ（含4張ブレイヴ）；18張卡片已完整併入 shared/data/cards.json，對戰引擎可直接使用；blockIcon以<5>為主（另有<6>），屬Eternal永恆賽限定"
+    },
+    {
+      "code": "SD42",
+      "name": "コラボスターター 仮面ライダー ～リ・イマジネーション～",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方構築済みデッキ；16張卡片清單已收錄於 shared/data/real/SD42.json，尚缺 bp/效果文字/卡圖，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入"
+    },
+    {
+      "code": "CB04",
+      "name": "コラボブースター 仮面ライダー ～伝説の始まり～",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "假面騎士（仮面ライダー，真實官方合作系列）",
+      "note": "真實官方彈（含10張ブレイヴ、2張究極卡）；82張卡片清單已收錄於 shared/data/real/CB04.json，尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "BSC31",
+      "name": "ディーバブースター 真夏の学園",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（含3張ブレイヴ）；63張卡片清單已收錄於 shared/data/real/BSC31.json，尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "BS43",
+      "name": "煌臨編 第4章 選バレシ者",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（含6張ブレイヴ）；140張卡片清單已收錄於 shared/data/real/BS43.json，尚缺 bp/效果文字/卡圖，流程同上；其中6張（BS43-RVX01～RVX06）官方列表頁的卡號文字本身多了一個空格（顯示成「BS43-RV X01」），已比對alt屬性/card_no2參數校正回正確的「BS43-RVX01」格式"
     }
   ],
   "standardRotation": {
