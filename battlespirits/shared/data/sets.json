@@ -64,7 +64,7 @@
       "releaseDate": "2018-01-01",
       "standardLegal": false,
       "collab": false,
-      "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。"
+      "note": "橫跨兩百多個不同商品代碼的促銷卡綜合卡池，1262張卡片清單中1239張已完整併入 shared/data/cards.json（23張因為官方頁面BP欄位顯示異常而跳過未併入，留在 shared/data/real/PROMO.json 供之後人工檢查），含65張真實究極卡(type=ultimate)和98張真實ブレイヴ(type=brave)——是目前唯一收錄到的真實究極卡資料，已驗證過究極卡的最低Lv3自動放置能量機制在真實資料上正確運作。這些卡各自的 card.set 欄位是各自真正所屬的商品代碼（例如CP14、SJ15），不是'PROMO'，所以這裡沒有標準賽合法性意義（standardLegal/releaseDate只是這個彙總分類本身的佔位值，實際合法性判斷已交給每張卡各自的 blockIcon）；沒有對應 sets.json 條目的商品代碼，isCardLegal 在標準賽會直接判不合法、永恆賽仍正常可用，這是合理的預設行為，不用另外幫每個商品代碼建立條目。另外新增2張卡（BS01-117、SD17-016）：來自「バトルスピリッツ メモリアルカードダスセット Hero Ver.」，該商品官方頁面完全找不到自身的商品代碼括號標籤，且這2張卡的card_no都沿用各自原本所屬系列（BS01、SD17）的編號，跟其他PROMO卡片的模式一致，因此比照現有規則歸入PROMO.json，而非另外猜測建立新代碼；目前 bp/text 尚未補齊（dataComplete:false），待使用者抓取後併入。"
     },
     {
       "code": "26RSD06",
@@ -1440,6 +1440,40 @@
       "standardLegal": false,
       "collab": false,
       "note": "跨商品代碼的收藏向復刻商品，官方頁面未顯示自身商品代碼括號標籤，代碼PB07為依既有PB編號空缺推定；扣除已收錄的15張後，19張卡片已完整併入 shared/data/cards.json，性質同PB46"
+    },
+    {
+      "code": "CB05",
+      "name": "コラボブースター デジモン ぼくらのデジモンアドベンチャー",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "數碼寶貝（デジモン，真實官方合作系列）",
+      "note": "真實官方彈；66張卡片清單已收錄於 shared/data/real/CB05.json，尚缺 bp/效果文字/卡圖，要用 tools/scrape-card-detail.mjs 補齊後再用 tools/merge-real-set.mjs 併入"
+    },
+    {
+      "code": "SD45",
+      "name": "コラボスターター デジモン 選ばれし子どもたち",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": true,
+      "collabSeries": "數碼寶貝（デジモン，真實官方合作系列）",
+      "note": "真實官方構築済みデッキ；15張卡片清單已收錄於 shared/data/real/SD45.json，尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "BS44",
+      "name": "神煌臨編 第1章 創界神の鼓動",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方彈（含9張ブレイヴ）；122張卡片清單已收錄於 shared/data/real/BS44.json，尚缺 bp/效果文字/卡圖，流程同上"
+    },
+    {
+      "code": "SD43",
+      "name": "バトスピドリームデッキ 太陽と月の絆",
+      "releaseDate": "2018-01-01",
+      "standardLegal": false,
+      "collab": false,
+      "note": "真實官方構築済みデッキ（含4張ブレイヴ）；18張卡片清單已收錄於 shared/data/real/SD43.json，尚缺 bp/效果文字/卡圖，流程同上"
     }
   ],
   "standardRotation": {
