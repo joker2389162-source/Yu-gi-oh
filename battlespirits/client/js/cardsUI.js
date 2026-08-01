@@ -24,18 +24,27 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
       <label class="chk"><input type="checkbox" id="card-collab-filter" /> 只看合作卡</label>
       <label class="chk"><input type="checkbox" id="card-awoken-filter" /> 顯示轉醒背面卡（僅供查閱，不能直接加入卡組）</label>
     </div>
-    <p class="hint">目前為系統示範卡池（含1組虛構合作卡示範、轉醒／煌臨／究極系統示範卡）。要加入卡組請先到「卡組編輯」分頁建立/選擇一副卡組。</p>
+    <p class="hint" id="card-count-hint">目前為系統示範卡池（含1組虛構合作卡示範、轉醒／煌臨／究極系統示範卡）。要加入卡組請先到「卡組編輯」分頁建立/選擇一副卡組。</p>
     <div id="card-grid" class="bs-card-grid"></div>
+    <div id="card-load-more-wrap" style="text-align:center;margin:16px 0;"></div>
   `;
 
   const grid = root.querySelector('#card-grid');
+  const countHint = root.querySelector('#card-count-hint');
+  const loadMoreWrap = root.querySelector('#card-load-more-wrap');
   const searchEl = root.querySelector('#card-search');
   const typeEl = root.querySelector('#card-type-filter');
   const colorEl = root.querySelector('#card-color-filter');
   const collabEl = root.querySelector('#card-collab-filter');
   const awokenEl = root.querySelector('#card-awoken-filter');
 
-  function render() {
+  // 卡池已成長到上萬張，一次把符合條件的卡全部畫成DOM節點＋外部卡圖請求會非常卡，
+  // 所以改成每次只畫一批（PAGE_SIZE），捲到底再用「顯示更多」按鈕載入下一批。
+  const PAGE_SIZE = 60;
+  let shownCount = PAGE_SIZE;
+  let debounceTimer = null;
+
+  function renderNow() {
     const q = searchEl.value.trim().toLowerCase();
     const type = typeEl.value;
     const color = colorEl.value;
@@ -52,8 +61,11 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
       return true;
     });
 
+    const visible = list.slice(0, shownCount);
+    countHint.textContent = `符合條件共 ${list.length} 張，目前顯示 ${visible.length} 張。要加入卡組請先到「卡組編輯」分頁建立/選擇一副卡組。`;
+
     grid.innerHTML = '';
-    for (const card of list) {
+    for (const card of visible) {
       const deck = editingId ? deckStore.get(editingId) : null;
       const entry = deck ? deck.main.find((e) => e.id === card.id) : null;
       const el = renderCardCard(card, {
@@ -62,7 +74,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
         onAdd: editingId
           ? () => {
               deckStore.addCard(editingId, card.id, 1);
-              render();
+              renderNow();
               refreshDeckUI();
             }
           : () => alert('請先到「卡組編輯」分頁建立或選擇一副要編輯的卡組。'),
@@ -75,7 +87,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
                 deckStore.addCard(editingId, card.id, 1);
               }
               deckStore.update(editingId, { contractCardId: card.id });
-              render();
+              renderNow();
               refreshDeckUI();
             }
           : () => alert('請先到「卡組編輯」分頁建立或選擇一副要編輯的卡組。'),
@@ -83,9 +95,31 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
       grid.appendChild(el);
     }
     if (list.length === 0) grid.innerHTML = '<p class="hint">沒有符合條件的卡片。</p>';
+
+    loadMoreWrap.innerHTML = '';
+    if (list.length > shownCount) {
+      const btn = document.createElement('button');
+      btn.textContent = `顯示更多（還有 ${list.length - shownCount} 張）`;
+      btn.onclick = () => {
+        shownCount += PAGE_SIZE;
+        renderNow();
+      };
+      loadMoreWrap.appendChild(btn);
+    }
   }
 
-  searchEl.oninput = render;
+  function render() {
+    // 篩選條件變動時要從頭開始顯示，不然舊的捲動位置對應不上新結果
+    shownCount = PAGE_SIZE;
+    renderNow();
+  }
+
+  function debouncedRender() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 200);
+  }
+
+  searchEl.oninput = debouncedRender;
   typeEl.onchange = render;
   colorEl.onchange = render;
   collabEl.onchange = render;
