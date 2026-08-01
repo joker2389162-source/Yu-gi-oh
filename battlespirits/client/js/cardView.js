@@ -40,19 +40,38 @@ function placeholderGradient(card) {
   return `linear-gradient(135deg, ${stops})`;
 }
 
-// 卡圖：有 image 網址就顯示真圖，沒有就用依屬性色產生的佔位卡框（不是真的官方卡圖）。
-export function cardArtHtml(card, { small } = {}) {
-  if (card.image) {
-    // 官方圖片伺服器會依 Referer 擋掉非官方網域的請求（防盜連結），
-    // 不送 Referer 就能正常載入。
-    return `<img class="bs-card-art" src="${card.image}" alt="${card.name}" loading="lazy" referrerpolicy="no-referrer" />`;
-  }
+function placeholderArtHtml(card, small) {
   const grad = placeholderGradient(card);
   const typeLabel = TYPE_LABELS[card.type] || card.type;
   return `<div class="bs-card-art bs-card-art--placeholder" style="background:${grad}">
     <span class="art-type">${typeLabel}</span>
     ${!small ? `<span class="art-name">${card.name}</span>` : ''}
   </div>`;
+}
+
+// 官方圖片伺服器上少數卡片的圖檔實際上載不出來（連結失效／尚未上架等），單純顯示壞圖示對
+// 使用者沒有意義，所以載入失敗時自動退回跟「沒有圖」時一樣的佔位卡框。
+window.__bsCardArtFallback = function bsCardArtFallback(imgEl) {
+  const card = {
+    name: imgEl.dataset.cardName,
+    type: imgEl.dataset.cardType,
+    colors: imgEl.dataset.cardColors ? imgEl.dataset.cardColors.split(',').filter(Boolean) : [],
+  };
+  const small = imgEl.dataset.small === '1';
+  imgEl.outerHTML = placeholderArtHtml(card, small);
+};
+
+// 卡圖：有 image 網址就顯示真圖，沒有就用依屬性色產生的佔位卡框（不是真的官方卡圖）。
+export function cardArtHtml(card, { small } = {}) {
+  if (card.image) {
+    // 官方圖片伺服器會依 Referer 擋掉非官方網域的請求（防盜連結），
+    // 不送 Referer 就能正常載入；少數卡片的圖檔本身在官方伺服器上就載不出來，
+    // 這種情況用 onerror 退回佔位卡框，而不是顯示壞掉的圖示。
+    return `<img class="bs-card-art" src="${card.image}" alt="${card.name}" loading="lazy" referrerpolicy="no-referrer"
+      data-card-name="${card.name}" data-card-type="${card.type}" data-card-colors="${(card.colors || []).join(',')}"
+      data-small="${small ? '1' : '0'}" onerror="window.__bsCardArtFallback(this)" />`;
+  }
+  return placeholderArtHtml(card, small);
 }
 
 const SUMMON_CONDITION_LABELS = {
