@@ -1,0 +1,1689 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 ディーバブースター 詩姫学園（BSC28））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 ディーバブースター 詩姫学園（BSC28））",
+  "setCode": "BSC28",
+  "setName": "ディーバブースター 詩姫学園",
+  "cardCount": 64,
+  "typeCounts": {
+    "spirit": 53,
+    "brave": 3,
+    "nexus": 4,
+    "magic": 4
+  },
+  "cards": [
+    {
+      "id": "BSC28-001",
+      "name": "[学園制服]レイ・オーバ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-002",
+      "name": "[学園制服]グリーフィア・ダルク",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-003",
+      "name": "[学園制服]ラビィ・ダーリン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-004",
+      "name": "[学園制服]エマ・ジーン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-005",
+      "name": "[みんなのお姉さん]エマ・ジーン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-006",
+      "name": "[学園制服]バンリ・ソラ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-007",
+      "name": "[学園制服]センリ・タイガ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-008",
+      "name": "[焔姫]センリ・タイガ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-009",
+      "name": "[学園制服]ホクト・アポロニア",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-010",
+      "name": "[赤き星装]ホクト・アポロニア",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-011",
+      "name": "[学園制服]リゼ・クロムウェル",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-012",
+      "name": "[学園制服]キャンディ・サード",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-013",
+      "name": "[学園制服]フォンニーナ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-014",
+      "name": "[学園制服]デリス・ペルティオ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-015",
+      "name": "[学園制服]フリーダ・ライファ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-016",
+      "name": "[ネクストディーバ]フリーダ・ライファ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-017",
+      "name": "[学園制服]ゼクシア・テンマ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-018",
+      "name": "[学園制服]マリモ・イーディス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-019",
+      "name": "[応援大使]マリモ・イーディス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-020",
+      "name": "[学園制服]ナナカ・シロナガ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-021",
+      "name": "[グランブルー]ナナカ・シロナガ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 12,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-022",
+      "name": "[学園制服]ネイ・ランテイル",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-023",
+      "name": "[学園制服]ジャンヌ・ドラニエス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-024",
+      "name": "[学園制服]キャシー・レイム",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-025",
+      "name": "[学園制服]セイナ・リューミン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-026",
+      "name": "[学園制服]ソニア・Ａ・ワスプ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-027",
+      "name": "[音速の歌姫]ソニア・Ａ・ワスプ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-028",
+      "name": "[学園制服]リアス・ウロヴォルン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-029",
+      "name": "[学園制服]シエラ・ムルセーヌ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-030",
+      "name": "[歌姫戦姫]シエラ・ムルセーヌ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-031",
+      "name": "[学園制服]フラム・サンドリア",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-032",
+      "name": "[学園の四魔女]フラム・サンドリア",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-033",
+      "name": "[学園制服]ダイヤ・ルーン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-034",
+      "name": "[学園制服]セフィ・アリエス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-035",
+      "name": "[学園制服]アン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-036",
+      "name": "[学園制服]ショコ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-037",
+      "name": "[学園制服]ムゥ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-038",
+      "name": "[学園制服]フーガ・リン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-039",
+      "name": "[可愛さリンリン]フーガ・リン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-040",
+      "name": "[学園制服]ローリア・シープス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-041",
+      "name": "[シャイガール]ローリア・シープス",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-042",
+      "name": "[学園制服]ミスティ・ライルビット",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-043",
+      "name": "[学園制服]リオル・ティーダ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-044",
+      "name": "[ブリッツガール]リオル・ティーダ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-045",
+      "name": "[学園制服]フロマージュ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-046",
+      "name": "[学園制服]イエロー・マーリン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-047",
+      "name": "[学園制服]ペンタンリュックのラクェル",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-048",
+      "name": "詩姫学園生徒手帳",
+      "set": "BSC28",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "学器"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-049",
+      "name": "詩姫学園指定ジャージ",
+      "set": "BSC28",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "学器"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-050",
+      "name": "詩姫学園指定学生鞄",
+      "set": "BSC28",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "学器"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-051",
+      "name": "思い出の修学旅行",
+      "set": "BSC28",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-052",
+      "name": "学園祭へようこそ",
+      "set": "BSC28",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-053",
+      "name": "白熱する体育祭",
+      "set": "BSC28",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-054",
+      "name": "詩姫学園",
+      "set": "BSC28",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-055",
+      "name": "ロマンティックフライト",
+      "set": "BSC28",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-056",
+      "name": "魂のリフレイン",
+      "set": "BSC28",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-057",
+      "name": "イージーダンス",
+      "set": "BSC28",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-058",
+      "name": "ラブウィンズ",
+      "set": "BSC28",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X01",
+      "name": "[学園制服]ノア・フルール",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X02",
+      "name": "[烈火の戦国姫]バンリ・ソラ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X03",
+      "name": "[歌姫神]ゼクシア・テンマ",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X04",
+      "name": "[儚き闇姫]リアス・ウロヴォルン",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X05",
+      "name": "[ホップステップ]ミスティ・ライルビット",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC28-X06",
+      "name": "[学園制服]トリックスター",
+      "set": "BSC28",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "制服",
+        "衣装"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}

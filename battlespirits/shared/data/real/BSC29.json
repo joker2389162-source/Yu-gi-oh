@@ -1,0 +1,737 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 ドリームブースター バトスピフェスティバル（BSC29））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 ドリームブースター バトスピフェスティバル（BSC29））",
+  "setCode": "BSC29",
+  "setName": "ドリームブースター バトスピフェスティバル",
+  "cardCount": 30,
+  "typeCounts": {
+    "spirit": 3,
+    "nexus": 11,
+    "magic": 16
+  },
+  "cards": [
+    {
+      "id": "BSC29-001",
+      "name": "丁未機グロリアス・ラクーン",
+      "set": "BSC29",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機獣"
+      ],
+      "rarity": "",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-002",
+      "name": "庚申師オンコット・マーリン",
+      "set": "BSC29",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "想獣"
+      ],
+      "rarity": "",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-003",
+      "name": "癸亥坊カラミティ・ウリ",
+      "set": "BSC29",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "爆蒼"
+      ],
+      "rarity": "",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-004",
+      "name": "茂上家の晩餐",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-005",
+      "name": "黎明",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-006",
+      "name": "コケツにいらずんばコージを得ず",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-007",
+      "name": "アイツのカード",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-008",
+      "name": "ぱーぷるとーく",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-009",
+      "name": "光と闇の聖剣",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "purple",
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-010",
+      "name": "始まりのカード",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-011",
+      "name": "苦渋の決断",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-012",
+      "name": "バトルウサギー先生のバトスピ講座！",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-013",
+      "name": "究極の力",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "極",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-014",
+      "name": "神皇の時計台",
+      "set": "BSC29",
+      "type": "nexus",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-015",
+      "name": "クリムゾンストライク",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-016",
+      "name": "ビビッとビクトリー!!",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-017",
+      "name": "ライジングサン",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-018",
+      "name": "勝ちへの固執",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "極",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-019",
+      "name": "大切なもの",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red",
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-020",
+      "name": "ヴァイオレットニードル",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-021",
+      "name": "卯咲ウサギの試練",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-022",
+      "name": "エメラルドブレス",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-023",
+      "name": "ズバッとビシッと大勝利!!",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-024",
+      "name": "親子の絆",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-025",
+      "name": "ホワイトリターン",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "white",
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-026",
+      "name": "減点",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-027",
+      "name": "イエローホールド",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-028",
+      "name": "ブルーインパクト",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-029",
+      "name": "お告げ",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BSC29-030",
+      "name": "…",
+      "set": "BSC29",
+      "type": "magic",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "-",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}

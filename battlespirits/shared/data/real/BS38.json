@@ -1,0 +1,3373 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 十二神皇編 第4章（BS38））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 十二神皇編 第4章（BS38））",
+  "setCode": "BS38",
+  "setName": "十二神皇編 第4章",
+  "cardCount": 132,
+  "typeCounts": {
+    "spirit": 79,
+    "ultimate": 15,
+    "nexus": 16,
+    "magic": 18,
+    "brave": 4
+  },
+  "cards": [
+    {
+      "id": "BS38-001",
+      "name": "ヒキャクドラゴン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "武竜",
+        "竜人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-002",
+      "name": "丙獣リングテール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "皇獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-003",
+      "name": "子連れドラゴン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "武竜",
+        "竜人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-004",
+      "name": "ナノティラー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "地竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-005",
+      "name": "起導銃士ヒガン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起導者",
+        "家臣",
+        "武竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-006",
+      "name": "庚寅獣ブロス・ティーガ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "十冠",
+        "皇獣",
+        "機獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-007",
+      "name": "剣皇武龍ゼットウ・ドラゴン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "家臣",
+        "武竜"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-008",
+      "name": "ビッグ・ザ・タイガー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "皇獣",
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-009",
+      "name": "ガスナコ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "霊獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-010",
+      "name": "ボルトスネーク",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "死竜",
+        "妖蛇"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-011",
+      "name": "獄土の騎士レフティス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-012",
+      "name": "戊の四騎龍ブルーライダー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "死竜"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-013",
+      "name": "獄土騎士団",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-014",
+      "name": "式鬼神ウラ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "呪鬼"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-015",
+      "name": "獄土の大騎士オルダ・グラナトス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "魔影"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-016",
+      "name": "丁の遺跡蛇ルインイール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 10,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "十冠",
+        "妖蛇",
+        "死竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-017",
+      "name": "タンホト",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 1,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "遊精",
+        "爪鳥"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-018",
+      "name": "獄風の小隊アントマン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "殻人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-019",
+      "name": "辛騎士ブルーヘッド",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "爪鳥"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-020",
+      "name": "辛の跳獣ブースト・チェッカー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "遊精",
+        "爪鳥"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-021",
+      "name": "獄風の衛兵ツノハサ・シールダー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "殻人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-022",
+      "name": "獄風の魔術師セントール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "殻人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-023",
+      "name": "乙の跳獣女王アルレ・クィーン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "遊精",
+        "爪鳥"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-024",
+      "name": "スタートル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-025",
+      "name": "アルジェント・ヴィクセン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-026",
+      "name": "辛の獣戦艦ガード・ウル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-027",
+      "name": "己械人ガンズ・フォックス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-028",
+      "name": "丁戦機ゲンドゥル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-029",
+      "name": "乙の獣戦艦ヤク・ド・ウォール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-030",
+      "name": "癸械神機シャイングリフ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "機人"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-031",
+      "name": "紅炎の戦姫ブリュンヒルデ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "機人",
+        "機獣"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-032",
+      "name": "メロフーリン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 0,
+      "costAlleviationColor": null,
+      "costAlleviationCount": 0,
+      "bp": null,
+      "family": [
+        "漂精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-033",
+      "name": "ピットペンタン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "歌鳥",
+        "漂精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-034",
+      "name": "ツナワタリーマウス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "道化",
+        "漂精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-035",
+      "name": "果物人ナナバ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "漂精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-036",
+      "name": "丙の道化トラペイズマウス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "道化",
+        "漂精"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-037",
+      "name": "庚の金猿カンダマダン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "想獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-038",
+      "name": "美食の妖精カノコ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "楽族"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-039",
+      "name": "壬の道化ジャグリンガリアン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "道化",
+        "漂精"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-040",
+      "name": "ツチブタギア",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "爆蒼"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-041",
+      "name": "アシカモシカ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "異合"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-042",
+      "name": "チョウチンリザード",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "異合"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-043",
+      "name": "辛の爆獣カルネージ・レッドボア",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "爆蒼"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-044",
+      "name": "獄海勇士スキッドメン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "異合"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-045",
+      "name": "広目天将ビルバクシャ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-046",
+      "name": "丁の爆獣ドリルサイクラッシャー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "爆蒼"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-047",
+      "name": "獄海将軍スキッドメン・ジェネラル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "異合"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-048",
+      "name": "炎極天フレイムタイガー",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "起導者",
+        "皇獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-049",
+      "name": "アルティメット・ムラマサ・ドラゴン",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "新生",
+        "起導者",
+        "武竜"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-050",
+      "name": "暗極天スピネルドラゴン",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "死竜"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-051",
+      "name": "獄土の魔導師ディナイアル",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "邪神",
+        "魔影"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-052",
+      "name": "獄風極天クルビデンス",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "邪神",
+        "殻人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-053",
+      "name": "黄金の大翼ライチョークス",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "爪鳥"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-054",
+      "name": "鋼極天バッファキャノン",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "機獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-055",
+      "name": "己械勇者プロング・ホーン",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "機人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-056",
+      "name": "極天姫ヒフミ",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "戦姫",
+        "楽族"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-057",
+      "name": "黄金道化ゴールデンハム",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "道化",
+        "漂精"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-058",
+      "name": "黄金爆獣ダッシュ・ヤマンシー",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "爆蒼"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-059",
+      "name": "獄海提督スキッドメン・アドミラル",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "邪神",
+        "異合"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-060",
+      "name": "No.5 オータムライスフィールド",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-061",
+      "name": "No.45 パレスケープ",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-062",
+      "name": "No.9 ホースチェスナットツリー",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-063",
+      "name": "No.18 グッドラックウェル",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-064",
+      "name": "No.39 ハイウィズダム",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-065",
+      "name": "No.36 バーチャスアイランド",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-066",
+      "name": "リボルドロー",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-067",
+      "name": "イビルフレイム",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-068",
+      "name": "インフェクションシュート",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-069",
+      "name": "マーターズハート",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-070",
+      "name": "アルティメットサンダーボルト",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-071",
+      "name": "インファナルウィンド",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-072",
+      "name": "ドリームリベンジ",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-073",
+      "name": "リアクティブバリア",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-074",
+      "name": "マジシャンズポーション",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-075",
+      "name": "ドラフティングコール",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-076",
+      "name": "ハイドロリックウェーブ",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-077",
+      "name": "スクロールドロー",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X01",
+      "name": "光龍騎神サジット・アポロドラゴン",
+      "set": "BS38-RV X01",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "星竜"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X02",
+      "name": "魔羯邪神シュタイン・ボルグ",
+      "set": "BS38-RV X02",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "冥主"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X03",
+      "name": "巨蟹武神キャンサード",
+      "set": "BS38-RV X03",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "殻人"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X04",
+      "name": "獅機龍神ストライクヴルム・レオ",
+      "set": "BS38-RV X04",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "機獣"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X05",
+      "name": "魔導双神ジェミナイズ",
+      "set": "BS38-RV X05",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "導魔"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV X06",
+      "name": "天蠍神騎スコル・スピア",
+      "set": "BS38-RV X06",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "神皇",
+        "光導",
+        "異合"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV001",
+      "name": "カメレオプス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "爬獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV002",
+      "name": "十字星竜サザンクロス・ドラゴン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "星竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV003",
+      "name": "ヤシウム",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "皇獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV004",
+      "name": "フライスカル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "夜族"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV005",
+      "name": "魔具使いのカエルム",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "無魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV006",
+      "name": "戦車皇ディルガン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "無魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV007",
+      "name": "大水蛇ハイドロゲン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "妖蛇"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV008",
+      "name": "ダンデラビット",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "遊精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV009",
+      "name": "コロコーン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "遊精"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV010",
+      "name": "星騎士ハーキュリーΩ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "殻人"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV011",
+      "name": "イグア・バギー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "星魂",
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV012",
+      "name": "キグナ・スワンMk-II",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "機獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV013",
+      "name": "ノーザンベアード",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "巨獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV014",
+      "name": "水晶魚クリスティール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "空魚"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV015",
+      "name": "空母鯨ホーゲール",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "空魚"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV016",
+      "name": "星犬ポメラン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "戯狩"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV017",
+      "name": "コグマル",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "小玩"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV018",
+      "name": "天星馬ペガシーダ",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "戯狩"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV019",
+      "name": "黒獣王ケフェウス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "獣頭"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV020",
+      "name": "星海獣シー・サーペンダー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "異合"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV021",
+      "name": "巨人勇者ペルセウス",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 9,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "十冠",
+        "星魂",
+        "闘神"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV022",
+      "name": "砲凰竜フェニック・キャノン",
+      "set": "BS38",
+      "type": "brave",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "異魔神",
+        "星魂",
+        "機竜"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV023",
+      "name": "黒翼竜バーン・クロウ",
+      "set": "BS38",
+      "type": "brave",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "異魔神",
+        "星魂",
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV024",
+      "name": "千刀鳥カクレイン",
+      "set": "BS38",
+      "type": "brave",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "異魔神",
+        "星魂",
+        "爪鳥"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV025",
+      "name": "ポッポール",
+      "set": "BS38",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "異魔神",
+        "星魂",
+        "歌鳥"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV026",
+      "name": "星の祭壇",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV027",
+      "name": "戴冠する活火山",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV028",
+      "name": "血塗られた魔具",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV029",
+      "name": "六分儀天文台",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV030",
+      "name": "八分儀の祠",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV031",
+      "name": "白き楯の長城",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV032",
+      "name": "時刻む花時計",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV033",
+      "name": "星空の冠",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV034",
+      "name": "未完成の古代戦艦：竜骨",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV035",
+      "name": "未完成の古代戦艦：船尾",
+      "set": "BS38",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV036",
+      "name": "サザンクロスフレイム",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV037",
+      "name": "カシオペアシール",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV038",
+      "name": "デルタバリア",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV039",
+      "name": "メロディアスハープ",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV040",
+      "name": "マーキュリーゴブレット",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-RV041",
+      "name": "エリダヌスフラッド",
+      "set": "BS38",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X01",
+      "name": "白庚皇エクスパルド",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [
+        "十冠",
+        "皇獣",
+        "機獣"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X02",
+      "name": "獄土の四魔卿マグナマイザー",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "purple"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "邪神",
+        "次代",
+        "魔影"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X03",
+      "name": "乙の白騎士アルパイン・ビット",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "十冠",
+        "遊精",
+        "爪鳥"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X04",
+      "name": "丑の十二神皇アバランシュ・バイソン",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "神皇",
+        "機獣"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X05",
+      "name": "子の十二神皇マウチュー",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "神皇",
+        "道化",
+        "漂精"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-X06",
+      "name": "獄海の四魔卿イル・イマージョ",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "邪神",
+        "次代",
+        "異合"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-XX01",
+      "name": "獄風の四魔卿ヴァンディール",
+      "set": "BS38",
+      "type": "ultimate",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "邪神",
+        "次代",
+        "殻人"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS38-XX02",
+      "name": "黄の起源龍デルフィニュート",
+      "set": "BS38",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "起源龍"
+      ],
+      "rarity": "XX",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}
