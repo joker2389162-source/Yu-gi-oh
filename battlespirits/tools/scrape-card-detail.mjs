@@ -157,7 +157,11 @@ async function main() {
 
   for (let i = 0; i < data.cards.length; i++) {
     const card = data.cards[i];
-    const url = `https://www.battlespirits.com/cardlist/detail_iframe.php?card_no=${encodeURIComponent(card.id)}&card_no2=${encodeURIComponent(card.id)}`;
+    // 少數卡片（例如BS43-RVX01～06）官方頁面本身的card_no參數帶有一個多餘的空格
+    // （例如"BS43-RV X01"），跟card_no2/卡圖檔名/alt文字用的乾淨編號不一樣；
+    // 如果偵測到這種卡片，_lookupId會記錄官方真正需要的、帶空格的查詢用編號。
+    const lookupId = card._lookupId || card.id;
+    const url = `https://www.battlespirits.com/cardlist/detail_iframe.php?card_no=${encodeURIComponent(lookupId)}&card_no2=${encodeURIComponent(card.id)}`;
     try {
       const res = await fetch(url, { headers: HEADERS });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
