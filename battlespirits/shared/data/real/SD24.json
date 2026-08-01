@@ -1,0 +1,437 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 アクセル全開デッキ【紺碧のゼロ】（SD24））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 アクセル全開デッキ【紺碧のゼロ】（SD24））",
+  "setCode": "SD24",
+  "setName": "アクセル全開デッキ【紺碧のゼロ】",
+  "cardCount": 17,
+  "typeCounts": {
+    "spirit": 7,
+    "ultimate": 4,
+    "nexus": 2,
+    "magic": 4
+  },
+  "cards": [
+    {
+      "id": "SD24-001",
+      "name": "巨人兵士マキウス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 1,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-002",
+      "name": "黒き戦士クレイトス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-003",
+      "name": "巨人教師アリストテレス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-004",
+      "name": "騎将フィロタス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-005",
+      "name": "戦馬ブケファロス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "戦獣"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-006",
+      "name": "勇将クラテロス",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-007",
+      "name": "ムゲンドラゴン・ノヴァ",
+      "set": "SD24",
+      "type": "spirit",
+      "colors": [
+        "red",
+        "purple",
+        "green",
+        "white",
+        "yellow",
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "新生"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-008",
+      "name": "剣将スティオン",
+      "set": "SD24",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "次代",
+        "闘神"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-009",
+      "name": "知将プトレマイオス",
+      "set": "SD24",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "闘神"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-010",
+      "name": "烈将アンティゴノス",
+      "set": "SD24",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "闘神"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-011",
+      "name": "首都アレクサンドーラ",
+      "set": "SD24",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-012",
+      "name": "ガルガンドの城門",
+      "set": "SD24",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-013",
+      "name": "キングスコマンド",
+      "set": "SD24",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-014",
+      "name": "フラッドストリーム",
+      "set": "SD24",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-015",
+      "name": "マッスルウォール",
+      "set": "SD24",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-016",
+      "name": "スパークバースト",
+      "set": "SD24",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "SD24-X01",
+      "name": "アルティメット・アレクサンダー",
+      "set": "SD24",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "新生",
+        "闘神"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2314 @@
+{
+  "_readme": "真實卡片資料（部分完整）：card_no/稀有度/卡名/費用/屬性色/種類/系統(家族)/軽減コスト(顏色與張數，從列表頁的圖示數量算出，不是只有顏色) 都是真的官方資料，來自使用者提供的官方卡片列表頁存檔（已選定 アルティメットバトル03（BS26））。bp（戰鬥力）與 text（效果文字）目前是 null，要用 tools/scrape-card-detail.mjs 在自己電腦上補齊，再用 tools/merge-real-set.mjs 併入 shared/data/cards.json。type 欄位新增了本引擎尚未支援的真實卡片種類：brave（ブレイヴ）、ultimate（アルティメット，跟先前示範資料的究極卡是同一個type值）；token=true 代表「トークンスピリット」（效果生成的代用靈魂卡，不可放入卡組）；contractCard=true 代表契約卡（含契約ネクサス/契約スピリット兩種）。",
+  "source": "使用者提供的官方卡片列表頁存檔（www.battlespirits.com/cardlist/，已選定 アルティメットバトル03（BS26））",
+  "setCode": "BS26",
+  "setName": "アルティメットバトル03",
+  "cardCount": 91,
+  "typeCounts": {
+    "spirit": 47,
+    "ultimate": 9,
+    "brave": 15,
+    "nexus": 8,
+    "magic": 12
+  },
+  "cards": [
+    {
+      "id": "BS26-001",
+      "name": "スターリー・リューマン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "竜人",
+        "星竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-002",
+      "name": "ドラゴ・スピーダー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "翼竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-003",
+      "name": "プテラ戦闘機",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "空牙"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-004",
+      "name": "アロブレーダー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "地竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-005",
+      "name": "プレアデス・ロックドラゴン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "星竜"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-006",
+      "name": "炎竜将イフリート",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "竜人"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-007",
+      "name": "リューマン・ファンタジスタ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "護将",
+        "竜人"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-008",
+      "name": "皇帝龍カイゼルドラゴン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "星将",
+        "星魂",
+        "古竜"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-009",
+      "name": "スモッグシープ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "霊獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-010",
+      "name": "ホーンバイパー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "妖蛇"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-011",
+      "name": "ジーバック・アーマー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "護将",
+        "魔影"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-012",
+      "name": "リンクスモーカー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "霊獣",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-013",
+      "name": "ボーン・リッター",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "無魔"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-014",
+      "name": "冥騎士キルメデス",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "護将",
+        "冥主"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-015",
+      "name": "骸塵将ムクロ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "無魔"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-016",
+      "name": "クィーン・ナイトメア",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "purple"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "星将",
+        "星魂",
+        "魔神"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-017",
+      "name": "ツルギムカデ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "刃虫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-018",
+      "name": "殻武人テンドウ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "殻人"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-019",
+      "name": "プロキワン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "剣獣",
+        "星魂"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-020",
+      "name": "シルバ・ヤンマ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "刃虫"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-021",
+      "name": "北風の狼ボレアースウルフ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "護将",
+        "剣獣"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-022",
+      "name": "殻刃将レギオス",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "殻人"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-023",
+      "name": "猟剣獣カーラ・ハウンド",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "星将",
+        "星魂",
+        "剣獣"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-024",
+      "name": "タンク・モービル・レオパルト",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "武装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-025",
+      "name": "アンバー・レオン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "甲竜",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-026",
+      "name": "運命姫神スクルド",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "武装"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-027",
+      "name": "砲神機ヘイムキャノン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "護将",
+        "武装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-028",
+      "name": "一角獣機ユニコーン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "武装",
+        "星魂"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-029",
+      "name": "白騎将シグフェズル",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "武装"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-030",
+      "name": "オニキスドラゴン・ライダー",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "white",
+        "blue"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "星将",
+        "甲竜",
+        "武装"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-031",
+      "name": "プリムッポ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 2,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "小玩"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-032",
+      "name": "ラドン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "想獣",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-033",
+      "name": "妖精姫パフューム",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "楽族"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-034",
+      "name": "天使ナスエル",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "護将",
+        "天霊"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-035",
+      "name": "[歌姫令嬢]グリーフィア・ダルク",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫",
+        "衣装"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-036",
+      "name": "妖精将グロリア",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "楽族"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-037",
+      "name": "海獣ケートス",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "想獣",
+        "星魂"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-038",
+      "name": "歌姫撫子マリカ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "詩姫"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-039",
+      "name": "操舵手アイザック",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-040",
+      "name": "防人ヌビア",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "護将",
+        "獣頭"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-041",
+      "name": "副船長チェスター",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "闘神"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-042",
+      "name": "刃狼ジゲン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "剣使",
+        "星魂",
+        "獣頭"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-043",
+      "name": "星海の海賊ペルセース",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "星魂",
+        "闘神"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-044",
+      "name": "猫人剣士バーマン",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "剣使",
+        "獣頭"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-045",
+      "name": "海賊将エドワード",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "闘神"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-046",
+      "name": "紅炎竜ヒノコ",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "星竜"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-047",
+      "name": "悪魔皇デビッド",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "冥主"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-048",
+      "name": "翠鳳凰ニックス",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "爪鳥"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-049",
+      "name": "電神皇トレイン",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "武装"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-050",
+      "name": "聖天馬スカイ",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "想獣"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-051",
+      "name": "青獣皇パンザー",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "次代",
+        "獣頭"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-052",
+      "name": "砲星鎧バルド・リザード",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "爬獣",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-053",
+      "name": "鳥星鎧シソバード",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "red"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "空牙",
+        "星魂"
+      ],
+      "rarity": "M",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-054",
+      "name": "魔星鎧フライビート",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "魔影",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-055",
+      "name": "蛇星鎧スネイケルズ",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "妖蛇",
+        "星魂"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-056",
+      "name": "地星鎧フォックスター",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "剣獣",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-057",
+      "name": "空星鎧イーグレット",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "green"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "爪鳥",
+        "星魂"
+      ],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-058",
+      "name": "盾星鎧シールドタンク",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "武装",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-059",
+      "name": "剣星鎧ソードフィッシュ",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "空魚",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-060",
+      "name": "兎星鎧ラビッタ",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "戯狩",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-061",
+      "name": "乙女星鎧ヴァルゴブレイヴ",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "天霊",
+        "光導"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-062",
+      "name": "船星鎧ブレイヴアルゴー",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "造兵",
+        "星魂"
+      ],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-063",
+      "name": "天蠍星鎧ブレイヴスコーピオン",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "blue"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "異合",
+        "光導"
+      ],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-064",
+      "name": "ガイナロック大渓谷",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-065",
+      "name": "超新星の輝き",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-066",
+      "name": "嘆きの街トロメア",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "purple"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-067",
+      "name": "アルバ大草原",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-068",
+      "name": "時空結合点Ａ-01",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-069",
+      "name": "ノーランディ絶対防衛線",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "white"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-070",
+      "name": "ソルージュの丘",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-071",
+      "name": "雷海域",
+      "set": "BS26",
+      "type": "nexus",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-072",
+      "name": "キャノンボール",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-073",
+      "name": "クリムゾンフレア",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "red"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 5,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-074",
+      "name": "コアドレイン",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-075",
+      "name": "フォビドゥングレイヴ",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "purple"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-076",
+      "name": "ハイプレッシャー",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-077",
+      "name": "アルティメットウィンド",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "green"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-078",
+      "name": "アルティメットイレイザー",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 1,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-079",
+      "name": "アンチブレイヴバリア",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "white"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-080",
+      "name": "イリュージョンミラー",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "R",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-081",
+      "name": "チェンジリング",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-082",
+      "name": "サンダータクティクス",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 3,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "U",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-083",
+      "name": "インパクトロア",
+      "set": "BS26",
+      "type": "magic",
+      "colors": [
+        "blue"
+      ],
+      "cost": 4,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [],
+      "rarity": "C",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X01",
+      "name": "殻法師シロカブト",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "殻人"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X02",
+      "name": "幻獣神姫エキドゥナ",
+      "set": "BS26",
+      "type": "spirit",
+      "colors": [
+        "yellow"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "yellow",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "星将",
+        "楽族",
+        "想獣"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X03",
+      "name": "アルティメット・ジークヴルム・ノヴァ",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "red"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "red",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "三龍神",
+        "星竜"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X04",
+      "name": "アルティメット・ラグナ・ロック",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "white",
+        "green"
+      ],
+      "cost": 8,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 6,
+      "bp": null,
+      "family": [
+        "新生",
+        "戦騎"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X05",
+      "name": "次代獣王ライオドラス",
+      "set": "BS26",
+      "type": "ultimate",
+      "colors": [
+        "blue"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "blue",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "次代",
+        "獣頭"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X06",
+      "name": "双魚星鎧ブレイヴピスケス",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "purple"
+      ],
+      "cost": 7,
+      "costAlleviationColor": "purple",
+      "costAlleviationCount": 4,
+      "bp": null,
+      "family": [
+        "魔影",
+        "光導"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X07",
+      "name": "巨蟹星鎧ブレイヴキャンサー",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "green"
+      ],
+      "cost": 6,
+      "costAlleviationColor": "green",
+      "costAlleviationCount": 3,
+      "bp": null,
+      "family": [
+        "殻虫",
+        "光導"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    },
+    {
+      "id": "BS26-X08",
+      "name": "宝瓶星鎧ブレイヴアクエリアス",
+      "set": "BS26",
+      "type": "brave",
+      "colors": [
+        "white"
+      ],
+      "cost": 5,
+      "costAlleviationColor": "white",
+      "costAlleviationCount": 2,
+      "bp": null,
+      "family": [
+        "武装",
+        "光導"
+      ],
+      "rarity": "X",
+      "text": null,
+      "dataComplete": false,
+      "missingFields": [
+        "bp",
+        "text",
+        "costSymbols",
+        "image"
+      ]
+    }
+  ]
+}
