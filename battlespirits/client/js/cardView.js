@@ -78,7 +78,7 @@ const SUMMON_CONDITION_LABELS = {
   always: () => '',
   sacrifice: (c) => `召喚條件：犧牲自己場上${c.value}張卡片`,
   ownFieldBpAtLeast: (c) => `召喚條件：自己場上需有BP${c.value}以上的卡片`,
-  lifeAtMost: (c) => `召喚條件：生命核心需在${c.value}個以下`,
+  lifeAtMost: (c) => `召喚條件：生命Core需在${c.value}個以下`,
 };
 
 function summonConditionTag(card) {

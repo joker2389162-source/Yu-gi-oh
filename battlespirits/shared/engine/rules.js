@@ -17,7 +17,7 @@ export const COLOR_LABELS = {
 
 export const TURN_STEPS = [
   'start', // 開始步驟：回合開始時效果觸發
-  'core', // 核心步驟：可從儲備區移動1個核心到場上卡片
+  'core', // Core步驟：可從儲備區移動1個核心到場上卡片
   'draw', // 抽牌步驟：抽1張牌
   'refresh', // 復甦步驟：棄核區核心全數移回儲備區
   'main', // 主要步驟：召喚／使用魔法／設置爆發卡
@@ -27,6 +27,6 @@ export const TURN_STEPS = [
 ];
 
 export const STEP_LABELS = {
-  start: '開始步驟', core: '核心步驟', draw: '抽牌步驟', refresh: '復甦步驟',
+  start: '開始步驟', core: 'Core步驟', draw: '抽牌步驟', refresh: '復甦步驟',
   main: '主要步驟', attack: '攻擊步驟', main2: '第二主要步驟', end: '結束步驟',
 };

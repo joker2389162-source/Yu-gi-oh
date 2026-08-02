@@ -492,7 +492,7 @@ export function initPlayTab({ db, deckStore, startersData }) {
         ${state.winner !== null ? `<div class="game-over">🏆 對局結束，玩家${state.winner + 1}（${state.winner === ctx.viewer ? '你' : '對手'}）獲勝！</div>` : ''}
 
         <div class="opp-area">
-          <div class="player-stats">對手 ・ 生命核心 ${opp.life} ・ 儲備 ${opp.reserve} ・ 棄核 ${opp.coreTrash} ・ 手牌 ${opp.handCount} 張 ・ 牌庫 ${opp.deckCount} 張 ・ 爆發區 ${opp.burstZoneCount} 張</div>
+          <div class="player-stats">對手 ・ 生命Core ${opp.life} ・ 儲備 ${opp.reserve} ・ 棄核 ${opp.coreTrash} ・ 手牌 ${opp.handCount} 張 ・ 牌庫 ${opp.deckCount} 張 ・ 爆發區 ${opp.burstZoneCount} 張</div>
           <div class="field">${renderField(opp, 'opp')}</div>
         </div>
 
@@ -532,9 +532,9 @@ export function initPlayTab({ db, deckStore, startersData }) {
 
         <div class="my-area">
           <div class="field">${renderField(me, 'me')}</div>
-          <div class="player-stats">你 ・ 生命核心 ${me.life} ・ 儲備 ${me.reserve} ・ 棄核 ${me.coreTrash} ・ 牌庫 ${me.deckCount} 張 ・ 爆發區 ${me.burstZoneCount} 張</div>
+          <div class="player-stats">你 ・ 生命Core ${me.life} ・ 儲備 ${me.reserve} ・ 棄核 ${me.coreTrash} ・ 牌庫 ${me.deckCount} 張 ・ 爆發區 ${me.burstZoneCount} 張</div>
 
-          ${ctx.isMyCoreStep ? '<p class="hint-small">核心步驟：點選場上一張自己的卡片，從儲備區貼1點能量上去（有官方BP門檻資料的卡會依門檻表變化BP，其餘卡維持每貼1點+1000BP的簡化規則）。</p>' : ''}
+          ${ctx.isMyCoreStep ? '<p class="hint-small">Core步驟：點選場上一張自己的卡片，從儲備區貼1點能量上去（有官方BP門檻資料的卡會依門檻表變化BP，其餘卡維持每貼1點+1000BP的簡化規則）。</p>' : ''}
 
           ${sel ? `
             <div class="selection-box">
