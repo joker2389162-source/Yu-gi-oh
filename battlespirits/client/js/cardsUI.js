@@ -81,7 +81,15 @@ export function initCardsTab({ db, setsData, getEditingDeckId, deckStore, refres
       if (color !== 'all' && !(c.colors || []).includes(color)) return false;
       if (setFilter !== 'all' && c.set !== setFilter) return false;
       if (collabOnly && !c.collab) return false;
-      if (q && !(c.name.toLowerCase().includes(q) || (c.text || '').toLowerCase().includes(q))) return false;
+      if (
+        q &&
+        !(
+          c.name.toLowerCase().includes(q) ||
+          (c.textZh || '').toLowerCase().includes(q) ||
+          (c.text || '').toLowerCase().includes(q)
+        )
+      )
+        return false;
       return true;
     });
 

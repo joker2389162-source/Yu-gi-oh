@@ -125,7 +125,7 @@ export function renderCardCard(card, { onAdd, showQty, onAddContract, isContract
       ${card.uTrigger ? ' ・ <span class="tag tag--ultimate">U觸發</span>' : ''}
     </div>
     <div class="bs-card-keywords">${(card.keywords || []).map(keywordLabel).join(' ／ ')}</div>
-    <div class="bs-card-text">${card.text || ''}</div>
+    <div class="bs-card-text">${card.textZh || card.text || ''}</div>
     <div class="bs-card-id">${card.id} ・ ${card.set}</div>
   `;
   if (card.awokenForm) {
