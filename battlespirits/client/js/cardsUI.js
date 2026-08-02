@@ -23,10 +23,11 @@ export function initCardsTab({ db, setsData, getEditingDeckId, deckStore, refres
       <input id="card-search" type="search" placeholder="搜尋卡名或效果文字關鍵字" />
       <select id="card-type-filter">
         <option value="all">全部種類</option>
-        <option value="spirit">精靈</option>
-        <option value="nexus">據點</option>
-        <option value="magic">魔法</option>
-        <option value="ultimate">究極</option>
+        <option value="spirit">Spirit</option>
+        <option value="nexus">Nexus</option>
+        <option value="magic">Magic</option>
+        <option value="ultimate">Ultimate</option>
+        <option value="brave">Brave</option>
       </select>
       <select id="card-color-filter">
         <option value="all">全部顏色</option>

@@ -1,6 +1,6 @@
 import { COLOR_LABELS } from '../../shared/engine/rules.js';
 
-const TYPE_LABELS = { spirit: '精靈', nexus: '據點', magic: '魔法', ultimate: '究極' };
+const TYPE_LABELS = { spirit: 'Spirit', nexus: 'Nexus', magic: 'Magic', ultimate: 'Ultimate', brave: 'Brave' };
 
 export const KEYWORD_LABELS = {
   blocker: 'Blocker（攔截者）',
