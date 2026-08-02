@@ -1,7 +1,23 @@
 import { renderCardCard } from './cardView.js';
 
-export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI }) {
+export function initCardsTab({ db, setsData, getEditingDeckId, deckStore, refreshDeckUI }) {
   const root = document.getElementById('tab-cards');
+
+  // 卡包／系列下拉選單：從目前卡池實際出現過的 set 代碼收集（不是列出sets.json裡全部
+  // 定義過的系列，避免出現選了卻一張卡都沒有的空選項），依代碼排序；有對應的系列名稱
+  // 就一起顯示，方便辨認。
+  const setCodesInPool = [...new Set(db.allCards().map((c) => c.set).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, 'ja')
+  );
+  const setsByCode = new Map((setsData?.sets || []).map((s) => [s.code, s]));
+  const setOptionsHtml = setCodesInPool
+    .map((code) => {
+      const setInfo = setsByCode.get(code);
+      const label = setInfo ? `${code}｜${setInfo.name}` : code;
+      return `<option value="${code}">${label}</option>`;
+    })
+    .join('');
+
   root.innerHTML = `
     <div class="toolbar">
       <input id="card-search" type="search" placeholder="搜尋卡名或效果文字關鍵字" />
@@ -21,6 +37,10 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
         <option value="green">綠</option>
         <option value="purple">紫</option>
       </select>
+      <select id="card-set-filter">
+        <option value="all">全部卡包／系列</option>
+        ${setOptionsHtml}
+      </select>
       <label class="chk"><input type="checkbox" id="card-collab-filter" /> 只看合作卡</label>
       <label class="chk"><input type="checkbox" id="card-awoken-filter" /> 顯示轉醒背面卡（僅供查閱，不能直接加入卡組）</label>
     </div>
@@ -35,6 +55,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
   const searchEl = root.querySelector('#card-search');
   const typeEl = root.querySelector('#card-type-filter');
   const colorEl = root.querySelector('#card-color-filter');
+  const setEl = root.querySelector('#card-set-filter');
   const collabEl = root.querySelector('#card-collab-filter');
   const awokenEl = root.querySelector('#card-awoken-filter');
 
@@ -48,6 +69,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
     const q = searchEl.value.trim().toLowerCase();
     const type = typeEl.value;
     const color = colorEl.value;
+    const setFilter = setEl.value;
     const collabOnly = collabEl.checked;
     const showAwoken = awokenEl.checked;
     const editingId = getEditingDeckId();
@@ -56,6 +78,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
       if (!showAwoken && c.awokenForm) return false;
       if (type !== 'all' && c.type !== type) return false;
       if (color !== 'all' && !(c.colors || []).includes(color)) return false;
+      if (setFilter !== 'all' && c.set !== setFilter) return false;
       if (collabOnly && !c.collab) return false;
       if (q && !(c.name.toLowerCase().includes(q) || (c.text || '').toLowerCase().includes(q))) return false;
       return true;
@@ -122,6 +145,7 @@ export function initCardsTab({ db, getEditingDeckId, deckStore, refreshDeckUI })
   searchEl.oninput = debouncedRender;
   typeEl.onchange = render;
   colorEl.onchange = render;
+  setEl.onchange = render;
   collabEl.onchange = render;
   awokenEl.onchange = render;
   render();

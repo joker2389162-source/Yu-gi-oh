@@ -29,12 +29,13 @@ tabButtons.forEach((btn) => {
 async function main() {
   const statusEl = document.getElementById('load-status');
   try {
-    const { db, startersData } = await loadDatabase();
+    const { db, startersData, setsData } = await loadDatabase();
     statusEl.remove();
 
     let editingDeckId = null;
     cardsUIRef = initCardsTab({
       db,
+      setsData,
       deckStore,
       getEditingDeckId: () => editingDeckId,
       refreshDeckUI: () => deckUIRef.renderEditor(),
