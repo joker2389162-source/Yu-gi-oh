@@ -169,3 +169,120 @@ code { background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
 .hand-card--unaffordable { opacity: .55; }
 
 .attack-controls { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* =========================================================
+   手機版響應式排版（<=760px）。桌面版版面完全不受影響，
+   以下規則只在小螢幕時覆蓋上面的樣式。
+   ========================================================= */
+@media (max-width: 760px) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-x: hidden; }
+
+  /* 頂部品牌列：logo 縮小、副標題允許換行不擠爆 */
+  .topbar { padding: 10px 12px; gap: 8px; }
+  .logo { width: 34px; height: 34px; font-size: 16px; border-radius: 8px; }
+  .brand h1 { font-size: 15px; line-height: 1.3; }
+  .brand .sub { display: none; } /* 手機上這行說明字太長沒必要顯示，優先讓標題不換行 */
+
+  .status { padding: 8px 12px; font-size: 13px; }
+
+  /* 分頁列：改成可橫向滑動、每個按鈕觸控範圍加大 */
+  .tabs {
+    padding: 0 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 12px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 44px;
+  }
+  .tab-panel { padding: 10px 10px; }
+
+  .foot { padding: 12px 10px; font-size: 11px; }
+
+  /* ---- 卡片資料庫：欄位變窄、字放大避免手指誤觸 ---- */
+  .toolbar { gap: 6px; }
+  .toolbar input[type="search"], .toolbar select {
+    flex: 1 1 140px;
+    min-height: 40px;
+    font-size: 14px;
+  }
+  .bs-card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .bs-card-art { height: 70px; }
+  .bs-add-btn { min-height: 38px; font-size: 13px; }
+
+  /* ---- 卡組編輯：清單與編輯區改成上下堆疊 ---- */
+  .deck-layout { flex-direction: column; gap: 14px; }
+  .deck-list-panel { width: 100%; }
+  .deck-editor-head { flex-direction: column; gap: 6px; }
+  .deck-editor-head input, .deck-editor-head select { width: 100%; }
+  .new-deck-form, .starter-import { max-width: none; }
+
+  /* 卡組內卡片列：原本 5 欄 grid 在窄螢幕會被壓爛，改成可換行的彈性排列 */
+  .deck-card-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    font-size: 13px;
+  }
+  .deck-card-row > *:first-child { flex: 1 1 100%; } /* 卡名獨占一行 */
+  .deck-card-row button { width: 32px; height: 32px; font-size: 15px; }
+
+  /* ---- 對戰設定 ---- */
+  .play-setup select, .play-setup input[type="text"] { max-width: none; font-size: 14px; min-height: 40px; }
+  .play-setup button { min-height: 42px; padding: 10px 16px; width: 100%; }
+  .online-actions { flex-wrap: wrap; }
+  .online-actions input { flex: 1 1 auto !important; min-height: 40px; }
+  .mode-tabs { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .mode-btn { min-height: 44px; white-space: nowrap; flex-shrink: 0; }
+
+  /* ---- 對戰畫面：卡片變小張、按鈕加大好按 ---- */
+  .board-topbar { flex-wrap: wrap; gap: 8px; padding: 8px 10px; }
+  .board-topbar button { min-height: 40px; padding: 8px 12px; font-size: 13px; }
+  .turn-indicator, .room-code { font-size: 12px; }
+
+  .opp-area, .my-area { padding: 8px; }
+  .player-stats { font-size: 12px; }
+
+  .field { gap: 6px; min-height: 50px; }
+  .field-card { min-width: 84px; padding: 5px 6px; font-size: 11px; }
+
+  .selection-box, .combat-box, .burst-box, .utrigger-box { padding: 8px; font-size: 12px; }
+  .selection-box { flex-direction: column; align-items: stretch; }
+  .selection-box button { min-height: 40px; }
+
+  .block-choices { gap: 6px; }
+  .block-choice-btn, .burst-activate-btn, .attack-btn { min-height: 38px; padding: 8px 12px; }
+
+  /* 手牌：固定寬度改成橫向滑動的卡片列，避免整排被壓縮到看不清楚 */
+  .hand-cards {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding-bottom: 4px;
+  }
+  .hand-card {
+    width: 128px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .hand-card--back { width: 50px; }
+  .hc-actions button { min-height: 32px; font-size: 12px; }
+
+  .attack-controls { gap: 8px; }
+  .attack-controls button { min-height: 40px; padding: 8px 12px; }
+}
+
+/* 更小的螢幕（多數直立手機）再收斂一階 */
+@media (max-width: 400px) {
+  .brand h1 { font-size: 13px; }
+  .bs-card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .hand-card { width: 112px; }
+}

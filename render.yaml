@@ -1,0 +1,37 @@
+# Render Blueprint：部署 battlespirits/ 底下的 Battle Spirits 線上卡牌遊戲
+# （跟 repo 根目錄的「遊戲王中文卡表工具」是完全獨立的子專案，兩者互不影響）。
+#
+# 用法：Render 後台 → New → Blueprint → 選這個 repo → Render 會自動讀到這個檔案，
+# 列出下面兩個服務讓你確認名稱/方案後一鍵建立。
+#
+# 建立完成後：
+#   1. 打開 battlespirits-client 服務的網址，會自動導到 /client/index.html。
+#   2. 到「對戰」分頁的「伺服器位址」欄位，貼上 battlespirits-server 服務的網址，
+#      並把開頭的 https:// 換成 wss://（例如 wss://battlespirits-server-xxxx.onrender.com）。
+#
+# 注意（Render 免費方案的限制，詳見部署說明）：
+#   - 免費 Web Service 閒置一段時間會被暫停，下次連線要重新喚醒，第一次連線可能
+#     要等 30~60 秒；正在進行的對局也會因為伺服器重啟而消失（房間狀態存在記憶體，
+#     沒有資料庫）。要避免的話要升級到付費方案（不會休眠）。
+
+services:
+  # 靜態前端：卡片資料庫／卡組編輯／對戰畫面 UI（純 HTML/CSS/JS，不需要 build）
+  - type: web
+    name: battlespirits-client
+    env: static
+    rootDir: battlespirits
+    buildCommand: ""
+    staticPublishPath: .
+    routes:
+      - type: redirect
+        source: /
+        destination: /client/index.html
+
+  # WebSocket 連線對戰伺服器（權威端規則引擎，client 連線對戰模式要用）
+  - type: web
+    name: battlespirits-server
+    env: node
+    plan: free
+    rootDir: battlespirits
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
